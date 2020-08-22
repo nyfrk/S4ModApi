@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug142|Win32">
+      <Configuration>Debug142</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{80F4B5D7-9AB1-4DA7-B3A9-C13241352964}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>S4Hooks</RootNamespace>
+    <ProjectName>S4ModApi</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug142|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141_xp</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug142|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>$(ProjectDir)lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)lib\;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <SourcePath>$(ProjectDir)lib;$(SourcePath)</SourcePath>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug142|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>$(ProjectDir)lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)lib\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <SourcePath>$(ProjectDir)lib;$(SourcePath)</SourcePath>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>$(ProjectDir)lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)lib\;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <SourcePath>$(ProjectDir)lib;$(SourcePath)</SourcePath>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;S4MODAPI;_DEBUG;S4MODAPI_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <CreateHotpatchableImage>true</CreateHotpatchableImage>
+      <UseFullPaths>false</UseFullPaths>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>/D_WIN32_WINNT=0x0501 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <CreateHotPatchableImage>Enabled</CreateHotPatchableImage>
+      <AdditionalDependencies>Precompiled.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>if exist "$(OutDir)deploy.bat" (call "$(OutDir)deploy.bat" )</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <NullTerminateStrings>true</NullTerminateStrings>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug142|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;S4MODAPI;_DEBUG;S4MODAPI_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <CreateHotpatchableImage>true</CreateHotpatchableImage>
+      <UseFullPaths>false</UseFullPaths>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalOptions>/D_WIN32_WINNT=0x0501 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <CreateHotPatchableImage>Enabled</CreateHotPatchableImage>
+      <AdditionalDependencies>Precompiled.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>if exist "$(OutDir)deploy.bat" (call "$(OutDir)deploy.bat" )</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <NullTerminateStrings>true</NullTerminateStrings>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;S4MODAPI;NDEBUG;S4MODAPI_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <CreateHotpatchableImage>true</CreateHotpatchableImage>
+      <UseFullPaths>false</UseFullPaths>
+      <AdditionalOptions>/D_WIN32_WINNT=0x0501 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <CreateHotPatchableImage>Enabled</CreateHotPatchableImage>
+      <AdditionalDependencies>Precompiled.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>if exist "$(OutDir)deploy.bat" (call "$(OutDir)deploy.bat" )</Command>
+    </PostBuildEvent>
+    <ResourceCompile>
+      <NullTerminateStrings>true</NullTerminateStrings>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="CCustomUi.cpp" />
+    <ClCompile Include="CFrameHook.cpp" />
+    <ClCompile Include="CHook.cpp" />
+    <ClCompile Include="CDialog.cpp" />
+    <ClCompile Include="CMessageBox.cpp" />
+    <ClCompile Include="CMouseHook.cpp" />
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="CS4Error.cpp" />
+    <ClCompile Include="CS4Recruit.cpp" />
+    <ClCompile Include="CS4Selection.cpp" />
+    <ClCompile Include="CS4Debug.cpp" />
+    <ClCompile Include="CS4Listeners.cpp" />
+    <ClCompile Include="CS4CustomUi.cpp" />
+    <ClCompile Include="CS4SendWarriors.cpp" />
+    <ClCompile Include="CS4Singleton.cpp" />
+    <ClCompile Include="CS4Unknown.cpp" />
+    <ClCompile Include="CS4Misc.cpp" />
+    <ClCompile Include="CS4Screen.cpp" />
+    <ClCompile Include="DebugInfo.cpp" />
+    <ClCompile Include="DebugProgram.cpp" />
+    <ClCompile Include="DebugRender.cpp" />
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="CS4IsObjectType.cpp" />
+    <ClCompile Include="globals.cpp" />
+    <ClCompile Include="CMapInitHook.cpp" />
+    <ClCompile Include="lib\hlib.cpp" />
+    <ClCompile Include="Log.cpp" />
+    <ClCompile Include="md5.cpp" />
+    <ClCompile Include="module.cpp" />
+    <ClCompile Include="patterns.cpp" />
+    <ClCompile Include="s4.cpp" />
+    <ClCompile Include="S4CreateInterface.cpp" />
+    <ClCompile Include="safemem.cpp" />
+    <ClCompile Include="CSettlerSendHook.cpp" />
+    <ClCompile Include="CTickHook.cpp" />
+    <ClCompile Include="CUpdate.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CCustomUi.h" />
+    <ClInclude Include="CDialog.h" />
+    <ClInclude Include="CFrameHook.h" />
+    <ClInclude Include="CHook.h" />
+    <ClInclude Include="CMapInitHook.h" />
+    <ClInclude Include="CMessageBox.h" />
+    <ClInclude Include="CMouseHook.h" />
+    <ClInclude Include="Console.h" />
+    <ClInclude Include="CSettlerSendHook.h" />
+    <ClInclude Include="CTickHook.h" />
+    <ClInclude Include="CSettlers4Api.h" />
+    <ClInclude Include="CUpdate.h" />
+    <ClInclude Include="DebugRender.h" />
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="lib\hlib.h" />
+    <ClInclude Include="Log.h" />
+    <ClInclude Include="md5.h" />
+    <ClInclude Include="module.h" />
+    <ClInclude Include="patterns.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="s4.h" />
+    <ClInclude Include="S4ModApi.h" />
+    <ClInclude Include="safemem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="S4ModApi.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

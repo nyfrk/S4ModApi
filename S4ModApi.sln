@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "S4ModApi", "S4ModApi\S4ModApi.vcxproj", "{80F4B5D7-9AB1-4DA7-B3A9-C13241352964}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Debug142|x86 = Debug142|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80F4B5D7-9AB1-4DA7-B3A9-C13241352964}.Debug|x86.ActiveCfg = Debug|Win32
+		{80F4B5D7-9AB1-4DA7-B3A9-C13241352964}.Debug|x86.Build.0 = Debug|Win32
+		{80F4B5D7-9AB1-4DA7-B3A9-C13241352964}.Debug142|x86.ActiveCfg = Release|Win32
+		{80F4B5D7-9AB1-4DA7-B3A9-C13241352964}.Debug142|x86.Build.0 = Release|Win32
+		{80F4B5D7-9AB1-4DA7-B3A9-C13241352964}.Release|x86.ActiveCfg = Release|Win32
+		{80F4B5D7-9AB1-4DA7-B3A9-C13241352964}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {779B4EE4-8F36-40ED-9D04-EEE5F670A740}
+	EndGlobalSection
+EndGlobal

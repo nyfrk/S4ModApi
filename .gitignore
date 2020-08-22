@@ -1,0 +1,31 @@
+# gitignore for C++
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Visual Studio Files
+/Debug
+/Release
+/Debug142
+*.suo
+*.csproj.user
+*.vbproj.user
+ipch
+*sdf
+.vs
+*.aps
+
+/PackageRelease.bat
+/*.zip
+*.xcf
+deploy.bat

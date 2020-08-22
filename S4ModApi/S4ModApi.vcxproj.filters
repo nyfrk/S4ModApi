@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Quelldateien">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Headerdateien">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Ressourcendateien">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Headerdateien\Helper">
+      <UniqueIdentifier>{baad1bee-76ea-498c-a605-6a0af58f09d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\COM">
+      <UniqueIdentifier>{ece4e5b9-68f1-41f3-bf84-07de844991f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\COM">
+      <UniqueIdentifier>{800b06ce-3689-4d3b-aed4-6227453b5d44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Helper">
+      <UniqueIdentifier>{623d89c8-943b-4f62-aa5f-cd95da021a50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\API">
+      <UniqueIdentifier>{b1d699a6-e583-4300-a682-30469055b32f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Hooks">
+      <UniqueIdentifier>{9886884f-4937-477f-b942-496e638777ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Hooks">
+      <UniqueIdentifier>{221d5dc7-315c-41a9-b6e4-cef4fede0354}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Exports">
+      <UniqueIdentifier>{61fabc4c-8677-470c-a7a7-5db48a840727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Settlers4">
+      <UniqueIdentifier>{6419cd99-e24d-4f22-9989-db56bedc1a21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Settlers4">
+      <UniqueIdentifier>{4eb5713a-0bdf-4433-aebb-03c5f4f20a36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Debug">
+      <UniqueIdentifier>{121b5a31-5643-45dd-9228-91af9c0b033f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\Debug">
+      <UniqueIdentifier>{2fa2068c-2806-4f5b-a6d5-50d4900e6058}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\GUI">
+      <UniqueIdentifier>{51eed382-4567-4671-8f9f-fcd51694ac1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\GUI">
+      <UniqueIdentifier>{b182323b-ae0f-4265-b994-118e003be3ad}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugInfo.cpp">
+      <Filter>Quelldateien\Exports</Filter>
+    </ClCompile>
+    <ClCompile Include="globals.cpp">
+      <Filter>Quelldateien\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="patterns.cpp">
+      <Filter>Quelldateien\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="S4CreateInterface.cpp">
+      <Filter>Quelldateien\Exports</Filter>
+    </ClCompile>
+    <ClCompile Include="s4.cpp">
+      <Filter>Quelldateien\Settlers4</Filter>
+    </ClCompile>
+    <ClCompile Include="safemem.cpp">
+      <Filter>Quelldateien\Exports</Filter>
+    </ClCompile>
+    <ClCompile Include="CMapInitHook.cpp">
+      <Filter>Quelldateien\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="CSettlerSendHook.cpp">
+      <Filter>Quelldateien\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="CTickHook.cpp">
+      <Filter>Quelldateien\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="md5.cpp">
+      <Filter>Quelldateien\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugProgram.cpp">
+      <Filter>Quelldateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Quelldateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugRender.cpp">
+      <Filter>Quelldateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4Debug.cpp">
+      <Filter>Quelldateien\COM</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4Listeners.cpp">
+      <Filter>Quelldateien\COM</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4Misc.cpp">
+      <Filter>Quelldateien\COM</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4Screen.cpp">
+      <Filter>Quelldateien\COM</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4Singleton.cpp">
+      <Filter>Quelldateien\COM</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4Unknown.cpp">
+      <Filter>Quelldateien\COM</Filter>
+    </ClCompile>
+    <ClCompile Include="CDialog.cpp">
+      <Filter>Quelldateien\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CMessageBox.cpp">
+      <Filter>Quelldateien\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CHook.cpp">
+      <Filter>Quelldateien\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Quelldateien\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="module.cpp">
+      <Filter>Quelldateien\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4CustomUi.cpp">
+      <Filter>Quelldateien\COM</Filter>
+    </ClCompile>
+    <ClCompile Include="CCustomUi.cpp">
+      <Filter>Quelldateien\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4Selection.cpp">
+      <Filter>Quelldateien\COM</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4Error.cpp">
+      <Filter>Quelldateien\COM</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\hlib.cpp">
+      <Filter>Quelldateien\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="CFrameHook.cpp">
+      <Filter>Quelldateien\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="CMouseHook.cpp">
+      <Filter>Quelldateien\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4SendWarriors.cpp">
+      <Filter>Quelldateien\COM</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4Recruit.cpp">
+      <Filter>Quelldateien\COM</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4IsObjectType.cpp">
+      <Filter>Quelldateien\COM</Filter>
+    </ClCompile>
+    <ClCompile Include="CUpdate.cpp">
+      <Filter>Quelldateien\Helper</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="patterns.h">
+      <Filter>Headerdateien\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="globals.h">
+      <Filter>Headerdateien\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="CFrameHook.h">
+      <Filter>Headerdateien\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="CMapInitHook.h">
+      <Filter>Headerdateien\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="CSettlerSendHook.h">
+      <Filter>Headerdateien\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="CMouseHook.h">
+      <Filter>Headerdateien\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="CTickHook.h">
+      <Filter>Headerdateien\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="CSettlers4Api.h">
+      <Filter>Headerdateien\COM</Filter>
+    </ClInclude>
+    <ClInclude Include="safemem.h">
+      <Filter>Headerdateien\API</Filter>
+    </ClInclude>
+    <ClInclude Include="s4.h">
+      <Filter>Headerdateien\Settlers4</Filter>
+    </ClInclude>
+    <ClInclude Include="md5.h">
+      <Filter>Headerdateien\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Headerdateien\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugRender.h">
+      <Filter>Headerdateien\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="CDialog.h">
+      <Filter>Headerdateien\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CMessageBox.h">
+      <Filter>Headerdateien\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CHook.h">
+      <Filter>Headerdateien\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Headerdateien\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="module.h">
+      <Filter>Headerdateien\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="CCustomUi.h">
+      <Filter>Headerdateien\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="S4ModApi.h">
+      <Filter>Headerdateien\API</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\hlib.h">
+      <Filter>Headerdateien\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="CUpdate.h">
+      <Filter>Headerdateien\Helper</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="S4ModApi.rc">
+      <Filter>Ressourcendateien</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
