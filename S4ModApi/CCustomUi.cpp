@@ -43,9 +43,9 @@ CCustomUi::CCustomUi(LPCS4CUSTOMUIELEMENT param) :
 	auto mod = param->mod;
 	if (param->szImg) {
 		if (m_flags & S4_CUSTOMUIFLAGS_FROMRES_IMG) {
-			m_hImg = (HBITMAP)LoadImageW(mod, param->szImg, IMAGE_BITMAP, 0, 0, 0);
+			m_hImg = (HBITMAP)LoadImageW(mod, param->szImg, IMAGE_BITMAP, 0, 0, 0 | LR_LOADTRANSPARENT);
 		} else {
-			m_hImg = (HBITMAP)LoadImageW(NULL, param->szImg, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+			m_hImg = (HBITMAP)LoadImageW(NULL, param->szImg, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_LOADTRANSPARENT);
 		}
 		if (m_hImg) {
 			BITMAP bm;
@@ -56,9 +56,9 @@ CCustomUi::CCustomUi(LPCS4CUSTOMUIELEMENT param) :
 	} else { LOG("LoadImageW failed with error " << dec << GetLastError()); m_hImg = NULL; }
 	if (param->szImgHover) {
 		if (m_flags & S4_CUSTOMUIFLAGS_FROMRES_IMG) {
-			m_hImgHover = (HBITMAP)LoadImageW(mod, param->szImgHover, IMAGE_BITMAP, 0, 0, 0);
+			m_hImgHover = (HBITMAP)LoadImageW(mod, param->szImgHover, IMAGE_BITMAP, 0, 0, 0 | LR_LOADTRANSPARENT);
 		} else {
-			m_hImgHover = (HBITMAP)LoadImageW(NULL, param->szImgHover, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+			m_hImgHover = (HBITMAP)LoadImageW(NULL, param->szImgHover, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_LOADTRANSPARENT);
 		}
 		if (m_hImgHover) {
 			BITMAP bm;
@@ -69,9 +69,9 @@ CCustomUi::CCustomUi(LPCS4CUSTOMUIELEMENT param) :
 	} else { LOG("LoadImageW failed with error " << dec << GetLastError()); m_hImgHover = NULL; }
 	if (param->szImgSelected) {
 		if (m_flags & S4_CUSTOMUIFLAGS_FROMRES_IMG) {
-			m_hImgSelected = (HBITMAP)LoadImageW(mod, param->szImgSelected, IMAGE_BITMAP, 0, 0, 0);
+			m_hImgSelected = (HBITMAP)LoadImageW(mod, param->szImgSelected, IMAGE_BITMAP, 0, 0, 0 | LR_LOADTRANSPARENT);
 		} else {
-			m_hImgSelected = (HBITMAP)LoadImageW(NULL, param->szImgSelected, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+			m_hImgSelected = (HBITMAP)LoadImageW(NULL, param->szImgSelected, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_LOADTRANSPARENT);
 		}
 		if (m_hImgSelected) {
 			BITMAP bm;
@@ -82,10 +82,10 @@ CCustomUi::CCustomUi(LPCS4CUSTOMUIELEMENT param) :
 	} else { LOG("LoadImageW failed with error " << dec << GetLastError()); m_hImgSelected = NULL; }
 	if (param->szImgSelectedHover) {
 		if (m_flags & S4_CUSTOMUIFLAGS_FROMRES_IMG) {
-			m_hImgSelectedHover = (HBITMAP)LoadImageW(mod, param->szImgSelectedHover, IMAGE_BITMAP, 0, 0, 0);
+			m_hImgSelectedHover = (HBITMAP)LoadImageW(mod, param->szImgSelectedHover, IMAGE_BITMAP, 0, 0, 0 | LR_LOADTRANSPARENT);
 		}
 		else {
-			m_hImgSelectedHover = (HBITMAP)LoadImageW(NULL, param->szImgSelectedHover, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+			m_hImgSelectedHover = (HBITMAP)LoadImageW(NULL, param->szImgSelectedHover, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_LOADTRANSPARENT);
 		}
 		if (m_hImgSelectedHover) {
 			BITMAP bm;
@@ -188,91 +188,72 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 		return FALSE;
 	}
 
-	POINT p = *cursor;
+	const POINT& p = *cursor;
 	bool newstate = false;	
 	HBITMAP hBm = NULL;
 	RECT *pRect = NULL;
-	const bool leftbutton = GetAsyncKeyState(VK_LBUTTON) < 0;
-
-	INT pillarboxWidth = 0;
-	if ((m_flags & S4_CUSTOMUIFLAGS_NO_PILLARBOX) == 0) {
-		auto pPillarboxWidth = S4::GetInstance().PillarboxWidth;
-		if (pPillarboxWidth) pillarboxWidth = *pPillarboxWidth;
-	}
-
-	p.x -= pillarboxWidth;
 
 	switch (m_state) {
 		case S4_CUSTOM_UI_UNSELECTED: {
+			if (m_hImgHover && PtInRect(&m_rect, p)) {
+				newstate = true;
+				m_state = S4_CUSTOM_UI_HOVERING;
+				goto lbl_S4_CUSTOM_UI_HOVERING;
+			}
 		lbl_S4_CUSTOM_UI_UNSELECTED:
-			if (PtInRect(&m_rect, p)) {
-				if (m_hImgHover) {
-					if (newstate) break; // protect from infinite loop
-					newstate = true;
-					m_state = S4_CUSTOM_UI_HOVERING;
-					goto lbl_S4_CUSTOM_UI_HOVERING;
-				}
-				if (leftbutton) {
-					if (m_hImgSelectedHover) {
-						hBm = m_hImgSelectedHover;
-						pRect = &m_selectedHoverRect;
-					}
-					else {
-						if (m_hImgHover) {
-							hBm = m_hImgHover;
-							pRect = &m_hoverRect;
-						}
-						else {
-							hBm = m_hImg;
-							pRect = &m_rect;
-						}
-					}
-					break;
-				} 
-			} 
-			hBm = m_hImg;
-			pRect = &m_rect;
-			break;
-		}
-		case S4_CUSTOM_UI_SELECTED: {
-		lbl_S4_CUSTOM_UI_SELECTED:
-			if (PtInRect(&m_selectedRect, p)) {
+			if (GetAsyncKeyState(VK_LBUTTON) < 0) {
 				if (m_hImgSelectedHover) {
-					if (newstate) break;
-					newstate = true;
-					m_state = S4_CUSTOM_UI_HOVERING_SELECTED;
-					goto lbl_S4_CUSTOM_UI_HOVERING_SELECTED;
-				}
-				if (leftbutton) {
+					hBm = m_hImgSelectedHover;
+					pRect = &m_selectedHoverRect;
+				} else {
 					if (m_hImgHover) {
 						hBm = m_hImgHover;
 						pRect = &m_hoverRect;
-					}
-					else {
+					} else {
 						hBm = m_hImg;
 						pRect = &m_rect;
 					}
-					break;
 				}
-			}
-			if (m_hImgSelected) {
-				hBm = m_hImgSelected;
-				pRect = &m_selectedRect;
 			} else {
 				hBm = m_hImg;
 				pRect = &m_rect;
 			}
 			break;
 		}
+		case S4_CUSTOM_UI_SELECTED: {
+			if (m_hImgSelectedHover && PtInRect(&m_selectedRect, p)) {
+				newstate = true;
+				m_state = S4_CUSTOM_UI_HOVERING_SELECTED;
+				goto lbl_S4_CUSTOM_UI_HOVERING_SELECTED;
+			}
+		lbl_S4_CUSTOM_UI_SELECTED:
+			if (GetAsyncKeyState(VK_LBUTTON) < 0) {
+				if (m_hImgHover) {
+					hBm = m_hImgHover;
+					pRect = &m_hoverRect;
+				} else {
+					hBm = m_hImg;
+					pRect = &m_rect;
+				}
+			} else {
+				if (m_hImgSelected) {
+					hBm = m_hImgSelected;
+					pRect = &m_selectedRect;
+				} else {
+					hBm = m_hImg;
+					pRect = &m_rect;
+				}
+			}
+			break;
+		}
 		case S4_CUSTOM_UI_HOVERING: {
-		lbl_S4_CUSTOM_UI_HOVERING:
 			if (!PtInRect(&m_hoverRect, p)) {
-				if (newstate) break;
 				newstate = true;
 				m_state = S4_CUSTOM_UI_UNSELECTED;
 				goto lbl_S4_CUSTOM_UI_UNSELECTED;
 			}
-			if (leftbutton) {
+		lbl_S4_CUSTOM_UI_HOVERING:
+			if (GetAsyncKeyState(VK_LBUTTON) < 0) {
 				if (m_hImgSelectedHover) {
 					hBm = m_hImgSelectedHover;
 					pRect = &m_selectedHoverRect;
@@ -297,14 +278,13 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 			break;
 		}
 		case S4_CUSTOM_UI_HOVERING_SELECTED: {
-		lbl_S4_CUSTOM_UI_HOVERING_SELECTED:
 			if (!PtInRect(&m_selectedHoverRect, p)) {
-				if (newstate) break;
 				newstate = true;
 				m_state = S4_CUSTOM_UI_SELECTED;
 				goto lbl_S4_CUSTOM_UI_SELECTED;
 			}
-			if (leftbutton) {
+		lbl_S4_CUSTOM_UI_HOVERING_SELECTED:
+			if (GetAsyncKeyState(VK_LBUTTON) < 0) {
 				if (m_hImgHover) {
 					hBm = m_hImgHover;
 					pRect = &m_hoverRect;
@@ -345,6 +325,12 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 		return FALSE;
 	}
 
+	INT pillarboxWidth = 0;
+	if ((m_flags & S4_CUSTOMUIFLAGS_NO_PILLARBOX) == 0) {
+		auto pPillarboxWidth = S4::GetInstance().PillarboxWidth;
+		if (pPillarboxWidth) pillarboxWidth = *pPillarboxWidth;
+	}
+
 	LOG("pillarbox == " << dec << pillarboxWidth)
 	m_position = *pRect;
 	m_position.left += pillarboxWidth;
@@ -355,14 +341,25 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 	HDC memDc = CreateCompatibleDC(hdc);
 	if (memDc) {	
 		std::lock_guard<decltype(m_bitmap_mtx)> lock(m_bitmap_mtx);
+		
 		SelectObject(memDc, hBm);
-		if (!BitBlt(hdc,
+
+		BLENDFUNCTION fnc;
+		fnc.BlendOp = AC_SRC_OVER;
+		fnc.BlendFlags = 0;
+		fnc.SourceConstantAlpha = 0xFF;
+		fnc.AlphaFormat = AC_SRC_ALPHA;
+		BITMAP bm;
+		GetObject(hBm, sizeof(BITMAP), &bm);
+		int width = bm.bmWidth;
+		int height = bm.bmHeight;
+		if (!AlphaBlend(hdc,
 			m_position.left,
 			m_position.top,
 			m_position.right - m_position.left,
 			m_position.bottom - m_position.top,
-			memDc, 0, 0, SRCCOPY)) {
-			LOG("BitBlt failed with error code " << dec << GetLastError())
+			memDc, 0, 0, width, height, fnc)) {
+			LOG("AlphaBlend failed with error code " << dec << GetLastError())
 		}
 		DeleteDC(memDc);
 	} else { LOG("bad memory DC for " << HEXNUM(this)) }
