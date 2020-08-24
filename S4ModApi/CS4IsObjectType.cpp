@@ -24,14 +24,6 @@
 #include "s4.h"
 #include "safemem.h"
 
-#define MAKE_RACE_INDEX(id) (id - S4_OBJECT_TRIBE_INDEX)
-#define MAKE_BUILDING_INDEX(id) (id - S4_OBJECT_BUILDING_INDEX +1)
-#define MAKE_GOOD_INDEX(id) (id - S4_OBJECT_GOOD_INDEX +1)
-#define MAKE_SETTLER_INDEX(id) (id - S4_OBJECT_SETTLER_INDEX +1)
-#define MAKE_VEHICLE_INDEX(id) (id - S4_OBJECT_VEHICLE_INDEX +1)
-#define MAKE_PLANT_INDEX(id) (id - S4_OBJECT_PLANT_INDEX +1)
-#define MAKE_ANIMAL_INDEX(id) (id - S4_OBJECT_ANIMAL_INDEX +1)
-
 static BOOL isBuilding(const Settler_t& obj, S4_OBJECT_TYPE id) {
 	if (obj.objectType != Settler_t::OBJECTTYPE_BUILDING) return FALSE;
 	switch (id) {

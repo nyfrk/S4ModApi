@@ -45,9 +45,32 @@ void S4::Initialize() {
 	LOAD_PTR(		SettlerPrototypes	, g_Patterns.SettlerFilter		, g_isGE ? 19 : 18		);
 	LOAD_PTR_OFF(	Selection			, g_Patterns.SettlerFilter		, g_isGE ? 56 : 49, -4	);
 	LOAD_PTR(		SettlerPool			, g_Patterns.SettlerFilter		, g_isGE ? -35 : -18	);
+	LOAD_PTR(		LocalPlayer 		, g_Patterns.OnSettlerCommandHook, g_isGE ? -0x73 : -0x66);
+	LOAD_PTR(		Tick, 
+					g_isGE ? g_Patterns.OnSettlerCommandHook : g_Patterns.NetEventConstuctor, 
+					g_isGE ? 0x87 : 4 );
+	{	// __SendEvent
+		DWORD addr = g_Patterns.OnSettlerCommandHook + (g_isGE ? 0xE9 : 0xC3);
+		DWORD off = READ_AT((LPCVOID)addr, 1);
+		if (addr && off)
+			__SendNetEvent = (decltype(__SendNetEvent))(addr + off + 5);
+		else
+			__SendNetEvent = nullptr;
+	}
+	if (g_isGE) {
+		LOAD_PTR(NetEventVTbl, g_Patterns.OnSettlerCommandHook, 0xC5);
+		NetEventVTbl = READ_AT((LPCVOID)NetEventVTbl);
+	} else {
+		LOAD_PTR(NetEventVTbl, g_Patterns.RecruitmentEventConstructor, 8);
+	}
+
 }
 
 S4& S4::GetInstance() {
 	static S4 instance;
 	return instance;
 }
+
+DWORD S4::GetLocalPlayer() { return READ_AT(LocalPlayer); }
+DWORD S4::GetCurrentTick() { return READ_AT((LPCVOID)READ_AT((LPCVOID)AddIfNotNull(READ_AT(Tick), 0x18))); }
+BOOL S4::SendNetEvent(LPCVOID event) { if (__SendNetEvent) { __SendNetEvent(event); return TRUE; } return FALSE; }

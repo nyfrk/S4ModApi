@@ -49,12 +49,30 @@ struct CSettlers4Api : public ISettlers4Api {
 	STDMETHOD_(HWND, GetHwnd)(THIS_); // defined in CS4Misc.cpp
 	STDMETHOD(GetHoveringUiElement)(THIS_ LPS4UIELEMENT); // defined in CS4Misc.cpp
 	STDMETHOD_(BOOL, IsCurrentlyOnScreen)(THIS_ S4_GUI_ENUM); // defined in CS4Screen.cpp
-	STDMETHOD_(BOOL, SendWarriors)(THIS_ INT x, INT y, S4_MOVEMENT_ENUM mode, PWORD warriors, SIZE_T countOfWarriors); // defined in CS4SendWarriors.cpp
-	STDMETHOD_(BOOL, RecruitWarriors)(THIS_ DWORD building, S4_SETTLER_TYPE_ENUM unit, INT amount); // defined in CS4Recruit.cpp
 	STDMETHOD_(BOOL, IsObjectOfType)(THIS_ WORD object, S4_OBJECT_TYPE type); // defined in CS4IsObjectType.cpp
 	STDMETHOD_(BOOL, ClearSelection)(THIS); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, GetSelection)(THIS_ PWORD out, SIZE_T outlen, PSIZE_T selectionCount); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount); // defined in CS4Selection.cpp
+
+	/** Settlers 4 NetEvents functions **/
+	STDMETHOD_(BOOL, SendWarriors)(THIS_ INT x, INT y, S4_MOVEMENT_ENUM mode, PWORD warriors, SIZE_T countOfWarriors, DWORD player); // defined in CS4SendWarriors.cpp
+	STDMETHOD_(BOOL, BuildBuilding)(THIS_ S4_OBJECT_TYPE buildingType, INT x, INT y, DWORD player); // defined in CS4Build.cpp
+	STDMETHOD_(BOOL, CrushBuilding)(THIS_ DWORD building, DWORD player); // defined in CS4Build.cpp
+	STDMETHOD_(BOOL, ToggleBuildingPriority)(THIS_ DWORD building, DWORD player); // defined in CS4Build.cpp
+	STDMETHOD_(BOOL, ToggleBuildingHalt)(THIS_ DWORD building, DWORD player); // defined in CS4Build.cpp
+	STDMETHOD_(BOOL, SetBuildingWorkarea)(THIS_ DWORD building, INT x, INT y, DWORD player); // defined in CS4Build.cpp
+	STDMETHOD_(BOOL, SetBuildingProduction)(THIS_ DWORD building, S4_OBJECT_TYPE good, INT amount, DWORD player); // defined in CS4Build.cpp
+	STDMETHOD_(BOOL, SetBuildingProductionPercentMode)(THIS_ DWORD building, BOOL enable, DWORD player); // defined in CS4Build.cpp
+	STDMETHOD_(BOOL, SetBuildingProductionPercentage)(THIS_ DWORD building, BYTE swords, BYTE bows, BYTE armors, BYTE racespecialweapons, DWORD player); // defined in CS4Build.cpp
+	STDMETHOD_(BOOL, CastSpell)(THIS_ DWORD priest, DWORD spell, INT x, INT y, DWORD player); // defined in CS4Casting.cpp
+	STDMETHOD_(BOOL, GarrisonWarriors)(THIS_ DWORD building, DWORD player); // defined in CS4GarrisonWarriors.cpp
+	STDMETHOD_(BOOL, UnGarrisonWarriors)(THIS_ DWORD building, INT column, BOOL bowman, DWORD player); // defined in CS4GarrisonWarriors.cpp
+	STDMETHOD_(BOOL, ChangeGoodDistribution)(THIS_ S4_OBJECT_TYPE good, S4_OBJECT_TYPE building, INT percent, DWORD ecosector, DWORD player); // defined in CS4GoodDistribution.cpp
+	STDMETHOD_(BOOL, ChangeGoodPriority)(THIS_ S4_OBJECT_TYPE good, INT offset, DWORD ecosector, DWORD player); // defined in CS4GoodDistribution.cpp
+	STDMETHOD_(BOOL, RecruitWarriors)(THIS_ DWORD building, S4_OBJECT_TYPE unit, INT amount, DWORD player); // defined in CS4Recruit.cpp
+	STDMETHOD_(BOOL, SetTradingRoute)(THIS_ DWORD sourceBuilding, DWORD destinationBuilding, DWORD player); // defined in CS4Trading.cpp
+	STDMETHOD_(BOOL, TradeGood)(THIS_ DWORD buidling, S4_OBJECT_TYPE good, INT amount, DWORD player); // defined in CS4Trading.cpp
+	STDMETHOD_(BOOL, StoreGood)(THIS_ DWORD buidling, S4_OBJECT_TYPE good, BOOL enable, DWORD player); // defined in CS4Trading.cpp
 
 	STDMETHOD_(S4CUSTOMUI, ShowMessageBox)(THIS_ LPCWSTR title, LPCWSTR message, INT x, INT y, INT w, INT h); // defined in CS4Screen.cpp
 	STDMETHOD_(S4CUSTOMUI, CreateCustomUiElement)(THIS_ LPCS4CUSTOMUIELEMENT);

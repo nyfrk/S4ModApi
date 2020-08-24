@@ -97,7 +97,7 @@ struct Settler_t { // struct is 92 bytes
 		OBJECTTYPE_ANIMAL = 128, // bunny, deer, etc
 	} objectType; // [+10]
 	BYTE _unk2;  // [+11]
-	S4_SETTLER_TYPE_ENUM settlerType;// [+12]
+	WORD settlerType;// [+12]
 	BYTE _unk3[6];   // [+14]
 	enum BaseType_e : BYTE {
 		BASETYPE_CIVILIAN = 0, // civilian building or object like wheat plant etc (wheatplant has settlerType == 209 and goodtype == 0)
@@ -154,13 +154,31 @@ struct S4 {
 	Selection_t* Selection;
 	Settler_t** SettlerPool;
 	DWORD* SettlerPrototypes;
+	
+	
+	DWORD GetLocalPlayer();
+	DWORD GetCurrentTick();
+	BOOL SendNetEvent(LPCVOID event);
+	inline DWORD GetNetEventVTbl() { return NetEventVTbl; }
 
 	void Initialize();
 	static S4& GetInstance();
 
 private:
+	DWORD* LocalPlayer;
+	DWORD* Tick;
+	DWORD NetEventVTbl;
+	void (__stdcall *__SendNetEvent)(LPCVOID event) = nullptr;
+
 	S4() = default;
 	S4(const S4&) = delete;
 	S4& operator=(S4 const&) = delete;
 };
 
+#define MAKE_RACE_INDEX(id) (id - S4_OBJECT_TRIBE_INDEX)
+#define MAKE_BUILDING_INDEX(id) (id - S4_OBJECT_BUILDING_INDEX +1)
+#define MAKE_GOOD_INDEX(id) (id - S4_OBJECT_GOOD_INDEX +1)
+#define MAKE_SETTLER_INDEX(id) (id - S4_OBJECT_SETTLER_INDEX +1)
+#define MAKE_VEHICLE_INDEX(id) (id - S4_OBJECT_VEHICLE_INDEX +1)
+#define MAKE_PLANT_INDEX(id) (id - S4_OBJECT_PLANT_INDEX +1)
+#define MAKE_ANIMAL_INDEX(id) (id - S4_OBJECT_ANIMAL_INDEX +1)

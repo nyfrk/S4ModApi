@@ -55,6 +55,9 @@
     <Filter Include="Quelldateien\GUI">
       <UniqueIdentifier>{b182323b-ae0f-4265-b994-118e003be3ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\COM\NetEvent">
+      <UniqueIdentifier>{dc8b7de0-157a-4218-851a-a52de7c7eb1f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -153,17 +156,32 @@
     <ClCompile Include="CMouseHook.cpp">
       <Filter>Quelldateien\Hooks</Filter>
     </ClCompile>
-    <ClCompile Include="CS4SendWarriors.cpp">
-      <Filter>Quelldateien\COM</Filter>
-    </ClCompile>
-    <ClCompile Include="CS4Recruit.cpp">
-      <Filter>Quelldateien\COM</Filter>
-    </ClCompile>
     <ClCompile Include="CS4IsObjectType.cpp">
       <Filter>Quelldateien\COM</Filter>
     </ClCompile>
     <ClCompile Include="CUpdate.cpp">
       <Filter>Quelldateien\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4Build.cpp">
+      <Filter>Quelldateien\COM\NetEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4Casting.cpp">
+      <Filter>Quelldateien\COM\NetEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4GarrisonWarriors.cpp">
+      <Filter>Quelldateien\COM\NetEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4GoodDistribution.cpp">
+      <Filter>Quelldateien\COM\NetEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4Recruit.cpp">
+      <Filter>Quelldateien\COM\NetEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4SendWarriors.cpp">
+      <Filter>Quelldateien\COM\NetEvent</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4Trading.cpp">
+      <Filter>Quelldateien\COM\NetEvent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

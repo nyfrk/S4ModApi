@@ -163,7 +163,11 @@
     <ClCompile Include="CMessageBox.cpp" />
     <ClCompile Include="CMouseHook.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="CS4Build.cpp" />
+    <ClCompile Include="CS4Casting.cpp" />
     <ClCompile Include="CS4Error.cpp" />
+    <ClCompile Include="CS4GarrisonWarriors.cpp" />
+    <ClCompile Include="CS4GoodDistribution.cpp" />
     <ClCompile Include="CS4Recruit.cpp" />
     <ClCompile Include="CS4Selection.cpp" />
     <ClCompile Include="CS4Debug.cpp" />
@@ -171,6 +175,7 @@
     <ClCompile Include="CS4CustomUi.cpp" />
     <ClCompile Include="CS4SendWarriors.cpp" />
     <ClCompile Include="CS4Singleton.cpp" />
+    <ClCompile Include="CS4Trading.cpp" />
     <ClCompile Include="CS4Unknown.cpp" />
     <ClCompile Include="CS4Misc.cpp" />
     <ClCompile Include="CS4Screen.cpp" />
