@@ -57,6 +57,7 @@ BOOL CSettlers4Api::DestroyCustomUiElement(S4CUSTOMUI arg) {
 }
 
 BOOL CSettlers4Api::HideCustomUiElement(S4CUSTOMUI arg) {
+	TRACE;
 	if (arg) {
 		auto diag = (CDialog*)arg;
 		diag->Hide();
@@ -67,6 +68,7 @@ BOOL CSettlers4Api::HideCustomUiElement(S4CUSTOMUI arg) {
 }
 
 BOOL CSettlers4Api::ShowCustomUiElement(S4CUSTOMUI arg) {
+	TRACE;
 	if (arg) {
 		auto diag = (CDialog*)arg;
 		diag->Show();

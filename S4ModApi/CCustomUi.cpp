@@ -188,72 +188,91 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 		return FALSE;
 	}
 
-	const POINT& p = *cursor;
+	POINT p = *cursor;
 	bool newstate = false;	
 	HBITMAP hBm = NULL;
 	RECT *pRect = NULL;
+	const bool leftbutton = GetAsyncKeyState(VK_LBUTTON) < 0;
+
+	INT pillarboxWidth = 0;
+	if ((m_flags & S4_CUSTOMUIFLAGS_NO_PILLARBOX) == 0) {
+		auto pPillarboxWidth = S4::GetInstance().PillarboxWidth;
+		if (pPillarboxWidth) pillarboxWidth = *pPillarboxWidth;
+	}
+
+	p.x -= pillarboxWidth;
 
 	switch (m_state) {
 		case S4_CUSTOM_UI_UNSELECTED: {
-			if (m_hImgHover && PtInRect(&m_rect, p)) {
-				newstate = true;
-				m_state = S4_CUSTOM_UI_HOVERING;
-				goto lbl_S4_CUSTOM_UI_HOVERING;
-			}
 		lbl_S4_CUSTOM_UI_UNSELECTED:
-			if (GetAsyncKeyState(VK_LBUTTON) < 0) {
+			if (PtInRect(&m_rect, p)) {
+				if (m_hImgHover) {
+					if (newstate) break; // protect from infinite loop
+					newstate = true;
+					m_state = S4_CUSTOM_UI_HOVERING;
+					goto lbl_S4_CUSTOM_UI_HOVERING;
+				}
+				if (leftbutton) {
+					if (m_hImgSelectedHover) {
+						hBm = m_hImgSelectedHover;
+						pRect = &m_selectedHoverRect;
+					}
+					else {
+						if (m_hImgHover) {
+							hBm = m_hImgHover;
+							pRect = &m_hoverRect;
+						}
+						else {
+							hBm = m_hImg;
+							pRect = &m_rect;
+						}
+					}
+					break;
+				} 
+			} 
+			hBm = m_hImg;
+			pRect = &m_rect;
+			break;
+		}
+		case S4_CUSTOM_UI_SELECTED: {
+		lbl_S4_CUSTOM_UI_SELECTED:
+			if (PtInRect(&m_selectedRect, p)) {
 				if (m_hImgSelectedHover) {
-					hBm = m_hImgSelectedHover;
-					pRect = &m_selectedHoverRect;
-				} else {
+					if (newstate) break;
+					newstate = true;
+					m_state = S4_CUSTOM_UI_HOVERING_SELECTED;
+					goto lbl_S4_CUSTOM_UI_HOVERING_SELECTED;
+				}
+				if (leftbutton) {
 					if (m_hImgHover) {
 						hBm = m_hImgHover;
 						pRect = &m_hoverRect;
-					} else {
+					}
+					else {
 						hBm = m_hImg;
 						pRect = &m_rect;
 					}
+					break;
 				}
+			}
+			if (m_hImgSelected) {
+				hBm = m_hImgSelected;
+				pRect = &m_selectedRect;
 			} else {
 				hBm = m_hImg;
 				pRect = &m_rect;
 			}
 			break;
 		}
-		case S4_CUSTOM_UI_SELECTED: {
-			if (m_hImgSelectedHover && PtInRect(&m_selectedRect, p)) {
-				newstate = true;
-				m_state = S4_CUSTOM_UI_HOVERING_SELECTED;
-				goto lbl_S4_CUSTOM_UI_HOVERING_SELECTED;
-			}
-		lbl_S4_CUSTOM_UI_SELECTED:
-			if (GetAsyncKeyState(VK_LBUTTON) < 0) {
-				if (m_hImgHover) {
-					hBm = m_hImgHover;
-					pRect = &m_hoverRect;
-				} else {
-					hBm = m_hImg;
-					pRect = &m_rect;
-				}
-			} else {
-				if (m_hImgSelected) {
-					hBm = m_hImgSelected;
-					pRect = &m_selectedRect;
-				} else {
-					hBm = m_hImg;
-					pRect = &m_rect;
-				}
-			}
-			break;
-		}
 		case S4_CUSTOM_UI_HOVERING: {
+		lbl_S4_CUSTOM_UI_HOVERING:
 			if (!PtInRect(&m_hoverRect, p)) {
+				if (newstate) break;
 				newstate = true;
 				m_state = S4_CUSTOM_UI_UNSELECTED;
 				goto lbl_S4_CUSTOM_UI_UNSELECTED;
 			}
-		lbl_S4_CUSTOM_UI_HOVERING:
-			if (GetAsyncKeyState(VK_LBUTTON) < 0) {
+			if (leftbutton) {
 				if (m_hImgSelectedHover) {
 					hBm = m_hImgSelectedHover;
 					pRect = &m_selectedHoverRect;
@@ -278,13 +297,14 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 			break;
 		}
 		case S4_CUSTOM_UI_HOVERING_SELECTED: {
+		lbl_S4_CUSTOM_UI_HOVERING_SELECTED:
 			if (!PtInRect(&m_selectedHoverRect, p)) {
+				if (newstate) break;
 				newstate = true;
 				m_state = S4_CUSTOM_UI_SELECTED;
 				goto lbl_S4_CUSTOM_UI_SELECTED;
 			}
-		lbl_S4_CUSTOM_UI_HOVERING_SELECTED:
-			if (GetAsyncKeyState(VK_LBUTTON) < 0) {
+			if (leftbutton) {
 				if (m_hImgHover) {
 					hBm = m_hImgHover;
 					pRect = &m_hoverRect;
@@ -323,12 +343,6 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 	if (!hBm || !pRect) {
 		LOG("not blitting custom ui at " << HEXNUM(this) << ". hBm == " << HEXNUM(hBm))
 		return FALSE;
-	}
-
-	INT pillarboxWidth = 0;
-	if ((m_flags & S4_CUSTOMUIFLAGS_NO_PILLARBOX) == 0) {
-		auto pPillarboxWidth = S4::GetInstance().PillarboxWidth;
-		if (pPillarboxWidth) pillarboxWidth = *pPillarboxWidth;
 	}
 
 	LOG("pillarbox == " << dec << pillarboxWidth)
