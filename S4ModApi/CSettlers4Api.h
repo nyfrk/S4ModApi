@@ -53,6 +53,7 @@ struct CSettlers4Api : public ISettlers4Api {
 	STDMETHOD_(BOOL, ClearSelection)(THIS); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, GetSelection)(THIS_ PWORD out, SIZE_T outlen, PSIZE_T selectionCount); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount); // defined in CS4Selection.cpp
+	STDMETHOD_(BOOL, StartBuildingPlacement)(THIS_ S4_OBJECT_TYPE building); // defined in CS4MenuEvents.cpp
 
 	/** Settlers 4 NetEvents functions **/
 	STDMETHOD_(BOOL, SendWarriors)(THIS_ INT x, INT y, S4_MOVEMENT_ENUM mode, PWORD warriors, SIZE_T countOfWarriors, DWORD player); // defined in CS4SendWarriors.cpp

@@ -183,6 +183,9 @@
     <ClCompile Include="CS4Trading.cpp">
       <Filter>Quelldateien\COM\NetEvent</Filter>
     </ClCompile>
+    <ClCompile Include="CS4MenuEvents.cpp">
+      <Filter>Quelldateien\COM\NetEvent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
