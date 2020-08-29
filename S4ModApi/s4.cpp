@@ -31,6 +31,14 @@ static inline DWORD AddIfNotNull(DWORD sum, INT add) {
 }
 #define LOAD_PTR_OFF(dest, patternaddr, patternoffset, postderefoffset) dest = (decltype(dest))AddIfNotNull(READ_AT(patternaddr, patternoffset),postderefoffset)
 #define LOAD_PTR(dest, patternaddr, patternoffset) LOAD_PTR_OFF(dest, patternaddr, patternoffset, 0)
+#define LOAD_FUNC(dest, patternaddr, patternoffset) {\
+	dest = (decltype(dest))nullptr;\
+	if (patternaddr) {\
+		DWORD addr = (patternaddr) + (patternoffset); \
+		DWORD off = READ_AT((LPCVOID)addr, 1); \
+		if (off) dest = (decltype(dest))(addr + off + 5);\
+	}\
+}
 
 void S4::Initialize() {
 	TRACE;
@@ -46,18 +54,11 @@ void S4::Initialize() {
 	LOAD_PTR_OFF(	Selection			, g_Patterns.SettlerFilter		, g_isGE ? 56 : 49, -4	);
 	LOAD_PTR(		SettlerPool			, g_Patterns.SettlerFilter		, g_isGE ? -35 : -18	);
 	LOAD_PTR(		LocalPlayer 		, g_Patterns.OnSettlerCommandHook, g_isGE ? -0x73 : -0x66);
-	LOAD_PTR(       LocalEvent          , g_Patterns.LocalEvent         , 4); // todo: ge support
+	LOAD_FUNC(      LocalEvent          , g_Patterns.LocalEvent         , 3);// todo: ge support
 	LOAD_PTR(		Tick, 
 					g_isGE ? g_Patterns.OnSettlerCommandHook : g_Patterns.NetEventConstuctor, 
 					g_isGE ? 0x87 : 4 );
-	{	// __SendEvent
-		DWORD addr = g_Patterns.OnSettlerCommandHook + (g_isGE ? 0xE9 : 0xC3);
-		DWORD off = READ_AT((LPCVOID)addr, 1);
-		if (addr && off)
-			__SendNetEvent = (decltype(__SendNetEvent))(addr + off + 5);
-		else
-			__SendNetEvent = nullptr;
-	}
+	LOAD_FUNC(      __SendNetEvent      , g_Patterns.OnSettlerCommandHook, (g_isGE ? 0xE9 : 0xC3));
 	if (g_isGE) {
 		LOAD_PTR(NetEventVTbl, g_Patterns.OnSettlerCommandHook, 0xC5);
 		NetEventVTbl = READ_AT((LPCVOID)NetEventVTbl);
@@ -78,16 +79,15 @@ DWORD S4::GetLocalPlayer() { return READ_AT(LocalPlayer); }
 DWORD S4::GetCurrentTick() { return READ_AT((LPCVOID)READ_AT((LPCVOID)AddIfNotNull(READ_AT(Tick), 0x18))); }
 BOOL S4::SendNetEvent(Event_t& event) { if (__SendNetEvent) { __SendNetEvent(&event); return TRUE; } return FALSE; }
 BOOL S4::SendLocalEvent(Event_t& event) { 
-	/*if (__SendLocalEvent)*/ { 
+	if (LocalEvent) {
 		LPCVOID pEvent = &event;
+		LPCVOID pLocalEvent = (LPCVOID)LocalEvent;
 		DWORD dwEcx = READ_AT(Tick); // event engine
 		if (!dwEcx) return FALSE;
 		__asm {
 			push pEvent
-			mov eax, S4_Main
-			add eax, 0x5A7C0
 			mov ecx, dwEcx
-			call eax // push event (thiscall)
+			call pLocalEvent // push event (thiscall)
 		}
 		return TRUE; 
 	} return FALSE; 
