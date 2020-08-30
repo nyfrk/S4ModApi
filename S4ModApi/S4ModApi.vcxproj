@@ -170,6 +170,7 @@
     <ClCompile Include="CS4GarrisonWarriors.cpp" />
     <ClCompile Include="CS4GoodDistribution.cpp" />
     <ClCompile Include="CS4Recruit.cpp" />
+    <ClCompile Include="CS4Scripting.cpp" />
     <ClCompile Include="CS4Selection.cpp" />
     <ClCompile Include="CS4Debug.cpp" />
     <ClCompile Include="CS4Listeners.cpp" />

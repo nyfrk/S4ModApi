@@ -498,6 +498,16 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(BOOL, HideCustomUiElement)(THIS_ S4CUSTOMUI) PURE;
 	STDMETHOD_(BOOL, ShowCustomUiElement)(THIS_ S4CUSTOMUI) PURE;
 
+	/** S4 Scripting **/
+	STDMETHOD_(BOOL, RevealWorldMap)(THIS_ BOOL) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SetZoom)(THIS_ DWORD level) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SetWorldCursor)(THIS_ INT x, INT y) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, DeleteWorldCursor)(THIS) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, AddSettlers)(THIS_ S4_OBJECT_TYPE settler, DWORD amount, INT x, INT y, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, ShowTextMessage)(THIS_ LPCSTR message, DWORD icon = 9, DWORD reserved = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GetLocalPlayer)(THIS) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(S4_OBJECT_TYPE, GetPlayerTribe)(THIS_ DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+
 	/** Never extend this interface, create a new one if you need more methods 
 		Otherwise you will break the ABI **/
 };

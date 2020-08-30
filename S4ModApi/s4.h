@@ -56,7 +56,8 @@ struct Event_t {
 	BYTE __pad1[3];
 	LPCVOID settlers;
 	WORD sizeofSettlers;
-	BYTE __pad2[2];
+	BYTE player;
+	BYTE __pad2;
 };
 
 //#define VFUNC { return 0; }
