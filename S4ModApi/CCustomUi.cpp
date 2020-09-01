@@ -364,8 +364,8 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 			if (!AlphaBlend(hdc,
 				m_position.left,
 				m_position.top,
-				m_position.right - m_position.left,
-				m_position.bottom - m_position.top,
+				width,
+				height,
 				memDc, 0, 0, width, height, fnc)) {
 				LOG("AlphaBlend failed with error code " << dec << GetLastError())
 			}
