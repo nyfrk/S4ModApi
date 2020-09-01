@@ -2,6 +2,7 @@
 // GNU Lesser General Public License v3 (LGPL v3) 
 //
 // Copyright (c) 2020 nyfrk <nyfrk@gmx.net>
+// Copyright (c) 2020 Viciten
 //
 // This file is part of S4ModApi.
 //
@@ -23,6 +24,8 @@
 #include "s4.h"
 #include "Log.h"
 
+#pragma comment(lib,"Msimg32") // AlphaBlend
+
 CCustomUi::CCustomUi(LPCS4CUSTOMUIELEMENT param) : 
 	CDialog(),
 	m_flags(param->flags),
@@ -43,57 +46,65 @@ CCustomUi::CCustomUi(LPCS4CUSTOMUIELEMENT param) :
 	auto mod = param->mod;
 	if (param->szImg) {
 		if (m_flags & S4_CUSTOMUIFLAGS_FROMRES_IMG) {
-			m_hImg = (HBITMAP)LoadImageW(mod, param->szImg, IMAGE_BITMAP, 0, 0, 0 | LR_LOADTRANSPARENT);
+			m_hImg = (HBITMAP)LoadImageW(mod, param->szImg, IMAGE_BITMAP, 0, 0, 0);
 		} else {
-			m_hImg = (HBITMAP)LoadImageW(NULL, param->szImg, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_LOADTRANSPARENT);
+			m_hImg = (HBITMAP)LoadImageW(NULL, param->szImg, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 		}
 		if (m_hImg) {
 			BITMAP bm;
 			GetObjectW(m_hImg, sizeof(bm), &bm);
 			m_rect.right = m_rect.left + bm.bmWidth;
 			m_rect.bottom = m_rect.top + bm.bmHeight;
+		} else {
+			LOG("LoadImageW failed with error " << dec << GetLastError());
 		}
-	} else { LOG("LoadImageW failed with error " << dec << GetLastError()); m_hImg = NULL; }
+	} else { m_hImg = NULL; }
 	if (param->szImgHover) {
 		if (m_flags & S4_CUSTOMUIFLAGS_FROMRES_IMG) {
-			m_hImgHover = (HBITMAP)LoadImageW(mod, param->szImgHover, IMAGE_BITMAP, 0, 0, 0 | LR_LOADTRANSPARENT);
+			m_hImgHover = (HBITMAP)LoadImageW(mod, param->szImgHover, IMAGE_BITMAP, 0, 0, 0);
 		} else {
-			m_hImgHover = (HBITMAP)LoadImageW(NULL, param->szImgHover, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_LOADTRANSPARENT);
+			m_hImgHover = (HBITMAP)LoadImageW(NULL, param->szImgHover, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 		}
 		if (m_hImgHover) {
 			BITMAP bm;
 			GetObjectW(m_hImgHover, sizeof(bm), &bm);
 			m_hoverRect.right = m_hoverRect.left + bm.bmWidth;
 			m_hoverRect.bottom = m_hoverRect.top + bm.bmHeight;
+		} else {
+			LOG("LoadImageW failed with error " << dec << GetLastError());
 		}
-	} else { LOG("LoadImageW failed with error " << dec << GetLastError()); m_hImgHover = NULL; }
+	} else { m_hImgHover = NULL; }
 	if (param->szImgSelected) {
 		if (m_flags & S4_CUSTOMUIFLAGS_FROMRES_IMG) {
-			m_hImgSelected = (HBITMAP)LoadImageW(mod, param->szImgSelected, IMAGE_BITMAP, 0, 0, 0 | LR_LOADTRANSPARENT);
+			m_hImgSelected = (HBITMAP)LoadImageW(mod, param->szImgSelected, IMAGE_BITMAP, 0, 0, 0);
 		} else {
-			m_hImgSelected = (HBITMAP)LoadImageW(NULL, param->szImgSelected, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_LOADTRANSPARENT);
+			m_hImgSelected = (HBITMAP)LoadImageW(NULL, param->szImgSelected, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 		}
 		if (m_hImgSelected) {
 			BITMAP bm;
 			GetObjectW(m_hImgSelected, sizeof(bm), &bm);
 			m_selectedRect.right = m_selectedRect.left + bm.bmWidth;
 			m_selectedRect.bottom = m_selectedRect.top + bm.bmHeight;
+		} else {
+			LOG("LoadImageW failed with error " << dec << GetLastError());
 		}
-	} else { LOG("LoadImageW failed with error " << dec << GetLastError()); m_hImgSelected = NULL; }
+	} else { m_hImgSelected = NULL; }
 	if (param->szImgSelectedHover) {
 		if (m_flags & S4_CUSTOMUIFLAGS_FROMRES_IMG) {
-			m_hImgSelectedHover = (HBITMAP)LoadImageW(mod, param->szImgSelectedHover, IMAGE_BITMAP, 0, 0, 0 | LR_LOADTRANSPARENT);
+			m_hImgSelectedHover = (HBITMAP)LoadImageW(mod, param->szImgSelectedHover, IMAGE_BITMAP, 0, 0, 0);
 		}
 		else {
-			m_hImgSelectedHover = (HBITMAP)LoadImageW(NULL, param->szImgSelectedHover, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_LOADTRANSPARENT);
+			m_hImgSelectedHover = (HBITMAP)LoadImageW(NULL, param->szImgSelectedHover, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 		}
 		if (m_hImgSelectedHover) {
 			BITMAP bm;
 			GetObjectW(m_hImgSelectedHover, sizeof(bm), &bm);
 			m_selectedHoverRect.right = m_selectedHoverRect.left + bm.bmWidth;
 			m_selectedHoverRect.bottom = m_selectedHoverRect.top + bm.bmHeight;
+		} else {
+			LOG("LoadImageW failed with error " << dec << GetLastError());
 		}
-	} else { LOG("LoadImageW failed with error " << dec << GetLastError()); m_hImgSelectedHover = NULL; }
+	} else { m_hImgSelectedHover = NULL; }
 	m_position = m_rect;
 }
 
@@ -341,25 +352,32 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 	HDC memDc = CreateCompatibleDC(hdc);
 	if (memDc) {	
 		std::lock_guard<decltype(m_bitmap_mtx)> lock(m_bitmap_mtx);
-		
 		SelectObject(memDc, hBm);
-
-		BLENDFUNCTION fnc;
-		fnc.BlendOp = AC_SRC_OVER;
-		fnc.BlendFlags = 0;
-		fnc.SourceConstantAlpha = 0xFF;
-		fnc.AlphaFormat = AC_SRC_ALPHA;
-		BITMAP bm;
-		GetObject(hBm, sizeof(BITMAP), &bm);
-		int width = bm.bmWidth;
-		int height = bm.bmHeight;
-		if (!AlphaBlend(hdc,
-			m_position.left,
-			m_position.top,
-			m_position.right - m_position.left,
-			m_position.bottom - m_position.top,
-			memDc, 0, 0, width, height, fnc)) {
-			LOG("AlphaBlend failed with error code " << dec << GetLastError())
+		auto width = m_position.right - m_position.left;
+		auto height = m_position.bottom - m_position.top;
+		if (m_flags & S4_CUSTOMUIFLAGS_TRANSPARENT) {
+			BLENDFUNCTION fnc;
+			fnc.BlendOp = AC_SRC_OVER;
+			fnc.BlendFlags = 0;
+			fnc.SourceConstantAlpha = 0xFF;
+			fnc.AlphaFormat = AC_SRC_ALPHA;
+			if (!AlphaBlend(hdc,
+				m_position.left,
+				m_position.top,
+				m_position.right - m_position.left,
+				m_position.bottom - m_position.top,
+				memDc, 0, 0, width, height, fnc)) {
+				LOG("AlphaBlend failed with error code " << dec << GetLastError())
+			}
+		} else {
+			if (!BitBlt(hdc,
+				m_position.left,
+				m_position.top,
+				width,
+				height,
+				memDc, 0, 0, SRCCOPY)) {
+				LOG("BitBlt failed with error code " << dec << GetLastError())
+			}
 		}
 		DeleteDC(memDc);
 	} else { LOG("bad memory DC for " << HEXNUM(this)) }
