@@ -399,6 +399,7 @@ typedef CONST S4UiElement* LPCS4UIELEMENT;
 #define S4_CUSTOMUIFLAGS_TYPE_TOGGLE (1<<4) // is a toggle
 #define S4_CUSTOMUIFLAGS_RESET_ON_HIDE (1<<5) // reset state on hide
 #define S4_CUSTOMUIFLAGS_NO_PILLARBOX (1<<6) // do not draw relative to pillarbox
+#define S4_CUSTOMUIFLAGS_TRANSPARENT (1<<7) // use alpha blending
 
 enum S4_CUSTOM_UI_ENUM : DWORD {
 	S4_CUSTOM_UI_UNSELECTED = 0,
