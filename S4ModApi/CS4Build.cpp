@@ -60,7 +60,7 @@ BOOL CSettlers4Api::BuildBuilding(S4_OBJECT_TYPE buildingType, INT x, INT y, DWO
 	ZeroMemory(&u1, sizeof(u1));
 	u1.eventStruct.CEvn_Logic_vtbl = vtbl;
 	u1.eventStruct.eventId = 0x13A1; // build event
-	u1.eventStruct.buildingType = (DWORD)buildingType - (DWORD)S4_OBJECT_BUILDING_INDEX +1;
+	u1.eventStruct.buildingType = MAKE_BUILDING_INDEX(buildingType);
 	u1.eventStruct.x = (WORD)x;
 	u1.eventStruct.y = (WORD)y;
 	u1.eventStruct.tick = S4::GetInstance().GetCurrentTick();
@@ -257,7 +257,7 @@ BOOL CSettlers4Api::SetBuildingProduction(DWORD building, S4_OBJECT_TYPE good, I
 	u1.eventStruct.CEvn_Logic_vtbl = vtbl;
 	u1.eventStruct.eventId = 0x13A9; // set building production event
 	u1.eventStruct.buildingIndex = (WORD)building;
-	u1.eventStruct.good = good - S4_OBJECT_GOOD_INDEX +1;
+	u1.eventStruct.good = MAKE_GOOD_INDEX(good);
 	u1.eventStruct.amount = amount;
 	u1.eventStruct.tick = S4::GetInstance().GetCurrentTick();
 	u1.eventStruct.player = (BYTE)localPlayer;

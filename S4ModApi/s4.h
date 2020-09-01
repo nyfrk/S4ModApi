@@ -44,6 +44,21 @@ struct Selection_t { // struct is xx bytes
 
 	DWORD count() const { return EndPtr - BasePtr; } // number of settlers in the selection
 };
+struct Event_t {
+	Event_t();
+	Event_t(DWORD _4, DWORD _8, DWORD _C, DWORD param2, DWORD param1, DWORD eventId); // todo: better names
+	operator bool() const { return eventId != 0; }
+	LPCVOID vtbl;
+	DWORD eventId;
+	DWORD param[2];
+	DWORD tick;
+	BYTE flags;
+	BYTE __pad1[3];
+	LPCVOID settlers;
+	WORD sizeofSettlers;
+	BYTE player;
+	BYTE __pad2;
+};
 
 //#define VFUNC { return 0; }
 //#define VFUNCVOID { }
@@ -131,6 +146,8 @@ struct Settler_t { // struct is 92 bytes
 #pragma pack(pop)
 
 struct S4 {
+	friend struct Event_t;
+
 	const INT32* PillarboxWidth;
 	UiElement_t** HoveringUiElement; // if points to NULL then there is none
 	HWND* Hwnd;
@@ -155,10 +172,11 @@ struct S4 {
 	Settler_t** SettlerPool;
 	DWORD* SettlerPrototypes;
 	
-	
 	DWORD GetLocalPlayer();
 	DWORD GetCurrentTick();
-	BOOL SendNetEvent(LPCVOID event);
+	BOOL SendNetEvent(Event_t& event);
+	BOOL SendLocalEvent(Event_t& event);
+	inline BOOL S4::SendNetEvent(LPCVOID event) { return SendNetEvent(*(Event_t*)event); } // todo: use Event_t 
 	inline DWORD GetNetEventVTbl() { return NetEventVTbl; }
 
 	void Initialize();
@@ -168,7 +186,11 @@ private:
 	DWORD* LocalPlayer;
 	DWORD* Tick;
 	DWORD NetEventVTbl;
-	void (__stdcall *__SendNetEvent)(LPCVOID event) = nullptr;
+	DWORD LocalEvent;
+
+	void (__stdcall *__SendNetEvent)(Event_t* event) = nullptr; // this is actually a thiscall, but this pointer is ignored
+	LPCVOID EventConstructor = nullptr;
+	
 
 	S4() = default;
 	S4(const S4&) = delete;

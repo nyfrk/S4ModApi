@@ -377,40 +377,6 @@ enum S4_GUI_ENUM : DWORD {
 	S4_GUI_ENUM_MAXVALUE // never put anything below this
 };
 
-/*enum S4_SETTLER_TYPE_ENUM : WORD {
-	S4_SETTLER_WARSHIP = 1,
-	S4_SETTLER_FERRY = 2,
-	S4_SETTLER_WARMACHINE = 4,
-	S4_SETTLER_TRADING_CART,
-	S4_SETTLER_SWORDMAN_LV1 = 0x1D,
-	S4_SETTLER_SWORDMAN_LV2,
-	S4_SETTLER_SWORDMAN_LV3,
-	S4_SETTLER_BOWMAN_LV1,
-	S4_SETTLER_BOWMAN_LV2,
-	S4_SETTLER_BOWMAN_LV3,
-	S4_SETTLER_MEDIC_LV1,
-	S4_SETTLER_MEDIC_LV2,
-	S4_SETTLER_MEDIC_LV3,
-	S4_SETTLER_AXEMAN_LV1,
-	S4_SETTLER_AXEMAN_LV2,
-	S4_SETTLER_AXEMAN_LV3,
-	S4_SETTLER_BLOWMAN_LV1,
-	S4_SETTLER_BLOWMAN_LV2,
-	S4_SETTLER_BLOWMAN_LV3,
-	S4_SETTLER_SQUAD_LEADER,
-	S4_SETTLER_PRIEST,
-	S4_SETTLER_SABOTEUR,
-	S4_SETTLER_PIONEER,
-	S4_SETTLER_THIEF,
-	S4_SETTLER_GEOLOGIST,
-	S4_SETTLER_GARDENER,
-	S4_SETTLER_BACKPACK_LV1 = 0x3D,
-	S4_SETTLER_BACKPACK_LV2,
-	S4_SETTLER_BACKPACK_LV3,
-	S4_SETTLER_DARK_WARRIOR = S4_SETTLER_SWORDMAN_LV1,
-	S4_SETTLER_DARK_THROWER = S4_SETTLER_BOWMAN_LV1,
-};*/
-
 enum S4_MOVEMENT_ENUM : DWORD {
 	S4_MOVEMENT_FORWARD,
 	S4_MOVEMENT_PATROL,
@@ -504,6 +470,7 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(BOOL, ClearSelection)(THIS) PURE;
 	STDMETHOD_(BOOL, GetSelection)(THIS_ PWORD out, SIZE_T outlen, PSIZE_T selectionCount) PURE;
 	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount) PURE;
+	STDMETHOD_(BOOL, StartBuildingPlacement)(THIS_ S4_OBJECT_TYPE building) PURE;
 
 	/** Settlers 4 NetEvents functions **/
 	STDMETHOD_(BOOL, SendWarriors)(THIS_ INT x, INT y, S4_MOVEMENT_ENUM mode, PWORD warriors, SIZE_T countOfWarriors, DWORD player = 0) PURE;
@@ -531,6 +498,16 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(BOOL, DestroyCustomUiElement)(THIS_ S4CUSTOMUI) PURE;
 	STDMETHOD_(BOOL, HideCustomUiElement)(THIS_ S4CUSTOMUI) PURE;
 	STDMETHOD_(BOOL, ShowCustomUiElement)(THIS_ S4CUSTOMUI) PURE;
+
+	/** S4 Scripting **/
+	STDMETHOD_(BOOL, RevealWorldMap)(THIS_ BOOL) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SetZoom)(THIS_ DWORD level) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SetWorldCursor)(THIS_ INT x, INT y) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, DeleteWorldCursor)(THIS) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, AddSettlers)(THIS_ S4_OBJECT_TYPE settler, DWORD amount, INT x, INT y, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, ShowTextMessage)(THIS_ LPCSTR message, DWORD icon = 9, DWORD reserved = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GetLocalPlayer)(THIS) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(S4_OBJECT_TYPE, GetPlayerTribe)(THIS_ DWORD player = 0) PURE; // defined in CS4Scripting.cpp
 
 	/** Never extend this interface, create a new one if you need more methods 
 		Otherwise you will break the ABI **/

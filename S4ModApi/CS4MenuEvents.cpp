@@ -19,53 +19,16 @@
 // along with S4ModApi. If not, see <https://www.gnu.org/licenses/lgpl-3.0>.
 ///////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#include "CSettlers4Api.h"
+#include "s4.h"
 
-#include <Windows.h>
 
-struct PatternAddr {
-	void Scan(LPCSTR name, DWORD base, LPCSTR basename, LPCSTR patternStr);
+BOOL CSettlers4Api::StartBuildingPlacement(S4_OBJECT_TYPE building) {
+	TRACE;
 
-	DWORD addr;
-	DWORD base;
-	LPCSTR name;
-	LPCSTR basename;
-	
-	operator bool() const;
-	operator DWORD() const;
-	operator LPCVOID() const;
-	DWORD operator+(int off);
-	DWORD operator-(int off);
-};
+	Event_t ev(0, 0, 0, MAKE_BUILDING_INDEX(building), 0, 0x1B5);
+	if (!ev.eventId) return FALSE;
 
-extern struct Patterns {
-	// Debug Rendering Patterns
-	PatternAddr 
-		OnMapInitHook,
-		PillarboxWidth,
-		OnFrameHook,
-		Hwnd,
-		Backbuffer,
-		OnSettlerCommandHook,
-		OnTickHook,
-		OnMouseButtonHook,
-		HoveringUiElement,
-		MenuScreenObj,
-		CurrentMenuScreen,
-		GameMenusWndProc,
-		WndProcChain,
-		ActiveIngameMenu,
-		SettlerFilter,
-		ClearSelection,
-		NetEventConstuctor,
-		RecruitmentEventConstructor,
-		LocalEvent;
-
-	void Scan();
-
-	Patterns() = default;
-private:
-	Patterns(const Patterns&) = delete;
-	Patterns& operator=(Patterns const&) = delete;
-} g_Patterns;
+	return S4::GetInstance().SendLocalEvent(ev);
+}
 

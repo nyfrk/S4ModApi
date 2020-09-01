@@ -74,6 +74,7 @@ void Patterns::Scan() {
 		SCAN_HE(GameMenusWndProc, S4_Main, "6A 00 57 83 EC 08"); // -4
 		SCAN_HE(WndProcChain, S4_Main, "0F B7 07 8B 04 85 ? ? ? ? 85 C0 74 0B 6A 00"); // +6
 		SCAN_HE(ActiveIngameMenu, S4_Main, "8B 34 8D ? ? ? ? 85 F6 0F 84 ? ? 00 00 A1 ? ? ? ? 8B 74 B0 0C 03 F0"); // +3
+		SCAN_HE(LocalEvent, S4_Main, "50 8B CA E8 ? ? ? ? B0 01 8B 4D F4"); // +4
 	}
 }
 

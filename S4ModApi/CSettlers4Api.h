@@ -53,6 +53,7 @@ struct CSettlers4Api : public ISettlers4Api {
 	STDMETHOD_(BOOL, ClearSelection)(THIS); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, GetSelection)(THIS_ PWORD out, SIZE_T outlen, PSIZE_T selectionCount); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount); // defined in CS4Selection.cpp
+	STDMETHOD_(BOOL, StartBuildingPlacement)(THIS_ S4_OBJECT_TYPE building); // defined in CS4MenuEvents.cpp
 
 	/** Settlers 4 NetEvents functions **/
 	STDMETHOD_(BOOL, SendWarriors)(THIS_ INT x, INT y, S4_MOVEMENT_ENUM mode, PWORD warriors, SIZE_T countOfWarriors, DWORD player); // defined in CS4SendWarriors.cpp
@@ -79,6 +80,16 @@ struct CSettlers4Api : public ISettlers4Api {
 	STDMETHOD_(BOOL, DestroyCustomUiElement)(THIS_ S4CUSTOMUI);
 	STDMETHOD_(BOOL, HideCustomUiElement)(THIS_ S4CUSTOMUI);
 	STDMETHOD_(BOOL, ShowCustomUiElement)(THIS_ S4CUSTOMUI);
+
+	/** S4 Scripting **/
+	STDMETHOD_(BOOL, RevealWorldMap)(THIS_ BOOL); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SetZoom)(THIS_ DWORD level); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SetWorldCursor)(THIS_ INT x, INT y); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, DeleteWorldCursor)(THIS); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, AddSettlers)(THIS_ S4_OBJECT_TYPE settler, DWORD amount, INT x, INT y, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, ShowTextMessage)(THIS_ LPCSTR message, DWORD icon, DWORD reserved); // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GetLocalPlayer)(THIS); // defined in CS4Scripting.cpp
+	STDMETHOD_(S4_OBJECT_TYPE, GetPlayerTribe)(THIS_ DWORD player = 0); // defined in CS4Scripting.cpp
 
 	~CSettlers4Api();  // defined in CS4Singleton.cpp
 	static CSettlers4Api& GetInstance(); // defined in CS4Singleton.cpp
