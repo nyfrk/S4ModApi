@@ -47,6 +47,16 @@ Some source files are only provided as precompiled obj files. This is due to the
 
 
 
+## Acknowledgments
+
+Special thanks to the following contributors. Without their work this project would not be as far as it is today.
+
+- [**MuffinMario**](https://github.com/MuffinMario) for the creation of [s4.muffinmar.io](https://s4.muffinmar.io/scripts/) and the reversal / documentation of the Lua interface including all function names, their parameters and many enumerations.
+- [**Viciten**](https://github.com/Viciten) for the support of [alpha blended bitmaps](https://github.com/nyfrk/S4ModApi/commit/134d532b83d201f43f18b699d877021f512411d3).
+
+
+
 ## License
 
 The project is licensed under the GNU Lesser General Public License v3 (LGPL v3). See [LICENSE](LICENSE.md) for details. 
+
