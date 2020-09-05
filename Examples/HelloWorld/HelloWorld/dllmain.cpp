@@ -18,6 +18,17 @@ static void CleanUp() {
     }
 };
 
+void mana() {
+    DWORD S4_Main = (DWORD)GetModuleHandle(NULL);
+    __asm {
+        push 10
+        push 1
+        mov eax, S4_Main
+        add eax, 0x16D5D0
+        call eax
+    }
+}
+
 BOOL APIENTRY DllMain( HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved ) {    
     switch (ul_reason_for_call) {
     case DLL_PROCESS_ATTACH: {
@@ -38,6 +49,7 @@ BOOL APIENTRY DllMain( HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpRese
         cuie.x = 50;
         cuie.y = 50;
         cuie.screen = S4_SCREEN_MAINMENU;
+        //cuie.flags = S4_CUSTOMUIFLAGS_TRANSPARENT;
         cuie.actionHandler = [](LPCVOID lpUiElement, S4_CUSTOM_UI_ENUM newstate) {
             if (newstate & S4_CUSTOM_UI_SELECTED) {
                 CleanUp();
@@ -46,6 +58,19 @@ BOOL APIENTRY DllMain( HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpRese
         };
  
         splashHandle = s4->CreateCustomUiElement(&cuie);
+
+        s4->AddTickListener([](DWORD tick, BOOL a, BOOL b) {
+            if (GetAsyncKeyState('L') < 0) {
+                while (GetAsyncKeyState('L') < 0) { Sleep(1); }
+                static int x = 128;
+                ++x;
+                s4->ShowTextMessage("test", 3, 1);
+                s4->SetGround(x, 128, 10, 20);
+                s4->GoodsAddPileEx(S4_OBJECT_TYPE::S4_OBJECT_GOOD_GOLDBAR, 8, 128, 128);
+            }
+            return (HRESULT)0;
+        });
+
         break;
     } 
     case DLL_THREAD_ATTACH:
