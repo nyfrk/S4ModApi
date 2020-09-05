@@ -427,6 +427,7 @@ typedef HRESULT(FAR S4HCALL* LPS4MAPINITCALLBACK)(LPVOID lpReserved0, LPVOID lpR
 typedef HRESULT(FAR S4HCALL* LPS4MOUSECALLBACK)(DWORD dwMouseButton, INT iX, INT iY, DWORD dwMsgId, HWND hwnd, LPCS4UIELEMENT lpUiElement);
 typedef HRESULT(FAR S4HCALL* LPS4SETTLERSENDCALLBACK)(DWORD dwPosition, S4_MOVEMENT_ENUM dwCommand, LPVOID lpReserved);
 typedef HRESULT(FAR S4HCALL* LPS4TICKCALLBACK)(DWORD dwTick, BOOL bHasEvent, BOOL bIsDelayed);
+typedef HRESULT(FAR S4HCALL* LPS4LUAOPENCALLBACK)(VOID);
 
 
 HRESULT __declspec(nothrow) S4HCALL S4CreateInterface(CONST GUID FAR* lpGUID, LPSETTLERS4API FAR* lplpS4H);
@@ -457,6 +458,8 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(S4HOOK, AddMouseListener)(THIS_ LPS4MOUSECALLBACK) PURE;
 	STDMETHOD_(S4HOOK, AddSettlerSendListener)(THIS_ LPS4SETTLERSENDCALLBACK) PURE;
 	STDMETHOD_(S4HOOK, AddTickListener)(THIS_ LPS4TICKCALLBACK) PURE;
+	STDMETHOD_(S4HOOK, AddLuaOpenListener)(THIS_ LPS4LUAOPENCALLBACK) PURE;
+	
 
 	/** Misc helper functions **/
 	STDMETHOD(GetMD5OfModule)(THIS_ HMODULE module, LPSTR out, SIZE_T sz) PURE;
@@ -500,14 +503,88 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(BOOL, ShowCustomUiElement)(THIS_ S4CUSTOMUI) PURE;
 
 	/** S4 Scripting **/
-	STDMETHOD_(BOOL, RevealWorldMap)(THIS_ BOOL) PURE; // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, SetZoom)(THIS_ DWORD level) PURE; // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, SetWorldCursor)(THIS_ INT x, INT y) PURE; // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, DeleteWorldCursor)(THIS) PURE; // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, AddSettlers)(THIS_ S4_OBJECT_TYPE settler, DWORD amount, INT x, INT y, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, ShowTextMessage)(THIS_ LPCSTR message, DWORD icon = 9, DWORD reserved = 0) PURE; // defined in CS4Scripting.cpp
 	STDMETHOD_(DWORD, GetLocalPlayer)(THIS) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, BuildingsAdd)(THIS_ S4_OBJECT_TYPE building, INT x, INT y, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, BuildingsAmount)(THIS_ S4_OBJECT_TYPE building, DWORD status, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, BuildingsCrush)(THIS_ DWORD building) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, BuildingsDelete)(THIS_ DWORD building, DWORD mode) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, BuildingsExistsBuildingInArea)(THIS_ S4_OBJECT_TYPE building, INT x, INT y, INT r, DWORD status, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, BuildingsGetFirstBuilding)(THIS_ S4_OBJECT_TYPE building, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, BuildingsGetInhabitantAmount)(THIS_ DWORD building, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, BuildingsGetTarget)(THIS_ DWORD building) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, BuildingsIsSelected)(THIS_ S4_OBJECT_TYPE building) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, DarkTribeAddManakopter)(THIS_ INT x, INT y, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, DarkTribeFlyTo)(THIS_ INT x, INT y) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, AIActivate)(THIS_ DWORD player, BOOL activate) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, MakeDark)(THIS_ INT x, INT y) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, MakeGreen)(THIS_ INT x, INT y) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, EffectsAdd)(THIS_ DWORD effect, DWORD sound, INT x, INT y, DWORD delay) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, ArePlayerAreasConnected)(THIS_ INT x1, INT y1, DWORD player2, INT x2, INT y2, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, GameDefaultGameEndCheck)(THIS) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, DisableLastNPlayersInStatistic)(THIS_ DWORD n) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, EnableLandExploredCheck)(THIS) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, FindAnyUnit)(THIS_ INT x, INT y, INT r, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GetAmountOfTreesInArea)(THIS_ INT x, INT y, INT r) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GetDifficulty)(THIS) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GetNumberOfSquaresWithDarkLand)(THIS_ DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GetOffenceFightingStrength)(THIS_ DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, HasPlayerLost)(THIS_ DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, IsAlmostAllLandExplored)(THIS_ DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, IsAreaDarkLand)(THIS_ INT x, INT y, INT r) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, IsAreaGreen)(THIS_ INT x, INT y, INT r) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, IsAreaOwned)(THIS_ INT x, INT y, INT r, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GetNumberOfPlayers)(THIS) PURE; // defined in CS4Scripting.cpp
 	STDMETHOD_(S4_OBJECT_TYPE, GetPlayerTribe)(THIS_ DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, ResetFogging)(THIS) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SetAlliesDontRevealFog)(THIS_ BOOL enable) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SetFightingStrength)(THIS_ DWORD strength, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, ShowClock)(THIS_ DWORD seconds) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, Time)(THIS) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GoodsAddPileEx)(THIS_ S4_OBJECT_TYPE good, DWORD amount, INT x, INT y) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GoodsAmount)(THIS_ S4_OBJECT_TYPE good, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GoodsDelete)(THIS_ S4_OBJECT_TYPE good, INT x, INT y, INT r) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GoodsGetAmountInArea)(THIS_ S4_OBJECT_TYPE good, INT x, INT y, INT r, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, MagicCastSpell)(THIS_ S4_OBJECT_TYPE tribe, S4_OBJECT_TYPE spell, INT x, INT y, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, MagicIncreaseMana)(THIS_ INT amount, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, MapAddDecoObject)(THIS_ DWORD object, INT x, INT y) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, MapDeleteDecoObject)(THIS_ INT x, INT y, INT r) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, MapSize)(THIS) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, MapPointIsOnScreen)(THIS_ INT x, INT y) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, MapSetScreenPos)(THIS_ INT x, INT y) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SettlersAdd)(THIS_ S4_OBJECT_TYPE settler, INT amount, INT x, INT y, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SettlersAddToFerry)(THIS_ DWORD ferry, S4_OBJECT_TYPE settler, INT amount) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, SettlersAmount)(THIS_ S4_OBJECT_TYPE settler, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, SettlersAmountInArea)(THIS_ S4_OBJECT_TYPE settler, INT x, INT y, INT r, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SettlersIsSelected)(THIS_ S4_OBJECT_TYPE settler, INT amount) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SettlersKillSelectableSettlers)(THIS_ S4_OBJECT_TYPE settler, INT x, INT y, INT r, BOOL animation, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, SettlersProductionAmount)(THIS_ S4_OBJECT_TYPE settler) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SettlersSetHealthInArea)(THIS_ S4_OBJECT_TYPE settler, INT x, INT y, INT r, DWORD health, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, StatisticBuildingsCaptured)(THIS_ DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, StatisticGoodsProduced)(THIS_ DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, StatisticLandOwnedByPlayer)(THIS_ DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, StatisticManaCollected)(THIS_ DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, StatisticMushroomFarmsDestroyed)(THIS_ DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, StatisticServantsFreed)(THIS_ DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, StatisticSpellsCast)(THIS_ DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, StatisticUnitsDestroyed)(THIS_ DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, ClearMarker)(THIS) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, DeleteWorldCursor)(THIS) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, PressButton)(THIS_ DWORD dialog, DWORD control) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, RevealWorldMap)(THIS_ BOOL enable) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SelectNextBuilding)(THIS_ S4_OBJECT_TYPE building) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SetMarker)(THIS_ INT x, INT y) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SetWorldCursor)(THIS_ INT x, INT y) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SetZoom)(THIS_ INT zoom) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, VehiclesAdd)(THIS_ S4_OBJECT_TYPE vehicle, DWORD direction, DWORD ammo, DWORD commands, INT x, INT y, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, VehiclesAddWheelerToFerry)(THIS_ DWORD ferry, S4_OBJECT_TYPE vehicle) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, VehiclesAmount)(THIS_ S4_OBJECT_TYPE vehicle, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, VehiclesAmountInArea)(THIS_ S4_OBJECT_TYPE vehicle, INT x, INT y, INT r, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, VehiclesGetFerryCargoInArea)(THIS_ INT x, INT y, INT r, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, VehiclesGetHealth)(THIS_ INT x, INT y) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, VehiclesIsSelected)(THIS_ S4_OBJECT_TYPE vehicle, INT amount) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, VehiclesKill)(THIS_ S4_OBJECT_TYPE vehicle, INT x, INT y, INT r, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SetGround)(THIS_ INT x, INT y, INT r, DWORD ground) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, ShowTextMessage)(THIS_ LPCSTR message, DWORD icon, DWORD reserved) PURE; // defined in CS4Scripting.cpp
 
 	/** Never extend this interface, create a new one if you need more methods 
 		Otherwise you will break the ABI **/
@@ -657,5 +734,292 @@ namespace hlib {
 	};
 
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// lua.h
+///////////////////////////////////////////////////////////////////////////////
+
+extern "C" {
+#ifndef lua_h
+#define lua_h
+
+#define LUA_VERSION	"Lua 3.2.1"
+#define LUA_COPYRIGHT	"Copyright (C) 1994-1999 TeCGraf, PUC-Rio"
+#define LUA_AUTHORS 	"W. Celes, R. Ierusalimschy & L. H. de Figueiredo"
+
+
+#define LUA_NOOBJECT  0
+
+#define LUA_ANYTAG    (-1)
+
+typedef struct lua_State lua_State;
+//extern lua_State* lua_state;
+
+typedef void (*lua_CFunction) (void);
+typedef unsigned int lua_Object;
+
+void	       lua_open(void);
+void           lua_close(void);
+lua_State* lua_setstate(lua_State* st);
+
+lua_Object     lua_settagmethod(int tag, char* event); /* In: new method */
+lua_Object     lua_gettagmethod(int tag, char* event);
+
+int            lua_newtag(void);
+int            lua_copytagmethods(int tagto, int tagfrom);
+void           lua_settag(int tag); /* In: object */
+
+void           lua_error(char* s);
+int            lua_dofile(char* filename); /* Out: returns */
+int            lua_dostring(char* string); /* Out: returns */
+int            lua_dobuffer(char* buff, int size, char* name);
+/* Out: returns */
+int            lua_callfunction(lua_Object f);
+/* In: parameters; Out: returns */
+
+void	       lua_beginblock(void);
+void	       lua_endblock(void);
+
+lua_Object     lua_lua2C(int number);
+#define	       lua_getparam(_)		lua_lua2C(_)
+#define	       lua_getresult(_)		lua_lua2C(_)
+
+int            lua_isnil(lua_Object object);
+int            lua_istable(lua_Object object);
+int            lua_isuserdata(lua_Object object);
+int            lua_iscfunction(lua_Object object);
+int            lua_isnumber(lua_Object object);
+int            lua_isstring(lua_Object object);
+int            lua_isfunction(lua_Object object);
+
+double         lua_getnumber(lua_Object object);
+char* lua_getstring(lua_Object object);
+long           lua_strlen(lua_Object object);
+lua_CFunction  lua_getcfunction(lua_Object object);
+void* lua_getuserdata(lua_Object object);
+
+
+void 	       lua_pushnil(void);
+void           lua_pushnumber(double n);
+void           lua_pushlstring(char* s, long len);
+void           lua_pushstring(char* s);
+void           lua_pushcclosure(lua_CFunction fn, int n);
+void           lua_pushusertag(void* u, int tag);
+void           lua_pushobject(lua_Object object);
+
+lua_Object     lua_pop(void);
+
+lua_Object     lua_getglobal(char* name);
+lua_Object     lua_rawgetglobal(char* name);
+void           lua_setglobal(char* name); /* In: value */
+void           lua_rawsetglobal(char* name); /* In: value */
+
+void           lua_settable(void); /* In: table, index, value */
+void           lua_rawsettable(void); /* In: table, index, value */
+lua_Object     lua_gettable(void); /* In: table, index */
+lua_Object     lua_rawgettable(void); /* In: table, index */
+
+int            lua_tag(lua_Object object);
+
+char* lua_nextvar(char* varname);  /* Out: value */
+int            lua_next(lua_Object o, int i);
+/* Out: ref, value */
+
+int            lua_ref(int lock); /* In: value */
+lua_Object     lua_getref(int ref);
+void	       lua_unref(int ref);
+
+lua_Object     lua_createtable(void);
+
+long	       lua_collectgarbage(long limit);
+
+
+	/* =============================================================== */
+	/* some useful macros/functions */
+
+#define lua_call(name)		lua_callfunction(lua_getglobal(name))
+
+#define lua_pushref(ref)	lua_pushobject(lua_getref(ref))
+
+#define lua_refobject(o,l)	(lua_pushobject(o), lua_ref(l))
+
+#define lua_register(n,f)	(lua_pushcfunction(f), lua_setglobal(n))
+
+#define lua_pushuserdata(u)     lua_pushusertag(u, 0)
+
+#define lua_pushcfunction(f)	lua_pushcclosure(f, 0)
+
+#define lua_clonetag(t)		lua_copytagmethods(lua_newtag(), (t))
+
+lua_Object     lua_seterrormethod(void);  /* In: new method */
+
+/* ==========================================================================
+** for compatibility with old versions. Avoid using these macros/functions
+** If your program does need any of these, define LUA_COMPAT2_5
+*/
+
+
+#ifdef LUA_COMPAT2_5
+
+
+lua_Object     lua_setfallback(char* event, lua_CFunction fallback);
+
+#define lua_storeglobal		lua_setglobal
+#define lua_type		lua_tag
+
+#define lua_lockobject(o)  lua_refobject(o,1)
+#define	lua_lock() lua_ref(1)
+#define lua_getlocked lua_getref
+#define	lua_pushlocked lua_pushref
+#define	lua_unlock lua_unref
+
+#define lua_pushliteral(o)  lua_pushstring(o)
+
+#define lua_getindexed(o,n) (lua_pushobject(o), lua_pushnumber(n), lua_gettable())
+#define lua_getfield(o,f)   (lua_pushobject(o), lua_pushstring(f), lua_gettable())
+
+#define lua_copystring(o) (strdup(lua_getstring(o)))
+
+#define lua_getsubscript  lua_gettable
+#define lua_storesubscript  lua_settable
+
+#endif
+
+#endif
+
+} // extern "C"
+
+
+
+/******************************************************************************
+* Copyright (c) 1994-1999 TeCGraf, PUC-Rio.  All rights reserved.
+*
+* Permission is hereby granted, without written agreement and without license
+* or royalty fees, to use, copy, modify, and distribute this software and its
+* documentation for any purpose, including commercial applications, subject to
+* the following conditions:
+*
+*  - The above copyright notice and this permission notice shall appear in all
+*    copies or substantial portions of this software.
+*
+*  - The origin of this software must not be misrepresented; you must not
+*    claim that you wrote the original software. If you use this software in a
+*    product, an acknowledgment in the product documentation would be greatly
+*    appreciated (but it is not required).
+*
+*  - Altered source versions must be plainly marked as such, and must not be
+*    misrepresented as being the original software.
+*
+* The authors specifically disclaim any warranties, including, but not limited
+* to, the implied warranties of merchantability and fitness for a particular
+* purpose.  The software provided hereunder is on an "as is" basis, and the
+* authors have no obligation to provide maintenance, support, updates,
+* enhancements, or modifications.  In no event shall TeCGraf, PUC-Rio, or the
+* authors be held liable to any party for direct, indirect, special,
+* incidental, or consequential damages arising out of the use of this software
+* and its documentation.
+*
+* The Lua language and this implementation have been entirely designed and
+* written by Waldemar Celes Filho, Roberto Ierusalimschy and
+* Luiz Henrique de Figueiredo at TeCGraf, PUC-Rio.
+*
+* This implementation contains no third-party code.
+******************************************************************************/
+
+
+///////////////////////////////////////////////////////////////////////////////
+// lauxlib.h
+///////////////////////////////////////////////////////////////////////////////
+
+/*
+** $Id: lauxlib.h,v 1.12 1999/03/10 14:19:41 roberto Exp $
+** Auxiliary functions for building Lua libraries
+** See Copyright Notice in lua.h
+*/
+
+extern "C" {
+#ifndef auxlib_h
+#define auxlib_h
+
+
+
+
+struct luaL_reg {
+	char* name;
+	lua_CFunction func;
+};
+
+
+#define luaL_arg_check(cond,numarg,extramsg) if (!(cond)) \
+                                               luaL_argerror(numarg,extramsg)
+
+void luaL_openlib(struct luaL_reg* l, int n);
+void luaL_argerror(int numarg, char* extramsg);
+#define luaL_check_string(n)  (luaL_check_lstr((n), NULL))
+char* luaL_check_lstr(int numArg, long* len);
+#define luaL_opt_string(n, d) (luaL_opt_lstr((n), (d), NULL))
+char* luaL_opt_lstr(int numArg, char* def, long* len);
+double luaL_check_number(int numArg);
+#define luaL_check_int(n)	((int)luaL_check_number(n))
+#define luaL_check_long(n)	((long)luaL_check_number(n))
+double luaL_opt_number(int numArg, double def);
+#define luaL_opt_int(n,d)	((int)luaL_opt_number(n,d))
+#define luaL_opt_long(n,d)	((long)luaL_opt_number(n,d))
+lua_Object luaL_functionarg(int arg);
+lua_Object luaL_tablearg(int arg);
+lua_Object luaL_nonnullarg(int numArg);
+void luaL_verror(char* fmt, ...);
+char* luaL_openspace(int size);
+void luaL_resetbuffer(void);
+void luaL_addchar(int c);
+int luaL_getsize(void);
+void luaL_addsize(int n);
+int luaL_newbuffer(int size);
+void luaL_oldbuffer(int old);
+char* luaL_buffer(void);
+int luaL_findstring(char* name, char* list[]);
+void luaL_chunkid(char* out, char* source, int len);
+void luaL_filesource(char* out, char* filename, int len);
+
+#endif
+} // extern "C"
+
+///////////////////////////////////////////////////////////////////////////////
+// luadebug.h
+///////////////////////////////////////////////////////////////////////////////
+
+
+/*
+** $Id: luadebug.h,v 1.6 1999/03/04 21:17:26 roberto Exp $
+** Debugging API
+** See Copyright Notice in lua.h
+*/
+
+extern "C" {
+#ifndef luadebug_h
+#define luadebug_h
+
+typedef lua_Object lua_Function;
+
+typedef void (*lua_LHFunction) (int line);
+typedef void (*lua_CHFunction) (lua_Function func, char* file, int line);
+
+lua_Function lua_stackedfunction(int level);
+void lua_funcinfo(lua_Object func, char** source, int* linedefined);
+int lua_currentline(lua_Function func);
+char* lua_getobjname(lua_Object o, char** name);
+
+lua_Object lua_getlocal(lua_Function func, int local_number, char** name);
+int lua_setlocal(lua_Function func, int local_number);
+
+int lua_nups(lua_Function func);
+
+lua_LHFunction lua_setlinehook(lua_LHFunction func);
+lua_CHFunction lua_setcallhook(lua_CHFunction func);
+int lua_setdebug(int debug);
+
+
+#endif
+} // extern "C"
 
 #endif

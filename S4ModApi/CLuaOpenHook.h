@@ -21,54 +21,19 @@
 
 #pragma once
 
-#include <Windows.h>
+#include "CHook.h"
 
-struct PatternAddr {
-	void Scan(LPCSTR name, DWORD base, LPCSTR basename, LPCSTR patternStr);
+class CLuaOpenHook : public CHook {
+public:
+	static CLuaOpenHook& GetInstance();
 
-	DWORD addr;
-	DWORD base;
-	LPCSTR name;
-	LPCSTR basename;
-	
-	operator bool() const;
-	operator DWORD() const;
-	operator LPCVOID() const;
-	DWORD operator+(int off);
-	DWORD operator-(int off);
-};
+protected:
+	virtual bool Init();
+	virtual void Patch();
+	virtual void Unpatch();
 
-extern struct Patterns {
-	// Debug Rendering Patterns
-	PatternAddr 
-		OnMapInitHook,
-		PillarboxWidth,
-		OnFrameHook,
-		Hwnd,
-		Backbuffer,
-		OnSettlerCommandHook,
-		OnTickHook,
-		OnMouseButtonHook,
-		HoveringUiElement,
-		MenuScreenObj,
-		CurrentMenuScreen,
-		GameMenusWndProc,
-		WndProcChain,
-		ActiveIngameMenu,
-		SettlerFilter,
-		ClearSelection,
-		NetEventConstuctor,
-		RecruitmentEventConstructor,
-		LocalEvent,
-		Lua,
-		ShowTextMessage,
-		OnLuaOpenHook;
-
-	void Scan();
-
-	Patterns() = default;
 private:
-	Patterns(const Patterns&) = delete;
-	Patterns& operator=(Patterns const&) = delete;
-} g_Patterns;
+	CLuaOpenHook();
+	static DWORD __stdcall OnLuaOpen();
+};
 

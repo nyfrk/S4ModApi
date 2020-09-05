@@ -75,6 +75,10 @@ void Patterns::Scan() {
 		SCAN_HE(WndProcChain, S4_Main, "0F B7 07 8B 04 85 ? ? ? ? 85 C0 74 0B 6A 00"); // +6
 		SCAN_HE(ActiveIngameMenu, S4_Main, "8B 34 8D ? ? ? ? 85 F6 0F 84 ? ? 00 00 A1 ? ? ? ? 8B 74 B0 0C 03 F0"); // +3
 		SCAN_HE(LocalEvent, S4_Main, "50 8B CA E8 ? ? ? ? B0 01 8B 4D F4"); // +4
+		SCAN_HE(Lua, S4_Main, "75 0D 50 E8 ? ? ? ? 83 C4 04 33 F6 EB 1B 50 6A 00 E8 ? ? ? ? 8B F0 83 C4 08 85 F6 75 0A B9 ? ? ? ? E8 ? ? ? ? 8B 15");
+		SCAN_HE(ShowTextMessage, S4_Main, "55 8B EC 53 56 57 6A 24 8B F2 8B F9");
+		SCAN_HE(OnLuaOpenHook, S4_Main, "89 5F 0C 89 5F 10 89 5F 14 89 5F 18 89 5F 04 89 5F 08 89 9F ? ? ? ? 89 3D ? ? ? ? E8"); // +30
+		
 	}
 }
 

@@ -23,6 +23,7 @@
 
 #include <Windows.h>
 #include "S4ModApi.h"
+#include "safemem.h"
 
 #pragma pack(push, 1)
 // Ui Elements
@@ -176,8 +177,11 @@ struct S4 {
 	DWORD GetCurrentTick();
 	BOOL SendNetEvent(Event_t& event);
 	BOOL SendLocalEvent(Event_t& event);
-	inline BOOL S4::SendNetEvent(LPCVOID event) { return SendNetEvent(*(Event_t*)event); } // todo: use Event_t 
+	inline BOOL SendNetEvent(LPCVOID event) { return SendNetEvent(*(Event_t*)event); } // todo: use Event_t 
 	inline DWORD GetNetEventVTbl() { return NetEventVTbl; }
+	inline void free(void* p) { if (__free)__free(p); }
+	inline void* realloc(void* p, size_t s) { return __realloc ? __realloc(p,s) : NULL; }
+	inline void* GetLuaState() { return (void*)READ_AT(lua_state); }
 
 	void Initialize();
 	static S4& GetInstance();
@@ -189,8 +193,10 @@ private:
 	DWORD LocalEvent;
 
 	void (__stdcall *__SendNetEvent)(Event_t* event) = nullptr; // this is actually a thiscall, but this pointer is ignored
+	void(__cdecl* __free)(void* ) = nullptr;
+	void*(__cdecl* __realloc)(void*, size_t) = nullptr;
 	LPCVOID EventConstructor = nullptr;
-	
+	LPCVOID lua_state = nullptr;
 
 	S4() = default;
 	S4(const S4&) = delete;

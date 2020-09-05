@@ -65,6 +65,9 @@ void S4::Initialize() {
 	} else {
 		LOAD_PTR(NetEventVTbl, g_Patterns.RecruitmentEventConstructor, 8);
 	}
+	LOAD_FUNC(__realloc, g_Patterns.Lua, 18);
+	LOAD_FUNC(__free, g_Patterns.Lua, 3);
+	LOAD_PTR(lua_state, g_Patterns.Lua, 44);
 
 	// history edition only, todo: add gold edition support
 	EventConstructor = (LPCVOID)AddIfNotNull(g_Patterns.NetEventConstuctor, -0x12);

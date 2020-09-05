@@ -55,22 +55,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>$(ProjectDir)lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(ProjectDir)lib\;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <LibraryPath>$(ProjectDir)lib\lua321\Release\;$(ProjectDir)lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)lib\lua321\include\;$(ProjectDir)lib\;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
     <SourcePath>$(ProjectDir)lib;$(SourcePath)</SourcePath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug142|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>$(ProjectDir)lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(ProjectDir)lib\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(ProjectDir)lib\lua321\Release\;$(ProjectDir)lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)lib\lua321\include\;$(ProjectDir)lib\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <SourcePath>$(ProjectDir)lib;$(SourcePath)</SourcePath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>$(ProjectDir)lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(ProjectDir)lib\;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <LibraryPath>$(ProjectDir)lib\lua321\Release\;$(ProjectDir)lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)lib\lua321\include\;$(ProjectDir)lib\;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
     <SourcePath>$(ProjectDir)lib;$(SourcePath)</SourcePath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -91,7 +91,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <CreateHotPatchableImage>Enabled</CreateHotPatchableImage>
-      <AdditionalDependencies>Precompiled.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Precompiled.lib;Lua321.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>if exist "$(OutDir)deploy.bat" (call "$(OutDir)deploy.bat" )</Command>
@@ -117,7 +117,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <CreateHotPatchableImage>Enabled</CreateHotPatchableImage>
-      <AdditionalDependencies>Precompiled.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Precompiled.lib;Lua321.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>if exist "$(OutDir)deploy.bat" (call "$(OutDir)deploy.bat" )</Command>
@@ -146,7 +146,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <CreateHotPatchableImage>Enabled</CreateHotPatchableImage>
-      <AdditionalDependencies>Precompiled.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Precompiled.lib;Lua321.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
       <Command>if exist "$(OutDir)deploy.bat" (call "$(OutDir)deploy.bat" )</Command>
@@ -160,6 +162,7 @@
     <ClCompile Include="CFrameHook.cpp" />
     <ClCompile Include="CHook.cpp" />
     <ClCompile Include="CDialog.cpp" />
+    <ClCompile Include="CLuaOpenHook.cpp" />
     <ClCompile Include="CMessageBox.cpp" />
     <ClCompile Include="CMouseHook.cpp" />
     <ClCompile Include="Console.cpp" />
@@ -205,6 +208,7 @@
     <ClInclude Include="CDialog.h" />
     <ClInclude Include="CFrameHook.h" />
     <ClInclude Include="CHook.h" />
+    <ClInclude Include="CLuaOpenHook.h" />
     <ClInclude Include="CMapInitHook.h" />
     <ClInclude Include="CMessageBox.h" />
     <ClInclude Include="CMouseHook.h" />

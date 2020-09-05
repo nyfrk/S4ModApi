@@ -189,6 +189,9 @@
     <ClCompile Include="CS4Scripting.cpp">
       <Filter>Quelldateien\COM</Filter>
     </ClCompile>
+    <ClCompile Include="CLuaOpenHook.cpp">
+      <Filter>Quelldateien\Hooks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -259,6 +262,9 @@
     </ClInclude>
     <ClInclude Include="CUpdate.h">
       <Filter>Headerdateien\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="CLuaOpenHook.h">
+      <Filter>Headerdateien\Hooks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

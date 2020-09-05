@@ -26,6 +26,7 @@
 #include "CMouseHook.h"
 #include "CSettlerSendHook.h"
 #include "CTickHook.h"
+#include "CLuaOpenHook.h"
 
 extern "C" {
 
@@ -62,6 +63,11 @@ extern "C" {
 	S4HOOK CSettlers4Api::AddTickListener(LPS4TICKCALLBACK cb) {
 		TRACE;
 		return CTickHook::GetInstance().AddListener(cb);
+	}
+
+	S4HOOK CSettlers4Api::AddLuaOpenListener(LPS4LUAOPENCALLBACK cb) {
+		TRACE;
+		return CLuaOpenHook::GetInstance().AddListener(cb);
 	}
 
 }
