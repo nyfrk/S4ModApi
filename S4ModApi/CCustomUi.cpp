@@ -203,16 +203,18 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 	bool newstate = false;	
 	HBITMAP hBm = NULL;
 	RECT *pRect = NULL;
+	bool inRect = false;
 
 	switch (m_state) {
 		case S4_CUSTOM_UI_UNSELECTED: {
-			if (m_hImgHover && PtInRect(&m_rect, p)) {
+			inRect = PtInRect(&m_rect, p);
+			if (inRect && m_hImgHover) {
 				newstate = true;
 				m_state = S4_CUSTOM_UI_HOVERING;
 				goto lbl_S4_CUSTOM_UI_HOVERING;
 			}
 		lbl_S4_CUSTOM_UI_UNSELECTED:
-			if (GetAsyncKeyState(VK_LBUTTON) < 0) {
+			if (inRect && GetAsyncKeyState(VK_LBUTTON) < 0) {
 				if (m_hImgSelectedHover) {
 					hBm = m_hImgSelectedHover;
 					pRect = &m_selectedHoverRect;
@@ -232,13 +234,14 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 			break;
 		}
 		case S4_CUSTOM_UI_SELECTED: {
-			if (m_hImgSelectedHover && PtInRect(&m_selectedRect, p)) {
+			inRect = PtInRect(&m_selectedRect, p);
+			if (inRect && m_hImgSelectedHover) {
 				newstate = true;
 				m_state = S4_CUSTOM_UI_HOVERING_SELECTED;
 				goto lbl_S4_CUSTOM_UI_HOVERING_SELECTED;
 			}
 		lbl_S4_CUSTOM_UI_SELECTED:
-			if (GetAsyncKeyState(VK_LBUTTON) < 0) {
+			if (inRect && GetAsyncKeyState(VK_LBUTTON) < 0) {
 				if (m_hImgHover) {
 					hBm = m_hImgHover;
 					pRect = &m_hoverRect;
