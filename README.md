@@ -58,5 +58,5 @@ Special thanks to the following contributors. Without their work this project wo
 
 ## License
 
-The project is licensed under the GNU Lesser General Public License v3 (LGPL v3). See [LICENSE](LICENSE.md) for details. 
+The S4ModApi project is licensed under the GNU Lesser General Public License version 3 (LGPLv3). See [COPYING.LESSER](COPYING.LESSER) file for details. 
 
