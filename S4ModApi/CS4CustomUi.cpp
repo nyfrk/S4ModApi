@@ -29,9 +29,9 @@ static HRESULT S4HCALL OnMessageBoxHide(CMessageBox* messagebox, INT reason) {
 	return 0;
 }
 
-S4CUSTOMUI CSettlers4Api::ShowMessageBox(LPCWSTR title, LPCWSTR message, INT x, INT y, INT w, INT h) {
+S4CUSTOMUI CSettlers4Api::ShowMessageBox(LPCWSTR title, LPCWSTR message, INT x, INT y, INT w, INT h, DWORD flags) {
 	TRACE;
-	auto mb = new CMessageBox(title,message,x,y,w,h);
+	auto mb = new CMessageBox(title,message,x,y,w,h,flags);
 	mb->SetHandler(OnMessageBoxHide);
 	mb->Show();
 	return mb;

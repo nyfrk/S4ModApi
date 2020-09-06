@@ -38,7 +38,7 @@ public:
 	~CCustomUi();
 
 protected:
-	virtual BOOL OnDraw(HDC hdc, const POINT* cursor) override;
+	virtual BOOL OnDraw(HDC hdc, const POINT* cursor, const RECT* clientRect) override;
 	virtual BOOL OnMouse(DWORD dwMouseButton, INT iX, INT iY, DWORD dwMsgId, HWND hwnd) override;
 	virtual BOOL OnShow() override; // do not call Hide() from here (will deadlock)
 	virtual BOOL OnHide() override; // do not call Show() from here (will deadlock)
@@ -47,7 +47,6 @@ private:
 	CCustomUi(const CCustomUi&) = delete;
 	CCustomUi& operator=(CCustomUi const&) = delete;
 
-	DWORD m_flags;
 	S4_GUI_ENUM m_screenFilter;
 	RECT m_rect, m_hoverRect, m_selectedRect, m_selectedHoverRect;
 	HBITMAP m_hImg, m_hImgHover, m_hImgSelected, m_hImgSelectedHover;
@@ -58,6 +57,3 @@ private:
 	volatile LPS4UICALLBACK m_handler;
 	volatile LPS4UIFILTERCALLBACK m_filterFunc;
 };
-
-// INT32 pillarboxWidth = 0;
-// if (S4::GetInstance().PillarboxWidth) pillarboxWidth = *S4::GetInstance().PillarboxWidth;

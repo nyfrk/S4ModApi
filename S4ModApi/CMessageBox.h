@@ -42,13 +42,13 @@ public:
 		CMessageBox_HideReason_CloseButton, // close button was used
 	};
 
-	CMessageBox(LPCWSTR title, LPCWSTR message, INT x, INT y, INT w, INT h);
+	CMessageBox(LPCWSTR title, LPCWSTR message, INT x, INT y, INT w, INT h, DWORD flags = 0);
 
 	HideReasonEnum GetHideReason();
 	void SetHandler(LPMESSAGEBOXHANDLER);
 
 protected:
-	virtual BOOL OnDraw(HDC hdc, const POINT *cursor) override;
+	virtual BOOL OnDraw(HDC hdc, const POINT *cursor, const RECT* client) override;
 	virtual BOOL OnMouse(DWORD dwMouseButton, INT iX, INT iY, DWORD dwMsgId, HWND hwnd) override;
 	virtual BOOL OnShow() override; // do not call Hide() from here (will deadlock)
 	virtual BOOL OnHide() override; // do not call Show() from here (will deadlock)
@@ -58,7 +58,7 @@ private:
 	CMessageBox& operator=(CMessageBox const&) = delete;
 
 	std::wstring m_title, m_message;
-	RECT m_closeButton, m_okButton;
+	RECT m_closeButton, m_okButton, m_windowRect;
 	HideReasonEnum m_hideReason;
 	volatile LPMESSAGEBOXHANDLER m_handler;
 };

@@ -22,8 +22,9 @@
 #include "CMessageBox.h"
 #include "Log.h"
 
-CMessageBox::CMessageBox(LPCWSTR title, LPCWSTR message, INT x, INT y, INT w, INT h) :
-	CDialog(x,y,w,h),
+CMessageBox::CMessageBox(LPCWSTR title, LPCWSTR message, INT x, INT y, INT w, INT h, DWORD flags) :
+	CDialog(x,y,w,h,flags),
+	m_windowRect(m_position),
 	m_title(title),
 	m_message(message),
 	m_handler(nullptr),
@@ -81,8 +82,11 @@ BOOL CMessageBox::OnMouse(DWORD dwMouseButton, INT iX, INT iY, DWORD dwMsgId, HW
 	return TRUE;
 }
 
-BOOL CMessageBox::OnDraw(HDC hdc, const POINT* cursor) {
+BOOL CMessageBox::OnDraw(HDC hdc, const POINT* cursor, const RECT* client) {
 	TRACE;
+
+	UpdatePositionWithOffsetsFlags(m_windowRect, client);
+
 	const RECT& rc = GetRect();
 	const POINT& p = *cursor;
 

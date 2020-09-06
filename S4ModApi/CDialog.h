@@ -32,8 +32,8 @@ class CDialog {
 public:
 	const enum FeaturesEnum : unsigned { FeatureNone = 0, FeatureOnMouse = 1, FeatureOnDraw = 2, FeatureAll = 3 } DialogFeatures;
 
-	CDialog(INT x, INT y, INT w, INT h, FeaturesEnum = FeatureAll);
-	CDialog(FeaturesEnum = FeatureAll);
+	CDialog(INT x, INT y, INT w, INT h, DWORD flags, FeaturesEnum = FeatureAll);
+	CDialog(DWORD flags = 0, FeaturesEnum = FeatureAll);
 	BOOL Show();
 	BOOL Hide();
 	BOOL IsShown() const;
@@ -43,12 +43,14 @@ public:
 	virtual ~CDialog();
 
 protected:
-	virtual BOOL OnDraw(HDC hdc, const POINT *cursor);
+	virtual BOOL OnDraw(HDC hdc, const POINT *cursor, const RECT* clientRect);
 	virtual BOOL OnMouse(DWORD dwMouseButton, INT iX, INT iY, DWORD dwMsgId, HWND hwnd);
 	virtual BOOL OnShow(); // do not call Hide() from here (will deadlock)
 	virtual BOOL OnHide(); // do not call Show() from here (will deadlock)
+	VOID UpdatePositionWithOffsetsFlags(const RECT& source, const RECT* clientRect);
 
 	RECT m_position;
+	DWORD m_flags;
 	static LPSETTLERS4API S4API;
 
 private:

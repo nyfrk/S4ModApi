@@ -24,6 +24,8 @@
 #include "CFrameHook.h"
 #include "CMouseHook.h"
 
+#include "s4.h" // pillar box width
+
 #define IncrementFeatureCounts() ModifyFeatureCounts(1)
 #define DecrementFeatureCounts() ModifyFeatureCounts(-1)
 
@@ -36,14 +38,16 @@ volatile CDialog::State CDialog::state;
 std::condition_variable CDialog::condIdle; // wait for various states
 unsigned CDialog::countFramehook = 0, CDialog::countMousehook = 0;
 
-CDialog::CDialog(INT x, INT y, INT w, INT h, FeaturesEnum f) :
+CDialog::CDialog(INT x, INT y, INT w, INT h, DWORD flags, FeaturesEnum f) :
 	m_position({ x, y, x + w, y + h }),
+	m_flags(flags),
 	m_isShown(false),
 	DialogFeatures(f) {	TRACE; }
 
-CDialog::CDialog(FeaturesEnum f) :
+CDialog::CDialog(DWORD flags, FeaturesEnum f) :
 	m_position({ 200, 200, 300, 300 }),
 	m_isShown(false),
+	m_flags(flags),
 	DialogFeatures(f) {
 	TRACE;
 }
@@ -164,10 +168,11 @@ CDialog::~CDialog() {
 	Hide();
 }
 
-BOOL CDialog::OnDraw(HDC hdc, const POINT* cursor) {
+BOOL CDialog::OnDraw(HDC hdc, const POINT* cursor, const RECT* clientRect) {
 	TRACE;
 	UNREFERENCED_PARAMETER(hdc);
 	UNREFERENCED_PARAMETER(cursor);
+	UNREFERENCED_PARAMETER(clientRect);
 	return FALSE; // nothing drawn
 }
 
@@ -211,8 +216,10 @@ HRESULT S4HCALL CDialog::OnFrameProc(LPDIRECTDRAWSURFACE7 lpSurface, INT32 iPill
 	UNREFERENCED_PARAMETER(lpReserved);
 	std::unique_lock<decltype(state_mutex)> lock(state_mutex);
 	POINT p = { 0 };
+	RECT clientRect = { 0 };
 	HWND hwnd = S4API ? S4API->GetHwnd() : NULL;
 	const POINT* pp = (hwnd && GetCursorPos(&p) && ScreenToClient(hwnd, &p)) ? &p : NULL;
+	if (hwnd) GetClientRect(hwnd, &clientRect);
 	HDC hdc;
 	lpSurface->GetDC(&hdc);
 	while (state != StateIdle) {
@@ -225,7 +232,7 @@ HRESULT S4HCALL CDialog::OnFrameProc(LPDIRECTDRAWSURFACE7 lpSurface, INT32 iPill
 			continue;
 		}
 		lock.unlock();
-		inst->OnDraw(hdc, pp);
+		inst->OnDraw(hdc, pp, &clientRect);
 		lock.lock();
 	}
 	lpSurface->ReleaseDC(hdc);
@@ -277,4 +284,54 @@ HRESULT S4HCALL CDialog::OnMouseProc(DWORD dwMouseButton, INT iX, INT iY, DWORD 
 		default: break;
 	}
 	return consumeEvent;
+}
+
+VOID CDialog::UpdatePositionWithOffsetsFlags(const RECT& source, const RECT* clientRect) {
+	m_position = source;
+	RECT& rc = m_position;
+	auto xoffset = 0, yoffset = 0;
+	auto bitmapWidth = rc.right - rc.left;
+	auto bitmapHeight = rc.bottom - rc.top;
+	INT pillarboxWidth = 0;
+	auto surfaceWidth = clientRect ? clientRect->right - clientRect->left : 0;
+	auto surfaceHeight = clientRect ? clientRect->bottom - clientRect->top : 0;
+
+	if ((m_flags & S4_CUSTOMUIFLAGS_NO_PILLARBOX) == 0) {
+		auto pPillarboxWidth = S4::GetInstance().PillarboxWidth;
+		if (pPillarboxWidth) pillarboxWidth = *pPillarboxWidth;
+	}
+
+	if (m_flags & S4_CUSTOMUIFLAGS_ANCHOR_CENTER) {
+		xoffset -= bitmapWidth / 2;
+	}
+	else if (m_flags & S4_CUSTOMUIFLAGS_ANCHOR_RIGHT) {
+		xoffset -= bitmapWidth;
+	}
+	if (m_flags & S4_CUSTOMUIFLAGS_ANCHOR_MIDDLE) {
+		yoffset -= bitmapHeight / 2;
+	}
+	else if (m_flags & S4_CUSTOMUIFLAGS_ANCHOR_BOTTOM) {
+		yoffset -= bitmapHeight;
+	}
+	if (m_flags & S4_CUSTOMUIFLAGS_ALIGN_CENTER) {
+		xoffset += surfaceWidth / 2;
+	}
+	else if (m_flags & S4_CUSTOMUIFLAGS_ALIGN_RIGHT) {
+		xoffset += surfaceWidth;
+		xoffset -= pillarboxWidth;
+	}
+	else {
+		xoffset += pillarboxWidth;
+	}
+	if (m_flags & S4_CUSTOMUIFLAGS_ALIGN_MIDDLE) {
+		yoffset += surfaceHeight / 2;
+	}
+	else if (m_flags & S4_CUSTOMUIFLAGS_ALIGN_BOTTOM) {
+		yoffset += surfaceHeight;
+	}
+
+	rc.left += xoffset;
+	rc.right += xoffset;
+	rc.top += yoffset;
+	rc.bottom += yoffset;
 }

@@ -27,8 +27,7 @@
 #pragma comment(lib,"Msimg32") // AlphaBlend
 
 CCustomUi::CCustomUi(LPCS4CUSTOMUIELEMENT param) : 
-	CDialog(),
-	m_flags(param->flags),
+	CDialog(param->flags),
 	m_screenFilter(param->screen),
 	m_state(S4_CUSTOM_UI_UNSELECTED),
 	m_handler(param->actionHandler),
@@ -181,7 +180,7 @@ BOOL CCustomUi::OnMouse(DWORD dwMouseButton, INT iX, INT iY, DWORD dwMsgId, HWND
 	return TRUE;
 }
 
-BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
+BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor, const RECT* clientRect) {
 	TRACE;
 
 	if (m_screenFilter != S4_GUI_UNKNOWN) {
@@ -202,12 +201,12 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 	const POINT& p = *cursor;
 	bool newstate = false;	
 	HBITMAP hBm = NULL;
-	RECT *pRect = NULL;
 	bool inRect = false;
 
 	switch (m_state) {
 		case S4_CUSTOM_UI_UNSELECTED: {
-			inRect = PtInRect(&m_rect, p);
+			UpdatePositionWithOffsetsFlags(m_rect, clientRect);
+			inRect = PtInRect(&m_position, p);
 			if (inRect && m_hImgHover) {
 				newstate = true;
 				m_state = S4_CUSTOM_UI_HOVERING;
@@ -217,24 +216,25 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 			if (inRect && GetAsyncKeyState(VK_LBUTTON) < 0) {
 				if (m_hImgSelectedHover) {
 					hBm = m_hImgSelectedHover;
-					pRect = &m_selectedHoverRect;
+					UpdatePositionWithOffsetsFlags(m_selectedHoverRect, clientRect);
 				} else {
 					if (m_hImgHover) {
 						hBm = m_hImgHover;
-						pRect = &m_hoverRect;
+						UpdatePositionWithOffsetsFlags(m_hoverRect, clientRect);
 					} else {
 						hBm = m_hImg;
-						pRect = &m_rect;
+						UpdatePositionWithOffsetsFlags(m_rect, clientRect);
 					}
 				}
 			} else {
 				hBm = m_hImg;
-				pRect = &m_rect;
+				UpdatePositionWithOffsetsFlags(m_rect, clientRect);
 			}
 			break;
 		}
 		case S4_CUSTOM_UI_SELECTED: {
-			inRect = PtInRect(&m_selectedRect, p);
+			UpdatePositionWithOffsetsFlags(m_selectedRect, clientRect);
+			inRect = PtInRect(&m_position, p);
 			if (inRect && m_hImgSelectedHover) {
 				newstate = true;
 				m_state = S4_CUSTOM_UI_HOVERING_SELECTED;
@@ -244,24 +244,25 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 			if (inRect && GetAsyncKeyState(VK_LBUTTON) < 0) {
 				if (m_hImgHover) {
 					hBm = m_hImgHover;
-					pRect = &m_hoverRect;
+					UpdatePositionWithOffsetsFlags(m_hoverRect, clientRect);
 				} else {
 					hBm = m_hImg;
-					pRect = &m_rect;
+					UpdatePositionWithOffsetsFlags(m_rect, clientRect);
 				}
 			} else {
 				if (m_hImgSelected) {
 					hBm = m_hImgSelected;
-					pRect = &m_selectedRect;
+					UpdatePositionWithOffsetsFlags(m_selectedRect, clientRect);
 				} else {
 					hBm = m_hImg;
-					pRect = &m_rect;
+					UpdatePositionWithOffsetsFlags(m_rect, clientRect);
 				}
 			}
 			break;
 		}
 		case S4_CUSTOM_UI_HOVERING: {
-			if (!PtInRect(&m_hoverRect, p)) {
+			UpdatePositionWithOffsetsFlags(m_hoverRect, clientRect);
+			if (!PtInRect(&m_position, p)) {
 				newstate = true;
 				m_state = S4_CUSTOM_UI_UNSELECTED;
 				goto lbl_S4_CUSTOM_UI_UNSELECTED;
@@ -270,29 +271,30 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 			if (GetAsyncKeyState(VK_LBUTTON) < 0) {
 				if (m_hImgSelectedHover) {
 					hBm = m_hImgSelectedHover;
-					pRect = &m_selectedHoverRect;
+					UpdatePositionWithOffsetsFlags(m_selectedHoverRect, clientRect);
 				} else {
 					if (m_hImgHover) {
 						hBm = m_hImgHover;
-						pRect = &m_hoverRect;
+						UpdatePositionWithOffsetsFlags(m_hoverRect, clientRect);
 					} else {
 						hBm = m_hImg;
-						pRect = &m_rect;
+						UpdatePositionWithOffsetsFlags(m_rect, clientRect);
 					}
 				}
 			} else {
 				if (m_hImgHover) {
 					hBm = m_hImgHover;
-					pRect = &m_hoverRect;
+					UpdatePositionWithOffsetsFlags(m_hoverRect, clientRect);
 				} else {
 					hBm = m_hImg;
-					pRect = &m_rect;
+					UpdatePositionWithOffsetsFlags(m_rect, clientRect);
 				}
 			}
 			break;
 		}
 		case S4_CUSTOM_UI_HOVERING_SELECTED: {
-			if (!PtInRect(&m_selectedHoverRect, p)) {
+			UpdatePositionWithOffsetsFlags(m_selectedHoverRect, clientRect);
+			if (!PtInRect(&m_position, p)) {
 				newstate = true;
 				m_state = S4_CUSTOM_UI_SELECTED;
 				goto lbl_S4_CUSTOM_UI_SELECTED;
@@ -301,32 +303,32 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 			if (GetAsyncKeyState(VK_LBUTTON) < 0) {
 				if (m_hImgHover) {
 					hBm = m_hImgHover;
-					pRect = &m_hoverRect;
+					UpdatePositionWithOffsetsFlags(m_hoverRect, clientRect);
 				} else {
 					if (m_hImgSelectedHover) {
 						hBm = m_hImgSelectedHover;
-						pRect = &m_selectedHoverRect;
+						UpdatePositionWithOffsetsFlags(m_selectedHoverRect, clientRect);
 					} else {
 						if (m_hImgSelected) {
 							hBm = m_hImgSelected;
-							pRect = &m_selectedRect;
+							UpdatePositionWithOffsetsFlags(m_selectedRect, clientRect);
 						} else {
 							hBm = m_hImg;
-							pRect = &m_rect;
+							UpdatePositionWithOffsetsFlags(m_rect, clientRect);
 						}
 					}
 				}
 			} else {
 				if (m_hImgSelectedHover) {
 					hBm = m_hImgSelectedHover;
-					pRect = &m_selectedHoverRect;
+					UpdatePositionWithOffsetsFlags(m_selectedHoverRect, clientRect);
 				} else {
 					if (m_hImgSelected) {
 						hBm = m_hImgSelected;
-						pRect = &m_selectedRect;
+						UpdatePositionWithOffsetsFlags(m_selectedRect, clientRect);
 					} else {
 						hBm = m_hImg;
-						pRect = &m_rect;
+						UpdatePositionWithOffsetsFlags(m_rect, clientRect);
 					}
 				}
 			}
@@ -334,30 +336,18 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 		}
 	}
 
-	if (!hBm || !pRect) {
+	if (!hBm) {
 		LOG("not blitting custom ui at " << HEXNUM(this) << ". hBm == " << HEXNUM(hBm))
 		return FALSE;
 	}
 
-	INT pillarboxWidth = 0;
-	if ((m_flags & S4_CUSTOMUIFLAGS_NO_PILLARBOX) == 0) {
-		auto pPillarboxWidth = S4::GetInstance().PillarboxWidth;
-		if (pPillarboxWidth) pillarboxWidth = *pPillarboxWidth;
-	}
-
-	LOG("pillarbox == " << dec << pillarboxWidth)
-	m_position = *pRect;
-	m_position.left += pillarboxWidth;
-	m_position.right += pillarboxWidth;
-
-	LOG("blitting custom ui at " << HEXNUM(this))
+	auto bitmapWidth = m_position.right - m_position.left;
+	auto bitmapHeight = m_position.bottom - m_position.top;
 
 	HDC memDc = CreateCompatibleDC(hdc);
 	if (memDc) {	
 		std::lock_guard<decltype(m_bitmap_mtx)> lock(m_bitmap_mtx);
 		SelectObject(memDc, hBm);
-		auto width = m_position.right - m_position.left;
-		auto height = m_position.bottom - m_position.top;
 		if (m_flags & S4_CUSTOMUIFLAGS_TRANSPARENT) {
 			BLENDFUNCTION fnc;
 			fnc.BlendOp = AC_SRC_OVER;
@@ -367,17 +357,17 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor) {
 			if (!AlphaBlend(hdc,
 				m_position.left,
 				m_position.top,
-				width,
-				height,
-				memDc, 0, 0, width, height, fnc)) {
+				bitmapWidth,
+				bitmapHeight,
+				memDc, 0, 0, bitmapWidth, bitmapHeight, fnc)) {
 				LOG("AlphaBlend failed with error code " << dec << GetLastError())
 			}
 		} else {
 			if (!BitBlt(hdc,
 				m_position.left,
 				m_position.top,
-				width,
-				height,
+				bitmapWidth,
+				bitmapHeight,
 				memDc, 0, 0, SRCCOPY)) {
 				LOG("BitBlt failed with error code " << dec << GetLastError())
 			}
