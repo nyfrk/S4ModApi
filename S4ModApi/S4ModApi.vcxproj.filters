@@ -192,6 +192,9 @@
     <ClCompile Include="CLuaOpenHook.cpp">
       <Filter>Quelldateien\Hooks</Filter>
     </ClCompile>
+    <ClCompile Include="CBltHook.cpp">
+      <Filter>Quelldateien\Hooks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -264,6 +267,9 @@
       <Filter>Headerdateien\Helper</Filter>
     </ClInclude>
     <ClInclude Include="CLuaOpenHook.h">
+      <Filter>Headerdateien\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="CBltHook.h">
       <Filter>Headerdateien\Hooks</Filter>
     </ClInclude>
   </ItemGroup>

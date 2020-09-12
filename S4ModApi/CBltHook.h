@@ -21,55 +21,19 @@
 
 #pragma once
 
-#include <Windows.h>
+#include "CHook.h"
 
-struct PatternAddr {
-	void Scan(LPCSTR name, DWORD base, LPCSTR basename, LPCSTR patternStr);
+class CBltHook : public CHook {
+public:
+	static CBltHook& GetInstance();
 
-	DWORD addr;
-	DWORD base;
-	LPCSTR name;
-	LPCSTR basename;
-	
-	operator bool() const;
-	operator DWORD() const;
-	operator LPCVOID() const;
-	DWORD operator+(int off);
-	DWORD operator-(int off);
-};
+protected:
+	virtual bool Init();
+	virtual void Patch();
+	virtual void Unpatch();
 
-extern struct Patterns {
-	// Debug Rendering Patterns
-	PatternAddr 
-		OnMapInitHook,
-		PillarboxWidth,
-		OnFrameHook,
-		Hwnd,
-		Backbuffer,
-		OnSettlerCommandHook,
-		OnTickHook,
-		OnMouseButtonHook,
-		HoveringUiElement,
-		MenuScreenObj,
-		CurrentMenuScreen,
-		GameMenusWndProc,
-		WndProcChain,
-		ActiveIngameMenu,
-		SettlerFilter,
-		ClearSelection,
-		NetEventConstuctor,
-		RecruitmentEventConstructor,
-		LocalEvent,
-		Lua,
-		ShowTextMessage,
-		OnLuaOpenHook,
-		OnBltHook;
-
-	void Scan();
-
-	Patterns() = default;
 private:
-	Patterns(const Patterns&) = delete;
-	Patterns& operator=(Patterns const&) = delete;
-} g_Patterns;
+	CBltHook();
+	static BOOL __stdcall CBltHook::OnBlt(DWORD caller, DWORD ecx, DWORD edx, DWORD _0, DWORD _1, DWORD _2, DWORD _3, DWORD _4, DWORD _5, DWORD _6);
+};
 
