@@ -149,6 +149,7 @@
       <AdditionalDependencies>Precompiled.lib;Lua321.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PostBuildEvent>
       <Command>if exist "$(OutDir)deploy.bat" (call "$(OutDir)deploy.bat" )</Command>
