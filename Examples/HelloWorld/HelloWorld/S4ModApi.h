@@ -432,6 +432,29 @@ typedef struct S4CustomUiElement {
 	LPS4UIFILTERCALLBACK filter;
 } *LPS4CUSTOMUIELEMENT;
 typedef CONST LPS4CUSTOMUIELEMENT LPCS4CUSTOMUIELEMENT;
+typedef struct S4BltParams {
+	VOID* caller;
+	WORD* imagePalette;
+	BYTE* imageData;
+	INT imageWidth;
+	INT imageHeight;
+	INT destX;
+	INT destY;
+	INT destClippingOffsetY;
+	WORD* subSurface;
+	BOOL imageHighRes;
+	INT destWidth;
+	INT destHeight;
+	INT surfaceWidth;
+	INT surfaceHeight;
+	INT stride;
+	DWORD zoomFactor;
+	WORD* surface;
+	BOOL isFogOfWar;
+	WORD settlerId;
+	WORD spriteId;
+	HDC destinationDc;
+} *LPS4BLTPARAMS;
 
 /** Callback types **/
 typedef HRESULT(FAR S4HCALL* LPS4FRAMECALLBACK)(LPDIRECTDRAWSURFACE7 lpSurface, INT32 iPillarboxWidth, LPVOID lpReserved);
@@ -440,7 +463,7 @@ typedef HRESULT(FAR S4HCALL* LPS4MOUSECALLBACK)(DWORD dwMouseButton, INT iX, INT
 typedef HRESULT(FAR S4HCALL* LPS4SETTLERSENDCALLBACK)(DWORD dwPosition, S4_MOVEMENT_ENUM dwCommand, LPVOID lpReserved);
 typedef HRESULT(FAR S4HCALL* LPS4TICKCALLBACK)(DWORD dwTick, BOOL bHasEvent, BOOL bIsDelayed);
 typedef HRESULT(FAR S4HCALL* LPS4LUAOPENCALLBACK)(VOID);
-typedef BOOL   (FAR S4HCALL* LPS4BLTCALLBACK)(DWORD _0, DWORD _1, DWORD _2, DWORD _3, DWORD _4, DWORD _5, DWORD _6, DWORD _7, DWORD _8, BOOL discard, DWORD caller);
+typedef BOOL   (FAR S4HCALL* LPS4BLTCALLBACK)(LPS4BLTPARAMS params, BOOL discard);
 
 
 HRESULT __declspec(nothrow) S4HCALL S4CreateInterface(CONST GUID FAR* lpGUID, LPSETTLERS4API FAR* lplpS4H);
