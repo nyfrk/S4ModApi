@@ -24,35 +24,33 @@
 #include "s4.h"
 #include "safemem.h"
 
-static BOOL isBuilding(const Settler_t& obj, S4_OBJECT_TYPE id) {
+static inline BOOL isBuilding(const Settler_t& obj, S4_BUILDING_ENUM id) {
 	if (obj.objectType != Settler_t::OBJECTTYPE_BUILDING) return FALSE;
 	switch (id) {
-	case S4_OBJECT_BUILDING:
-		return TRUE;
-	case S4_OBJECT_BUILDING_PORTA:
-	case S4_OBJECT_BUILDING_PORTB:
-	case S4_OBJECT_BUILDING_PORTC:
-	case S4_OBJECT_BUILDING_PORTD:
-	case S4_OBJECT_BUILDING_PORTE:
-	case S4_OBJECT_BUILDING_PORTF:
-	case S4_OBJECT_BUILDING_PORTG:
-	case S4_OBJECT_BUILDING_PORTH:
-		return obj.settlerType == MAKE_BUILDING_INDEX(S4_OBJECT_BUILDING_PORT)
-			&& obj.goodType == MAKE_BUILDING_INDEX(id);
-	case S4_OBJECT_BUILDING_SHIPYARDA:
-	case S4_OBJECT_BUILDING_SHIPYARDB:
-	case S4_OBJECT_BUILDING_SHIPYARDC:
-	case S4_OBJECT_BUILDING_SHIPYARDD:
-	case S4_OBJECT_BUILDING_SHIPYARDE:
-	case S4_OBJECT_BUILDING_SHIPYARDF:
-	case S4_OBJECT_BUILDING_SHIPYARDG:
-	case S4_OBJECT_BUILDING_SHIPYARDH:
-		return obj.settlerType == MAKE_BUILDING_INDEX(S4_OBJECT_BUILDING_SHIPYARD)
-			&& obj.goodType == MAKE_BUILDING_INDEX(id);
-	default: return obj.settlerType == MAKE_BUILDING_INDEX(id);
+	case S4_BUILDING_PORTA:
+	case S4_BUILDING_PORTB:
+	case S4_BUILDING_PORTC:
+	case S4_BUILDING_PORTD:
+	case S4_BUILDING_PORTE:
+	case S4_BUILDING_PORTF:
+	case S4_BUILDING_PORTG:
+	case S4_BUILDING_PORTH:
+		return obj.settlerType == S4_BUILDING_PORT
+			&& obj.goodType == id;
+	case S4_BUILDING_SHIPYARDA:
+	case S4_BUILDING_SHIPYARDB:
+	case S4_BUILDING_SHIPYARDC:
+	case S4_BUILDING_SHIPYARDD:
+	case S4_BUILDING_SHIPYARDE:
+	case S4_BUILDING_SHIPYARDF:
+	case S4_BUILDING_SHIPYARDG:
+	case S4_BUILDING_SHIPYARDH:
+		return obj.settlerType == S4_BUILDING_SHIPYARD
+			&& obj.goodType == id;
+	default: return obj.settlerType == id;
 	}
 }
-static BOOL isVehicle(const Settler_t& obj, S4_OBJECT_TYPE id) {
+static inline BOOL isVehicle(const Settler_t& obj, S4_VEHICLE_ENUM id) {
 	if ((obj.objectType & (Settler_t::OBJECTTYPE_LANDVEHICLE | Settler_t::OBJECTTYPE_SHIP)) == 0)
 		return FALSE;
 	switch (obj.baseType) {
@@ -60,283 +58,93 @@ static BOOL isVehicle(const Settler_t& obj, S4_OBJECT_TYPE id) {
 		case Settler_t::BASETYPE_TRADINGCART:
 		case Settler_t::BASETYPE_WARSHIP:
 		case Settler_t::BASETYPE_CIVILIAN_SHIP:
-			switch (id) {
-				case S4_OBJECT_VEHICLE:	return TRUE;
-				default: return obj.settlerType == MAKE_VEHICLE_INDEX(id);
-			}
+			return obj.settlerType == id;
 		default: return FALSE;
 	}
 }
-static BOOL isSettler(const Settler_t& obj, S4_OBJECT_TYPE id) {
+static inline BOOL isSettler(const Settler_t& obj, S4_SETTLER_ENUM id) {
 	if (obj.objectType != Settler_t::OBJECTTYPE_SETTLER) return FALSE;
-	switch (id) {
-		case S4_OBJECT_SETTLER:	return TRUE;
-		default: return obj.settlerType == MAKE_SETTLER_INDEX(id);
-	}
+	return obj.settlerType == id;
 }
-static BOOL isGood(const Settler_t& obj, S4_OBJECT_TYPE id) {
+static inline BOOL isGood(const Settler_t& obj, S4_GOOD_ENUM id) {
 	if (obj.objectType != Settler_t::OBJECTTYPE_GOOD) return FALSE;
-	switch (id) {
-		case S4_OBJECT_GOOD: return TRUE;
-		default: return obj.goodType == MAKE_GOOD_INDEX(id);
-	}
+	return obj.goodType == id;
 }
-static BOOL isPlant(const Settler_t& obj, S4_OBJECT_TYPE id) {
+static inline BOOL isPlant(const Settler_t& obj, S4_OBJECT_ENUM id) {
 	if (obj.objectType != Settler_t::OBJECTTYPE_PLANT) return FALSE;
-	switch (id) {
-		case S4_OBJECT_PLANT:	return TRUE;
-		default: return obj.settlerType == MAKE_PLANT_INDEX(id);
-	}
+	return obj.settlerType == id;
 }
-static BOOL isAnimal(const Settler_t& obj, S4_OBJECT_TYPE id) {
+/*static BOOL isAnimal(const Settler_t& obj, S4_OBJECT_TYPE id) {
 	if (obj.objectType != Settler_t::OBJECTTYPE_ANIMAL) return FALSE;
 	//switch (id) {
 	//	case S4_OBJECT_ANIMAL:	return TRUE;
 	//	default: return obj.settlerType == MAKE_ANIMAL_INDEX(id);
 	//}
+}*/
+
+static BOOL GetPoolObject(Settler_t& obj, WORD object) {
+	auto pool = S4::GetInstance().SettlerPool;
+	if (!pool) return FALSE;
+	auto pObj = (Settler_t*)READ_AT(&(pool[object]));
+	if (!pObj) return FALSE;
+	return NULL != memget_s(&obj, pObj, sizeof(obj));
 }
 
-BOOL CSettlers4Api::IsObjectOfType(WORD object, S4_OBJECT_TYPE type) {
+BOOL CSettlers4Api::IsObjectBuilding(WORD object, S4_BUILDING_ENUM type) {
 	TRACE;
-	auto pool = S4::GetInstance().SettlerPool;
-	if (!pool) return type == S4_OBJECT_UNKNOWN;
-	auto pObj = (Settler_t*)READ_AT(&(pool[object]));
-	if (!pObj) return type == S4_OBJECT_EMPTY;
 	Settler_t obj = { 0 };
-	memget_s(&obj, pObj, sizeof(obj));
-
-	switch (type) {
-		// TRIBES
-	case S4_OBJECT_TRIBE_NONE: return !obj.isTribe();
-	case S4_OBJECT_TRIBE: return obj.isTribe();
-	case S4_OBJECT_TRIBE_ROMAN:
-	case S4_OBJECT_TRIBE_VIKING: 
-	case S4_OBJECT_TRIBE_MAYA: 
-	case S4_OBJECT_TRIBE_DARK:
-	case S4_OBJECT_TRIBE_TROJAN:  return obj.isTribe() && obj.getTribe() == MAKE_RACE_INDEX(type);
-
-		// GOODS
-	case S4_OBJECT_GOOD:
-	case S4_OBJECT_GOOD_AGAVE:  // good id 1
-	case S4_OBJECT_GOOD_AMMO: 
-	case S4_OBJECT_GOOD_ARMOR: 
-	case S4_OBJECT_GOOD_AXE: 
-	case S4_OBJECT_GOOD_BATTLEAXE: 
-	case S4_OBJECT_GOOD_BLOWGUN: 
-	case S4_OBJECT_GOOD_BOARD: 
-	case S4_OBJECT_GOOD_BOW: 
-	case S4_OBJECT_GOOD_BREAD: 
-	case S4_OBJECT_GOOD_COAL: 
-	case S4_OBJECT_GOOD_FISH: 
-	case S4_OBJECT_GOOD_FLOUR: 
-	case S4_OBJECT_GOOD_GOAT: 
-	case S4_OBJECT_GOOD_GOLDBAR: 
-	case S4_OBJECT_GOOD_GOLDORE: 
-	case S4_OBJECT_GOOD_GRAIN: 
-	case S4_OBJECT_GOOD_GUNPOWDER: 
-	case S4_OBJECT_GOOD_HAMMER: 
-	case S4_OBJECT_GOOD_HONEY: 
-	case S4_OBJECT_GOOD_IRONBAR: 
-	case S4_OBJECT_GOOD_IRONORE: 
-	case S4_OBJECT_GOOD_LOG: 
-	case S4_OBJECT_GOOD_MEAD: 
-	case S4_OBJECT_GOOD_MEAT: 
-	case S4_OBJECT_GOOD_PICKAXE: 
-	case S4_OBJECT_GOOD_PIG: 
-	case S4_OBJECT_GOOD_ROD: 
-	case S4_OBJECT_GOOD_SAW: 
-	case S4_OBJECT_GOOD_SCYTHE: 
-	case S4_OBJECT_GOOD_SHEEP: 
-	case S4_OBJECT_GOOD_SHOVEL: 
-	case S4_OBJECT_GOOD_STONE: 
-	case S4_OBJECT_GOOD_SULFUR: 
-	case S4_OBJECT_GOOD_SWORD: 
-	case S4_OBJECT_GOOD_TEQUILA: 
-	case S4_OBJECT_GOOD_WATER: 
-	case S4_OBJECT_GOOD_WINE: 
-	case S4_OBJECT_GOOD_BACKPACKCATAPULT: 
-	case S4_OBJECT_GOOD_GOOSE: 
-	case S4_OBJECT_GOOD_EXPLOSIVEARROW: 
-	case S4_OBJECT_GOOD_SUNFLOWEROIL: 
-	case S4_OBJECT_GOOD_SUNFLOWER: return isGood(obj, type); // good id 42
-
-		// BUILDINGS
-	case S4_OBJECT_BUILDING:
-	//case S4_OBJECT_BUILDING_READY:
-	//case S4_OBJECT_BUILDING_UNDERCONSTRUCTION:  break;
-	case S4_OBJECT_BUILDING_WOODCUTTERHUT: // building id 1
-	case S4_OBJECT_BUILDING_FORESTERHUT: 
-	case S4_OBJECT_BUILDING_SAWMILL: 
-	case S4_OBJECT_BUILDING_STONECUTTERHUT: 
-	case S4_OBJECT_BUILDING_WATERWORKHUT: 
-	case S4_OBJECT_BUILDING_FISHERHUT: 
-	case S4_OBJECT_BUILDING_HUNTERHUT: 
-	case S4_OBJECT_BUILDING_SLAUGHTERHOUSE: 
-	case S4_OBJECT_BUILDING_MILL: 
-	case S4_OBJECT_BUILDING_BAKERY: 
-	case S4_OBJECT_BUILDING_GRAINFARM: 
-	case S4_OBJECT_BUILDING_ANIMALRANCH: 
-	case S4_OBJECT_BUILDING_DONKEYRANCH: 
-	case S4_OBJECT_BUILDING_STONEMINE: 
-	case S4_OBJECT_BUILDING_IRONMINE: 
-	case S4_OBJECT_BUILDING_GOLDMINE: 
-	case S4_OBJECT_BUILDING_COALMINE: 
-	case S4_OBJECT_BUILDING_SULFURMINE: 
-	case S4_OBJECT_BUILDING_SMELTGOLD: 
-	case S4_OBJECT_BUILDING_SMELTIRON: 
-	case S4_OBJECT_BUILDING_TOOLSMITH: 
-	case S4_OBJECT_BUILDING_WEAPONSMITH: 
-	case S4_OBJECT_BUILDING_VEHICLEHALL: 
-	case S4_OBJECT_BUILDING_BARRACKS: 
-	case S4_OBJECT_BUILDING_CHARCOALMAKER: 
-	case S4_OBJECT_BUILDING_TRAININGCENTER: 
-	case S4_OBJECT_BUILDING_HEALERHUT: 
-	case S4_OBJECT_BUILDING_AMMOMAKERHUT: 
-	case S4_OBJECT_BUILDING_GUNPOWDERMAKERHUT: 
-	case S4_OBJECT_BUILDING_LANDSCAPEMAKERHUT: 
-	case S4_OBJECT_BUILDING_SHIPYARD: 
-	case S4_OBJECT_BUILDING_PORT: 
-	case S4_OBJECT_BUILDING_MARKETPLACE: 
-	case S4_OBJECT_BUILDING_STORAGEAREA: 
-	case S4_OBJECT_BUILDING_VINYARD: 
-	case S4_OBJECT_BUILDING_AGAVEFARMERHUT: 
-	case S4_OBJECT_BUILDING_TEQUILAMAKERHUT: 
-	case S4_OBJECT_BUILDING_BEEKEEPERHUT: 
-	case S4_OBJECT_BUILDING_MEADMAKERHUT: 
-	case S4_OBJECT_BUILDING_RESIDENCESMALL: 
-	case S4_OBJECT_BUILDING_RESIDENCEMEDIUM: 
-	case S4_OBJECT_BUILDING_RESIDENCEBIG: 
-	case S4_OBJECT_BUILDING_SMALLTEMPLE: 
-	case S4_OBJECT_BUILDING_BIGTEMPLE: 
-	case S4_OBJECT_BUILDING_LOOKOUTTOWER: 
-	case S4_OBJECT_BUILDING_GUARDTOWERSMALL: 
-	case S4_OBJECT_BUILDING_GUARDTOWERBIG: 
-	case S4_OBJECT_BUILDING_CASTLE: 
-	case S4_OBJECT_BUILDING_MUSHROOMFARM: 
-	case S4_OBJECT_BUILDING_DARKTEMPLE: 
-	case S4_OBJECT_BUILDING_FORTRESS: 
-	case S4_OBJECT_BUILDING_PORTA: 
-	case S4_OBJECT_BUILDING_PORTB: 
-	case S4_OBJECT_BUILDING_PORTC: 
-	case S4_OBJECT_BUILDING_PORTD: 
-	case S4_OBJECT_BUILDING_PORTE: 
-	case S4_OBJECT_BUILDING_PORTF: 
-	case S4_OBJECT_BUILDING_SHIPYARDA: 
-	case S4_OBJECT_BUILDING_SHIPYARDB: 
-	case S4_OBJECT_BUILDING_SHIPYARDC: 
-	case S4_OBJECT_BUILDING_SHIPYARDD: 
-	case S4_OBJECT_BUILDING_SHIPYARDE: 
-	case S4_OBJECT_BUILDING_SHIPYARDF: 
-	case S4_OBJECT_BUILDING_EYECATCHER01: 
-	case S4_OBJECT_BUILDING_EYECATCHER02: 
-	case S4_OBJECT_BUILDING_EYECATCHER03: 
-	case S4_OBJECT_BUILDING_EYECATCHER04: 
-	case S4_OBJECT_BUILDING_EYECATCHER05: 
-	case S4_OBJECT_BUILDING_EYECATCHER06: 
-	case S4_OBJECT_BUILDING_EYECATCHER07: 
-	case S4_OBJECT_BUILDING_EYECATCHER08: 
-	case S4_OBJECT_BUILDING_EYECATCHER09: 
-	case S4_OBJECT_BUILDING_EYECATCHER10: 
-	case S4_OBJECT_BUILDING_EYECATCHER11: 
-	case S4_OBJECT_BUILDING_EYECATCHER12: 
-	case S4_OBJECT_BUILDING_SHIPYARDG: 
-	case S4_OBJECT_BUILDING_SHIPYARDH: 
-	case S4_OBJECT_BUILDING_PORTG: 
-	case S4_OBJECT_BUILDING_PORTH: 
-	case S4_OBJECT_BUILDING_MANACOPTERHALL: 
-	case S4_OBJECT_BUILDING_SUNFLOWEROILMAKERHUT: 
-	case S4_OBJECT_BUILDING_SUNFLOWERFARMERHUT: 
+	if (GetPoolObject(obj, object)) {
 		return isBuilding(obj, type);
-
-		// SETTLERS
-	case S4_OBJECT_SETTLER:
-	case S4_OBJECT_SETTLER_CARRIER:  // settler id 1
-	case S4_OBJECT_SETTLER_DIGGER: 
-	case S4_OBJECT_SETTLER_BUILDER: 
-	case S4_OBJECT_SETTLER_WOODCUTTER: 
-	case S4_OBJECT_SETTLER_STONECUTTER: 
-	case S4_OBJECT_SETTLER_FORESTER: 
-	case S4_OBJECT_SETTLER_FARMERGRAIN: 
-	case S4_OBJECT_SETTLER_FARMERANIMALS: 
-	case S4_OBJECT_SETTLER_FISHER: 
-	case S4_OBJECT_SETTLER_WATERWORKER: 
-	case S4_OBJECT_SETTLER_HUNTER: 
-	case S4_OBJECT_SETTLER_SAWMILLWORKER: 
-	case S4_OBJECT_SETTLER_SMELTER: 
-	case S4_OBJECT_SETTLER_MINEWORKER: 
-	case S4_OBJECT_SETTLER_SMITH: 
-	case S4_OBJECT_SETTLER_MILLER: 
-	case S4_OBJECT_SETTLER_BAKER: 
-	case S4_OBJECT_SETTLER_BUTCHER: 
-	case S4_OBJECT_SETTLER_SHIPYARDWORKER: 
-	case S4_OBJECT_SETTLER_HEALER: 
-	case S4_OBJECT_SETTLER_CHARCOALMAKER: 
-	case S4_OBJECT_SETTLER_AMMOMAKER: 
-	case S4_OBJECT_SETTLER_VEHICLEMAKER: 
-	case S4_OBJECT_SETTLER_VINTNER: 
-	case S4_OBJECT_SETTLER_BEEKEEPER: 
-	case S4_OBJECT_SETTLER_MEADMAKER: 
-	case S4_OBJECT_SETTLER_AGAVEFARMER: 
-	case S4_OBJECT_SETTLER_TEQUILAMAKER: 
-	case S4_OBJECT_SETTLER_SWORDSMAN_01: 
-	case S4_OBJECT_SETTLER_SWORDSMAN_02: 
-	case S4_OBJECT_SETTLER_SWORDSMAN_03: 
-	case S4_OBJECT_SETTLER_BOWMAN_01: 
-	case S4_OBJECT_SETTLER_BOWMAN_02: 
-	case S4_OBJECT_SETTLER_BOWMAN_03: 
-	case S4_OBJECT_SETTLER_MEDIC_01: 
-	case S4_OBJECT_SETTLER_MEDIC_02: 
-	case S4_OBJECT_SETTLER_MEDIC_03: 
-	case S4_OBJECT_SETTLER_AXEWARRIOR_01: 
-	case S4_OBJECT_SETTLER_AXEWARRIOR_02: 
-	case S4_OBJECT_SETTLER_AXEWARRIOR_03: 
-	case S4_OBJECT_SETTLER_BLOWGUNWARRIOR_01: 
-	case S4_OBJECT_SETTLER_BLOWGUNWARRIOR_02: 
-	case S4_OBJECT_SETTLER_BLOWGUNWARRIOR_03: 
-	case S4_OBJECT_SETTLER_SQUADLEADER: 
-	case S4_OBJECT_SETTLER_PRIEST: 
-	case S4_OBJECT_SETTLER_SABOTEUR: 
-	case S4_OBJECT_SETTLER_PIONEER: 
-	case S4_OBJECT_SETTLER_THIEF: 
-	case S4_OBJECT_SETTLER_GEOLOGIST: 
-	case S4_OBJECT_SETTLER_GARDENER: 
-	case S4_OBJECT_SETTLER_LANDSCAPER: 
-	case S4_OBJECT_SETTLER_DARKGARDENER: 
-	case S4_OBJECT_SETTLER_MUSHROOMFARMER: 
-	case S4_OBJECT_SETTLER_SHAMAN: 
-	case S4_OBJECT_SETTLER_SLAVED_SETTLER: 
-	case S4_OBJECT_SETTLER_TEMPLE_SERVANT: 
-	case S4_OBJECT_SETTLER_ANGEL_01: 
-	case S4_OBJECT_SETTLER_ANGEL_02: 
-	case S4_OBJECT_SETTLER_ANGEL_03: 
-	case S4_OBJECT_SETTLER_DONKEY: 
-	case S4_OBJECT_SETTLER_BACKPACKCATAPULTIST_01: 
-	case S4_OBJECT_SETTLER_BACKPACKCATAPULTIST_02: 
-	case S4_OBJECT_SETTLER_BACKPACKCATAPULTIST_03: 
-	case S4_OBJECT_SETTLER_SUNFLOWERFARMER: 
-	case S4_OBJECT_SETTLER_SUNFLOWEROILMAKER: 
-	case S4_OBJECT_SETTLER_MANACOPTERMASTER: return isSettler(obj, type);
-
-		// VEHICLES
-	case S4_OBJECT_VEHICLE:
-	case S4_OBJECT_VEHICLE_WARSHIP:  // vehicle id 1
-	case S4_OBJECT_VEHICLE_FERRY: 
-	case S4_OBJECT_VEHICLE_TRANSPORTSHIP: 
-	case S4_OBJECT_VEHICLE_WARMACHINE: 
-	case S4_OBJECT_VEHICLE_CART: 
-	case S4_OBJECT_VEHICLE_FOUNDATION_CART: return isVehicle(obj, type);
-
-		// PLANTS
-	case S4_OBJECT_PLANT:
-	case S4_OBJECT_PLANT_1:
-	case S4_OBJECT_PLANT_ROMAN_TREE:
-	case S4_OBJECT_PLANT_MAYAN_TREE:
-	case S4_OBJECT_PLANT_TROJAN_TREE:
-	case S4_OBJECT_PLANT_WHEAT:
-	case S4_OBJECT_PLANT_SUNFLOWER:	return isPlant(obj, type);
-	default: ;
 	}
+	return FALSE;
+}
 
+BOOL CSettlers4Api::IsObjectSettler(WORD object, S4_SETTLER_ENUM type) {
+	TRACE;
+	Settler_t obj = { 0 };
+	if (GetPoolObject(obj, object)) {
+		return isSettler(obj, type);
+	}
+	return FALSE;
+}
+
+BOOL CSettlers4Api::IsObjectObject(WORD object, S4_OBJECT_ENUM type) {
+	TRACE;
+	Settler_t obj = { 0 };
+	if (GetPoolObject(obj, object)) {
+		return isPlant(obj, type);
+	}
+	return FALSE;
+}
+
+BOOL CSettlers4Api::IsObjectVehicle(WORD object, S4_VEHICLE_ENUM type) {
+	TRACE;
+	Settler_t obj = { 0 };
+	if (GetPoolObject(obj, object)) {
+		return isVehicle(obj, type);
+	}
+	return FALSE;
+}
+
+BOOL CSettlers4Api::IsObjectGood(WORD object, S4_GOOD_ENUM type) {
+	TRACE;
+	Settler_t obj = { 0 };
+	if (GetPoolObject(obj, object)) {
+		return isGood(obj, type);
+	}
+	return FALSE;
+}
+
+BOOL CSettlers4Api::IsObjectTribe(WORD object, S4_TRIBE_ENUM type) {
+	TRACE;
+	Settler_t obj = { 0 };
+	if (GetPoolObject(obj, object)) {
+		switch (type) {
+			case S4_TRIBE_NONE: return !obj.isTribe();
+			case S4_TRIBE_ANY: return obj.isTribe();
+			default: return obj.isTribe() && obj.getTribe() == type;
+		};
+	}
 	return FALSE;
 }
 

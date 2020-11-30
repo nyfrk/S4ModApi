@@ -153,19 +153,19 @@ DWORD CSettlers4Api::GetLocalPlayer() {
 	return S4::GetInstance().GetLocalPlayer();
 }
 
-DWORD CSettlers4Api::BuildingsAdd(S4_OBJECT_TYPE building, INT x, INT y, DWORD player) {
+DWORD CSettlers4Api::BuildingsAdd(S4_BUILDING_ENUM building, INT x, INT y, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
 	PLAYER_GUARD;
-	LUA_PUSH4(x, y, player, MAKE_BUILDING_INDEX(building));
+	LUA_PUSH4(x, y, player, building);
 	return LUA_RET_NUMBER("Buildings", "AddBuilding");
 }
 
-DWORD CSettlers4Api::BuildingsAmount(S4_OBJECT_TYPE building, DWORD status, DWORD player) {
+DWORD CSettlers4Api::BuildingsAmount(S4_BUILDING_ENUM building, DWORD status, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
 	PLAYER_GUARD;
-	LUA_PUSH3(player, MAKE_BUILDING_INDEX(building), status);
+	LUA_PUSH3(player, building, status);
 	return LUA_RET_NUMBER("Buildings", "Amount");
 }
 
@@ -183,19 +183,19 @@ BOOL CSettlers4Api::BuildingsDelete(DWORD building, DWORD mode) {
 	return LUA_RET_VOID("Buildings", "Delete");
 }
 
-BOOL CSettlers4Api::BuildingsExistsBuildingInArea(S4_OBJECT_TYPE building, INT x, INT y, INT r, DWORD status, DWORD player) {
+BOOL CSettlers4Api::BuildingsExistsBuildingInArea(S4_BUILDING_ENUM building, INT x, INT y, INT r, DWORD status, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
 	PLAYER_GUARD;
-	LUA_PUSH6(player, MAKE_BUILDING_INDEX(building), x, y, r, status);
+	LUA_PUSH6(player, building, x, y, r, status);
 	return LUA_RET_NUMBER("Buildings", "ExistsBuildingInArea");
 }
 
-DWORD CSettlers4Api::BuildingsGetFirstBuilding(S4_OBJECT_TYPE building, DWORD player) {
+DWORD CSettlers4Api::BuildingsGetFirstBuilding(S4_BUILDING_ENUM building, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
 	PLAYER_GUARD;
-	LUA_PUSH2(player, MAKE_BUILDING_INDEX(building));
+	LUA_PUSH2(player, building);
 	return LUA_RET_NUMBER("Buildings", "GetFirstBuilding");
 }
 
@@ -214,10 +214,10 @@ DWORD CSettlers4Api::BuildingsGetTarget(DWORD building) {
 	return LUA_RET_NUMBER("Buildings", "GetTarget");
 }
 
-BOOL CSettlers4Api::BuildingsIsSelected(S4_OBJECT_TYPE building) {
+BOOL CSettlers4Api::BuildingsIsSelected(S4_BUILDING_ENUM building) {
 	TRACE;
 	CHECK_LUA_STATE;
-	LUA_PUSH1(MAKE_BUILDING_INDEX(building));
+	LUA_PUSH1(building);
 	return LUA_RET_NUMBER("Buildings", "IsSelected");
 }
 
@@ -373,13 +373,13 @@ DWORD CSettlers4Api::GetNumberOfPlayers() {
 	return LUA_RET_NUMBER("Game", "NumberOfPlayers");
 }
 
-S4_OBJECT_TYPE CSettlers4Api::GetPlayerTribe(DWORD player) {
+S4_TRIBE_ENUM CSettlers4Api::GetPlayerTribe(DWORD player) {
 	TRACE;
-	if (!_IsLuaState()) return S4_OBJECT_TYPE::S4_OBJECT_TRIBE_NONE;
-	PLAYER_GUARD_(S4_OBJECT_TYPE::S4_OBJECT_TRIBE_NONE);
+	if (!_IsLuaState()) return S4_TRIBE_ENUM::S4_TRIBE_NONE;
+	PLAYER_GUARD_(S4_TRIBE_ENUM::S4_TRIBE_NONE);
 	LUA_PUSH1(player);
-	if (!CallLuaFunc("Game", "PlayerRace")) return S4_OBJECT_TYPE::S4_OBJECT_TRIBE_NONE;
-	return (S4_OBJECT_TYPE)(S4_OBJECT_TRIBE_INDEX + (DWORD)lua_getnumber(lua_getresult(1)));
+	if (!CallLuaFunc("Game", "PlayerRace")) return S4_TRIBE_ENUM::S4_TRIBE_NONE;
+	return (S4_TRIBE_ENUM)((DWORD)lua_getnumber(lua_getresult(1)));
 }
 
 BOOL CSettlers4Api::ResetFogging() {
@@ -416,39 +416,39 @@ DWORD CSettlers4Api::Time() {
 	return LUA_RET_NUMBER("Game", "Time");
 }
 
-DWORD CSettlers4Api::GoodsAddPileEx(S4_OBJECT_TYPE good, DWORD amount, INT x, INT y) {
+DWORD CSettlers4Api::GoodsAddPileEx(S4_GOOD_ENUM good, DWORD amount, INT x, INT y) {
 	TRACE;
 	CHECK_LUA_STATE;
-	LUA_PUSH4(x,y,MAKE_GOOD_INDEX(good),amount);
+	LUA_PUSH4(x,y,good,amount);
 	return LUA_RET_NUMBER("Goods", "AddPileEx");
 }
 
-DWORD CSettlers4Api::GoodsAmount(S4_OBJECT_TYPE good, DWORD player) {
+DWORD CSettlers4Api::GoodsAmount(S4_GOOD_ENUM good, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
 	PLAYER_GUARD;
-	LUA_PUSH2(player, MAKE_GOOD_INDEX(good));
+	LUA_PUSH2(player, good);
 	return LUA_RET_NUMBER("Goods", "Amount");
 }
 
-DWORD CSettlers4Api::GoodsDelete(S4_OBJECT_TYPE good, INT x, INT y, INT r) {
+DWORD CSettlers4Api::GoodsDelete(S4_GOOD_ENUM good, INT x, INT y, INT r) {
 	TRACE;
 	CHECK_LUA_STATE;
-	LUA_PUSH4(x,y,r, MAKE_GOOD_INDEX(good));
+	LUA_PUSH4(x,y,r, good);
 	return LUA_RET_NUMBER("Goods", "Delete");
 }
 
-DWORD CSettlers4Api::GoodsGetAmountInArea(S4_OBJECT_TYPE good, INT x, INT y, INT r, DWORD player) {
+DWORD CSettlers4Api::GoodsGetAmountInArea(S4_GOOD_ENUM good, INT x, INT y, INT r, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
-	LUA_PUSH5(player, MAKE_GOOD_INDEX(good), x, y, r);
+	LUA_PUSH5(player, good, x, y, r);
 	return LUA_RET_NUMBER("Goods", "GetAmountInArea");
 }
 
-DWORD CSettlers4Api::MagicCastSpell(S4_OBJECT_TYPE tribe, S4_OBJECT_TYPE spell, INT x, INT y, DWORD player) {
+DWORD CSettlers4Api::MagicCastSpell(S4_TRIBE_ENUM tribe, S4_SPELL_ENUM spell, INT x, INT y, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
-	LUA_PUSH5(player, MAKE_RACE_INDEX(tribe), spell, x, y);
+	LUA_PUSH5(player, tribe, spell, x, y);
 	return LUA_RET_NUMBER("Magic", "CastSpell");
 }
 
@@ -494,64 +494,64 @@ BOOL CSettlers4Api::MapSetScreenPos(INT x, INT y) {
 	return LUA_RET_NUMBER("Map", "SetScreenPos");
 }
 
-BOOL CSettlers4Api::SettlersAdd(S4_OBJECT_TYPE settler, INT amount, INT x, INT y, DWORD player) {
+BOOL CSettlers4Api::SettlersAdd(S4_SETTLER_ENUM settler, INT amount, INT x, INT y, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
 	PLAYER_GUARD;
-	LUA_PUSH5(x, y, player, MAKE_SETTLER_INDEX(settler), amount);
+	LUA_PUSH5(x, y, player, settler, amount);
 	return LUA_RET_VOID("Settlers", "AddSettlers"); // todo: probably has multiple return values
 }
 
-BOOL CSettlers4Api::SettlersAddToFerry(DWORD ferry, S4_OBJECT_TYPE settler, INT amount) {
+BOOL CSettlers4Api::SettlersAddToFerry(DWORD ferry, S4_SETTLER_ENUM settler, INT amount) {
 	TRACE;
 	CHECK_LUA_STATE;
-	LUA_PUSH3(ferry, MAKE_SETTLER_INDEX(settler), amount);
+	LUA_PUSH3(ferry, settler, amount);
 	return LUA_RET_VOID("Settlers", "AddSettlersToFerry");
 }
 
-DWORD CSettlers4Api::SettlersAmount(S4_OBJECT_TYPE settler, DWORD player) {
+DWORD CSettlers4Api::SettlersAmount(S4_SETTLER_ENUM settler, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
 	PLAYER_GUARD;
-	LUA_PUSH2(player, MAKE_SETTLER_INDEX(settler));
+	LUA_PUSH2(player, settler);
 	return LUA_RET_NUMBER("Settlers", "Amount");
 }
 
-DWORD CSettlers4Api::SettlersAmountInArea(S4_OBJECT_TYPE settler, INT x, INT y, INT r, DWORD player) {
+DWORD CSettlers4Api::SettlersAmountInArea(S4_SETTLER_ENUM settler, INT x, INT y, INT r, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
 	PLAYER_GUARD;
-	LUA_PUSH5(player, MAKE_SETTLER_INDEX(settler), x, y, r);
+	LUA_PUSH5(player, settler, x, y, r);
 	return LUA_RET_NUMBER("Settlers", "AmountInArea");
 }
 
-BOOL CSettlers4Api::SettlersIsSelected(S4_OBJECT_TYPE settler, INT amount) {
+BOOL CSettlers4Api::SettlersIsSelected(S4_SETTLER_ENUM settler, INT amount) {
 	TRACE;
 	CHECK_LUA_STATE;
-	LUA_PUSH2(MAKE_SETTLER_INDEX(settler), amount);
+	LUA_PUSH2(settler, amount);
 	return LUA_RET_NUMBER("Settlers", "IsSelected");
 }
 
-BOOL CSettlers4Api::SettlersKillSelectableSettlers(S4_OBJECT_TYPE settler, INT x, INT y, INT r, BOOL animation, DWORD player) {
+BOOL CSettlers4Api::SettlersKillSelectableSettlers(S4_SETTLER_ENUM settler, INT x, INT y, INT r, BOOL animation, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
 	PLAYER_GUARD;
-	LUA_PUSH6(player, MAKE_SETTLER_INDEX(settler), x, y, r, animation);
+	LUA_PUSH6(player, settler, x, y, r, animation);
 	return LUA_RET_VOID("Settlers", "KillSelectableSettlers");
 }
 
-DWORD CSettlers4Api::SettlersProductionAmount(S4_OBJECT_TYPE settler) {
+DWORD CSettlers4Api::SettlersProductionAmount(S4_SETTLER_ENUM settler) {
 	TRACE;
 	CHECK_LUA_STATE;
-	LUA_PUSH1(MAKE_SETTLER_INDEX(settler));
+	LUA_PUSH1(settler);
 	return LUA_RET_NUMBER("Settlers", "ProductionAmount");
 }
 
-BOOL CSettlers4Api::SettlersSetHealthInArea(S4_OBJECT_TYPE settler, INT x, INT y, INT r, DWORD health, DWORD player) {
+BOOL CSettlers4Api::SettlersSetHealthInArea(S4_SETTLER_ENUM settler, INT x, INT y, INT r, DWORD health, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
 	PLAYER_GUARD;
-	LUA_PUSH6(player, MAKE_SETTLER_INDEX(settler), x, y, r, health);
+	LUA_PUSH6(player, settler, x, y, r, health);
 	return LUA_RET_VOID("Settlers", "SetHealthInArea");
 }
 
@@ -599,10 +599,10 @@ BOOL CSettlers4Api::RevealWorldMap(BOOL enable) {
 	return LUA_RET_VOID("Tutorial", "RWM");
 }
 
-BOOL CSettlers4Api::SelectNextBuilding(S4_OBJECT_TYPE building) {
+BOOL CSettlers4Api::SelectNextBuilding(S4_BUILDING_ENUM building) {
 	TRACE;
 	CHECK_LUA_STATE;
-	LUA_PUSH1(MAKE_BUILDING_INDEX(building));
+	LUA_PUSH1(building);
 	return LUA_RET_VOID("Tutorial", "SelectNextBuilding");
 }
 
@@ -627,34 +627,34 @@ BOOL CSettlers4Api::SetZoom(INT zoom) {
 	return LUA_RET_VOID("Tutorial", "SetZoom");
 }
 
-DWORD CSettlers4Api::VehiclesAdd(S4_OBJECT_TYPE vehicle, DWORD direction, DWORD ammo, DWORD commands, INT x, INT y, DWORD player) {
+DWORD CSettlers4Api::VehiclesAdd(S4_VEHICLE_ENUM vehicle, DWORD direction, DWORD ammo, DWORD commands, INT x, INT y, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
 	PLAYER_GUARD;
-	LUA_PUSH7(x,y,player, MAKE_VEHICLE_INDEX(vehicle), direction, ammo, commands);
+	LUA_PUSH7(x,y,player, vehicle, direction, ammo, commands);
 	return LUA_RET_NUMBER("Vehicles", "AddVehicle");
 }
 
-BOOL CSettlers4Api::VehiclesAddWheelerToFerry(DWORD ferry, S4_OBJECT_TYPE vehicle) {
+BOOL CSettlers4Api::VehiclesAddWheelerToFerry(DWORD ferry, S4_VEHICLE_ENUM vehicle) {
 	TRACE;
 	CHECK_LUA_STATE;
-	LUA_PUSH2(ferry, MAKE_VEHICLE_INDEX(vehicle));
+	LUA_PUSH2(ferry, vehicle);
 	return LUA_RET_VOID("Vehicles", "AddWheelerToFerry");
 }
 
-DWORD CSettlers4Api::VehiclesAmount(S4_OBJECT_TYPE vehicle, DWORD player) {
+DWORD CSettlers4Api::VehiclesAmount(S4_VEHICLE_ENUM vehicle, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
 	PLAYER_GUARD;
-	LUA_PUSH2(player, MAKE_VEHICLE_INDEX(vehicle));
+	LUA_PUSH2(player, vehicle);
 	return LUA_RET_NUMBER("Vehicles", "Amount");
 }
 
-DWORD CSettlers4Api::VehiclesAmountInArea(S4_OBJECT_TYPE vehicle, INT x, INT y, INT r, DWORD player) {
+DWORD CSettlers4Api::VehiclesAmountInArea(S4_VEHICLE_ENUM vehicle, INT x, INT y, INT r, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
 	PLAYER_GUARD;
-	LUA_PUSH5(player, MAKE_VEHICLE_INDEX(vehicle), x, y, r);
+	LUA_PUSH5(player, vehicle, x, y, r);
 	return LUA_RET_NUMBER("Vehicles", "AmountInArea");
 }
 
@@ -673,18 +673,18 @@ DWORD CSettlers4Api::VehiclesGetHealth(INT x, INT y) {
 	return LUA_RET_NUMBER("Vehicles", "GetHealth");
 }
 
-BOOL CSettlers4Api::VehiclesIsSelected(S4_OBJECT_TYPE vehicle, INT amount) {
+BOOL CSettlers4Api::VehiclesIsSelected(S4_VEHICLE_ENUM vehicle, INT amount) {
 	TRACE;
 	CHECK_LUA_STATE;
-	LUA_PUSH2(MAKE_VEHICLE_INDEX(vehicle), amount);
+	LUA_PUSH2(vehicle, amount);
 	return LUA_RET_NUMBER("Vehicles", "IsSelected");
 }
 
-BOOL CSettlers4Api::VehiclesKill(S4_OBJECT_TYPE vehicle, INT x, INT y, INT r, DWORD player) {
+BOOL CSettlers4Api::VehiclesKill(S4_VEHICLE_ENUM vehicle, INT x, INT y, INT r, DWORD player) {
 	TRACE;
 	CHECK_LUA_STATE;
 	PLAYER_GUARD;
-	LUA_PUSH5(player, MAKE_VEHICLE_INDEX(vehicle), x, y, r);
+	LUA_PUSH5(player, vehicle, x, y, r);
 	return LUA_RET_VOID("Vehicles", "KillVehicles");
 }
 

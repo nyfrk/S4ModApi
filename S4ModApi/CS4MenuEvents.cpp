@@ -23,10 +23,10 @@
 #include "s4.h"
 
 
-BOOL CSettlers4Api::StartBuildingPlacement(S4_OBJECT_TYPE building) {
+BOOL CSettlers4Api::StartBuildingPlacement(S4_BUILDING_ENUM building) {
 	TRACE;
 
-	Event_t ev(0, 0, 0, MAKE_BUILDING_INDEX(building), 0, 0x1B5);
+	Event_t ev(0, 0, 0, building, 0, 0x1B5);
 	if (!ev.eventId) return FALSE;
 
 	return S4::GetInstance().SendLocalEvent(ev);

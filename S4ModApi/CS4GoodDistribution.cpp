@@ -25,7 +25,7 @@
 #include "safemem.h"
 #include "s4.h"
 
-BOOL CSettlers4Api::ChangeGoodDistribution(S4_OBJECT_TYPE good, S4_OBJECT_TYPE building, INT percent, DWORD ecosector, DWORD player) {
+BOOL CSettlers4Api::ChangeGoodDistribution(S4_GOOD_ENUM good, S4_BUILDING_ENUM building, INT percent, DWORD ecosector, DWORD player) {
 	TRACE;
 
 	DWORD vtbl = S4::GetInstance().GetNetEventVTbl(); // 00E4BA08
@@ -58,8 +58,8 @@ BOOL CSettlers4Api::ChangeGoodDistribution(S4_OBJECT_TYPE good, S4_OBJECT_TYPE b
 
 	u1.eventStruct.CEvn_Logic_vtbl = vtbl; // 00E4BA08
 	u1.eventStruct.eventId = 0x13A4;
-	u1.eventStruct.good = (WORD)MAKE_GOOD_INDEX(good);
-	u1.eventStruct.building = (WORD)MAKE_BUILDING_INDEX(building);
+	u1.eventStruct.good = (WORD)(good);
+	u1.eventStruct.building = (WORD)(building);
 	u1.eventStruct.change = (INT16)percent;
 	u1.eventStruct.ecosector = (WORD)ecosector;
 	u1.eventStruct.tick = S4::GetInstance().GetCurrentTick();
@@ -69,7 +69,7 @@ BOOL CSettlers4Api::ChangeGoodDistribution(S4_OBJECT_TYPE good, S4_OBJECT_TYPE b
 }
 
 // positive offset means lower priority, negative offset means higher priority
-BOOL CSettlers4Api::ChangeGoodPriority(S4_OBJECT_TYPE good, INT offset, DWORD ecosector, DWORD player) {
+BOOL CSettlers4Api::ChangeGoodPriority(S4_GOOD_ENUM good, INT offset, DWORD ecosector, DWORD player) {
 	TRACE;
 
 	DWORD vtbl = S4::GetInstance().GetNetEventVTbl(); // 00E4BA08
@@ -101,7 +101,7 @@ BOOL CSettlers4Api::ChangeGoodPriority(S4_OBJECT_TYPE good, INT offset, DWORD ec
 
 	u1.eventStruct.CEvn_Logic_vtbl = vtbl; // 00E4BA08
 	u1.eventStruct.eventId = 0x13A5;
-	u1.eventStruct.good = (WORD)MAKE_GOOD_INDEX(good);
+	u1.eventStruct.good = (WORD)(good);
 	u1.eventStruct.offset = (INT16)offset;
 	u1.eventStruct.ecosector = ecosector;
 	u1.eventStruct.tick = S4::GetInstance().GetCurrentTick();

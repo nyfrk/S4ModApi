@@ -65,7 +65,7 @@ BOOL CSettlers4Api::SetTradingRoute(DWORD sourceBuilding, DWORD destinationBuild
 	return S4::GetInstance().SendNetEvent(&u1);
 }
 
-BOOL CSettlers4Api::TradeGood(DWORD buidling, S4_OBJECT_TYPE good, INT amount, DWORD player) {
+BOOL CSettlers4Api::TradeGood(DWORD buidling, S4_GOOD_ENUM good, INT amount, DWORD player) {
 	TRACE;
 
 	DWORD vtbl = S4::GetInstance().GetNetEventVTbl(); // 00E4BA08
@@ -97,7 +97,7 @@ BOOL CSettlers4Api::TradeGood(DWORD buidling, S4_OBJECT_TYPE good, INT amount, D
 
 	u1.eventStruct.CEvn_Logic_vtbl = vtbl; // 00E4BA08
 	u1.eventStruct.eventId = 0x138E;
-	u1.eventStruct.good = (WORD)MAKE_GOOD_INDEX(good);
+	u1.eventStruct.good = (WORD)(good);
 	u1.eventStruct.buidling = (WORD)buidling;
 	u1.eventStruct.amount = amount;
 	u1.eventStruct.tick = S4::GetInstance().GetCurrentTick();
@@ -106,7 +106,7 @@ BOOL CSettlers4Api::TradeGood(DWORD buidling, S4_OBJECT_TYPE good, INT amount, D
 	return S4::GetInstance().SendNetEvent(&u1);
 }
 
-BOOL CSettlers4Api::StoreGood(DWORD buidling, S4_OBJECT_TYPE good, BOOL enable, DWORD player) {
+BOOL CSettlers4Api::StoreGood(DWORD buidling, S4_GOOD_ENUM good, BOOL enable, DWORD player) {
 	TRACE;
 
 	DWORD vtbl = S4::GetInstance().GetNetEventVTbl(); // 00E4BA08
@@ -138,7 +138,7 @@ BOOL CSettlers4Api::StoreGood(DWORD buidling, S4_OBJECT_TYPE good, BOOL enable, 
 
 	u1.eventStruct.CEvn_Logic_vtbl = vtbl; // 00E4BA08
 	u1.eventStruct.eventId = 0x13B4;
-	u1.eventStruct.good = (WORD)MAKE_GOOD_INDEX(good);
+	u1.eventStruct.good = (WORD)(good);
 	u1.eventStruct.buidling = (WORD)buidling;
 	u1.eventStruct.enable = enable;
 	u1.eventStruct.tick = S4::GetInstance().GetCurrentTick();

@@ -51,31 +51,37 @@ struct CSettlers4Api : public ISettlers4Api {
 	STDMETHOD_(HWND, GetHwnd)(THIS_); // defined in CS4Misc.cpp
 	STDMETHOD(GetHoveringUiElement)(THIS_ LPS4UIELEMENT); // defined in CS4Misc.cpp
 	STDMETHOD_(BOOL, IsCurrentlyOnScreen)(THIS_ S4_GUI_ENUM); // defined in CS4Screen.cpp
-	STDMETHOD_(BOOL, IsObjectOfType)(THIS_ WORD object, S4_OBJECT_TYPE type); // defined in CS4IsObjectType.cpp
+	STDMETHOD_(BOOL, IsObjectBuilding)(THIS_ WORD object, S4_BUILDING_ENUM type); // defined in CS4IsObjectType.cpp
+	STDMETHOD_(BOOL, IsObjectSettler)(THIS_ WORD object, S4_SETTLER_ENUM type); // defined in CS4IsObjectType.cpp
+	STDMETHOD_(BOOL, IsObjectObject)(THIS_ WORD object, S4_OBJECT_ENUM type); // defined in CS4IsObjectType.cpp
+	STDMETHOD_(BOOL, IsObjectVehicle)(THIS_ WORD object, S4_VEHICLE_ENUM type); // defined in CS4IsObjectType.cpp
+	STDMETHOD_(BOOL, IsObjectGood)(THIS_ WORD object, S4_GOOD_ENUM type); // defined in CS4IsObjectType.cpp
+	STDMETHOD_(BOOL, IsObjectTribe)(THIS_ WORD object, S4_TRIBE_ENUM type); // defined in CS4IsObjectType.cpp
 	STDMETHOD_(BOOL, ClearSelection)(THIS); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, GetSelection)(THIS_ PWORD out, SIZE_T outlen, PSIZE_T selectionCount); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount); // defined in CS4Selection.cpp
-	STDMETHOD_(BOOL, StartBuildingPlacement)(THIS_ S4_OBJECT_TYPE building); // defined in CS4MenuEvents.cpp
+	STDMETHOD_(BOOL, StartBuildingPlacement)(THIS_ S4_BUILDING_ENUM building); // defined in CS4MenuEvents.cpp
 
 	/** Settlers 4 NetEvents functions **/
 	STDMETHOD_(BOOL, SendWarriors)(THIS_ INT x, INT y, S4_MOVEMENT_ENUM mode, PWORD warriors, SIZE_T countOfWarriors, DWORD player); // defined in CS4SendWarriors.cpp
-	STDMETHOD_(BOOL, BuildBuilding)(THIS_ S4_OBJECT_TYPE buildingType, INT x, INT y, DWORD player); // defined in CS4Build.cpp
+	STDMETHOD_(BOOL, BuildBuilding)(THIS_ S4_BUILDING_ENUM buildingType, INT x, INT y, DWORD player); // defined in CS4Build.cpp
 	STDMETHOD_(BOOL, CrushBuilding)(THIS_ DWORD building, DWORD player); // defined in CS4Build.cpp
 	STDMETHOD_(BOOL, ToggleBuildingPriority)(THIS_ DWORD building, DWORD player); // defined in CS4Build.cpp
 	STDMETHOD_(BOOL, ToggleBuildingHalt)(THIS_ DWORD building, DWORD player); // defined in CS4Build.cpp
 	STDMETHOD_(BOOL, SetBuildingWorkarea)(THIS_ DWORD building, INT x, INT y, DWORD player); // defined in CS4Build.cpp
-	STDMETHOD_(BOOL, SetBuildingProduction)(THIS_ DWORD building, S4_OBJECT_TYPE good, INT amount, DWORD player); // defined in CS4Build.cpp
+	STDMETHOD_(BOOL, SetBuildingProduction)(THIS_ DWORD building, S4_GOOD_ENUM good, INT amount, DWORD player); // defined in CS4Build.cpp
 	STDMETHOD_(BOOL, SetBuildingProductionPercentMode)(THIS_ DWORD building, BOOL enable, DWORD player); // defined in CS4Build.cpp
 	STDMETHOD_(BOOL, SetBuildingProductionPercentage)(THIS_ DWORD building, BYTE swords, BYTE bows, BYTE armors, BYTE racespecialweapons, DWORD player); // defined in CS4Build.cpp
 	STDMETHOD_(BOOL, CastSpell)(THIS_ DWORD priest, DWORD spell, INT x, INT y, DWORD player); // defined in CS4Casting.cpp
 	STDMETHOD_(BOOL, GarrisonWarriors)(THIS_ DWORD building, DWORD player); // defined in CS4GarrisonWarriors.cpp
 	STDMETHOD_(BOOL, UnGarrisonWarriors)(THIS_ DWORD building, INT column, BOOL bowman, DWORD player); // defined in CS4GarrisonWarriors.cpp
-	STDMETHOD_(BOOL, ChangeGoodDistribution)(THIS_ S4_OBJECT_TYPE good, S4_OBJECT_TYPE building, INT percent, DWORD ecosector, DWORD player); // defined in CS4GoodDistribution.cpp
-	STDMETHOD_(BOOL, ChangeGoodPriority)(THIS_ S4_OBJECT_TYPE good, INT offset, DWORD ecosector, DWORD player); // defined in CS4GoodDistribution.cpp
-	STDMETHOD_(BOOL, RecruitWarriors)(THIS_ DWORD building, S4_OBJECT_TYPE unit, INT amount, DWORD player); // defined in CS4Recruit.cpp
+	STDMETHOD_(BOOL, ChangeGoodDistribution)(THIS_ S4_GOOD_ENUM good, S4_BUILDING_ENUM building, INT percent, DWORD ecosector, DWORD player); // defined in CS4GoodDistribution.cpp
+	STDMETHOD_(BOOL, ChangeGoodPriority)(THIS_ S4_GOOD_ENUM good, INT offset, DWORD ecosector, DWORD player); // defined in CS4GoodDistribution.cpp
+	STDMETHOD_(BOOL, RecruitWarriors)(THIS_ DWORD building, S4_SETTLER_ENUM unit, INT amount, DWORD player); // defined in CS4Recruit.cpp
+	STDMETHOD_(BOOL, RecruitVehicle)(THIS_ DWORD building, S4_VEHICLE_ENUM unit, INT amount, DWORD player); // defined in CS4Recruit.cpp
 	STDMETHOD_(BOOL, SetTradingRoute)(THIS_ DWORD sourceBuilding, DWORD destinationBuilding, DWORD player); // defined in CS4Trading.cpp
-	STDMETHOD_(BOOL, TradeGood)(THIS_ DWORD buidling, S4_OBJECT_TYPE good, INT amount, DWORD player); // defined in CS4Trading.cpp
-	STDMETHOD_(BOOL, StoreGood)(THIS_ DWORD buidling, S4_OBJECT_TYPE good, BOOL enable, DWORD player); // defined in CS4Trading.cpp
+	STDMETHOD_(BOOL, TradeGood)(THIS_ DWORD buidling, S4_GOOD_ENUM good, INT amount, DWORD player); // defined in CS4Trading.cpp
+	STDMETHOD_(BOOL, StoreGood)(THIS_ DWORD buidling, S4_GOOD_ENUM good, BOOL enable, DWORD player); // defined in CS4Trading.cpp
 
 	STDMETHOD_(S4CUSTOMUI, ShowMessageBox)(THIS_ LPCWSTR title, LPCWSTR message, INT x, INT y, INT w, INT h, DWORD flags); // defined in CS4Screen.cpp
 	STDMETHOD_(S4CUSTOMUI, CreateCustomUiElement)(THIS_ LPCS4CUSTOMUIELEMENT);
@@ -85,15 +91,15 @@ struct CSettlers4Api : public ISettlers4Api {
 
 	/** S4 Scripting **/
 	STDMETHOD_(DWORD, GetLocalPlayer)(THIS); // defined in CS4Scripting.cpp
-	STDMETHOD_(DWORD, BuildingsAdd)(THIS_ S4_OBJECT_TYPE building, INT x, INT y, DWORD player); // defined in CS4Scripting.cpp
-	STDMETHOD_(DWORD, BuildingsAmount)(THIS_ S4_OBJECT_TYPE building, DWORD status, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, BuildingsAdd)(THIS_ S4_BUILDING_ENUM building, INT x, INT y, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, BuildingsAmount)(THIS_ S4_BUILDING_ENUM building, DWORD status, DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, BuildingsCrush)(THIS_ DWORD building); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, BuildingsDelete)(THIS_ DWORD building, DWORD mode); // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, BuildingsExistsBuildingInArea)(THIS_ S4_OBJECT_TYPE building, INT x, INT y, INT r, DWORD status, DWORD player); // defined in CS4Scripting.cpp
-	STDMETHOD_(DWORD, BuildingsGetFirstBuilding)(THIS_ S4_OBJECT_TYPE building, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, BuildingsExistsBuildingInArea)(THIS_ S4_BUILDING_ENUM building, INT x, INT y, INT r, DWORD status, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, BuildingsGetFirstBuilding)(THIS_ S4_BUILDING_ENUM building, DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(DWORD, BuildingsGetInhabitantAmount)(THIS_ DWORD building, DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(DWORD, BuildingsGetTarget)(THIS_ DWORD building); // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, BuildingsIsSelected)(THIS_ S4_OBJECT_TYPE building); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, BuildingsIsSelected)(THIS_ S4_BUILDING_ENUM building); // defined in CS4Scripting.cpp
 	STDMETHOD_(DWORD, DarkTribeAddManakopter)(THIS_ INT x, INT y, DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, DarkTribeFlyTo)(THIS_ INT x, INT y); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, AIActivate)(THIS_ DWORD player, BOOL activate); // defined in CS4Scripting.cpp
@@ -115,31 +121,31 @@ struct CSettlers4Api : public ISettlers4Api {
 	STDMETHOD_(BOOL, IsAreaGreen)(THIS_ INT x, INT y, INT r); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, IsAreaOwned)(THIS_ INT x, INT y, INT r, DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(DWORD, GetNumberOfPlayers)(THIS); // defined in CS4Scripting.cpp
-	STDMETHOD_(S4_OBJECT_TYPE, GetPlayerTribe)(THIS_ DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(S4_TRIBE_ENUM, GetPlayerTribe)(THIS_ DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, ResetFogging)(THIS); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, SetAlliesDontRevealFog)(THIS_ BOOL enable); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, SetFightingStrength)(THIS_ DWORD strength, DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, ShowClock)(THIS_ DWORD seconds); // defined in CS4Scripting.cpp
 	STDMETHOD_(DWORD, Time)(THIS); // defined in CS4Scripting.cpp
-	STDMETHOD_(DWORD, GoodsAddPileEx)(THIS_ S4_OBJECT_TYPE good, DWORD amount, INT x, INT y); // defined in CS4Scripting.cpp
-	STDMETHOD_(DWORD, GoodsAmount)(THIS_ S4_OBJECT_TYPE good, DWORD player); // defined in CS4Scripting.cpp
-	STDMETHOD_(DWORD, GoodsDelete)(THIS_ S4_OBJECT_TYPE good, INT x, INT y, INT r); // defined in CS4Scripting.cpp
-	STDMETHOD_(DWORD, GoodsGetAmountInArea)(THIS_ S4_OBJECT_TYPE good, INT x, INT y, INT r, DWORD player); // defined in CS4Scripting.cpp
-	STDMETHOD_(DWORD, MagicCastSpell)(THIS_ S4_OBJECT_TYPE tribe, S4_OBJECT_TYPE spell, INT x, INT y, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GoodsAddPileEx)(THIS_ S4_GOOD_ENUM good, DWORD amount, INT x, INT y); // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GoodsAmount)(THIS_ S4_GOOD_ENUM good, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GoodsDelete)(THIS_ S4_GOOD_ENUM good, INT x, INT y, INT r); // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, GoodsGetAmountInArea)(THIS_ S4_GOOD_ENUM good, INT x, INT y, INT r, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, MagicCastSpell)(THIS_ S4_TRIBE_ENUM tribe, S4_SPELL_ENUM spell, INT x, INT y, DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, MagicIncreaseMana)(THIS_ INT amount, DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(DWORD, MapAddDecoObject)(THIS_ DWORD object, INT x, INT y); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, MapDeleteDecoObject)(THIS_ INT x, INT y, INT r); // defined in CS4Scripting.cpp
 	STDMETHOD_(DWORD, MapSize)(THIS); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, MapPointIsOnScreen)(THIS_ INT x, INT y); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, MapSetScreenPos)(THIS_ INT x, INT y); // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, SettlersAdd)(THIS_ S4_OBJECT_TYPE settler, INT amount, INT x, INT y, DWORD player); // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, SettlersAddToFerry)(THIS_ DWORD ferry, S4_OBJECT_TYPE settler, INT amount); // defined in CS4Scripting.cpp
-	STDMETHOD_(DWORD, SettlersAmount)(THIS_ S4_OBJECT_TYPE settler, DWORD player); // defined in CS4Scripting.cpp
-	STDMETHOD_(DWORD, SettlersAmountInArea)(THIS_ S4_OBJECT_TYPE settler, INT x, INT y, INT r, DWORD player); // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, SettlersIsSelected)(THIS_ S4_OBJECT_TYPE settler, INT amount); // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, SettlersKillSelectableSettlers)(THIS_ S4_OBJECT_TYPE settler, INT x, INT y, INT r, BOOL animation, DWORD player); // defined in CS4Scripting.cpp
-	STDMETHOD_(DWORD, SettlersProductionAmount)(THIS_ S4_OBJECT_TYPE settler); // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, SettlersSetHealthInArea)(THIS_ S4_OBJECT_TYPE settler, INT x, INT y, INT r, DWORD health, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SettlersAdd)(THIS_ S4_SETTLER_ENUM settler, INT amount, INT x, INT y, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SettlersAddToFerry)(THIS_ DWORD ferry, S4_SETTLER_ENUM settler, INT amount); // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, SettlersAmount)(THIS_ S4_SETTLER_ENUM settler, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, SettlersAmountInArea)(THIS_ S4_SETTLER_ENUM settler, INT x, INT y, INT r, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SettlersIsSelected)(THIS_ S4_SETTLER_ENUM settler, INT amount); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SettlersKillSelectableSettlers)(THIS_ S4_SETTLER_ENUM settler, INT x, INT y, INT r, BOOL animation, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, SettlersProductionAmount)(THIS_ S4_SETTLER_ENUM settler); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SettlersSetHealthInArea)(THIS_ S4_SETTLER_ENUM settler, INT x, INT y, INT r, DWORD health, DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(DWORD, StatisticBuildingsCaptured)(THIS_ DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(DWORD, StatisticGoodsProduced)(THIS_ DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(DWORD, StatisticLandOwnedByPlayer)(THIS_ DWORD player); // defined in CS4Scripting.cpp
@@ -152,18 +158,18 @@ struct CSettlers4Api : public ISettlers4Api {
 	STDMETHOD_(BOOL, DeleteWorldCursor)(THIS); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, PressButton)(THIS_ DWORD dialog, DWORD control); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, RevealWorldMap)(THIS_ BOOL enable); // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, SelectNextBuilding)(THIS_ S4_OBJECT_TYPE building); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SelectNextBuilding)(THIS_ S4_BUILDING_ENUM building); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, SetMarker)(THIS_ INT x, INT y); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, SetWorldCursor)(THIS_ INT x, INT y); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, SetZoom)(THIS_ INT zoom); // defined in CS4Scripting.cpp
-	STDMETHOD_(DWORD, VehiclesAdd)(THIS_ S4_OBJECT_TYPE vehicle, DWORD direction, DWORD ammo, DWORD commands, INT x, INT y, DWORD player); // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, VehiclesAddWheelerToFerry)(THIS_ DWORD ferry, S4_OBJECT_TYPE vehicle); // defined in CS4Scripting.cpp
-	STDMETHOD_(DWORD, VehiclesAmount)(THIS_ S4_OBJECT_TYPE vehicle, DWORD player); // defined in CS4Scripting.cpp
-	STDMETHOD_(DWORD, VehiclesAmountInArea)(THIS_ S4_OBJECT_TYPE vehicle, INT x, INT y, INT r, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, VehiclesAdd)(THIS_ S4_VEHICLE_ENUM vehicle, DWORD direction, DWORD ammo, DWORD commands, INT x, INT y, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, VehiclesAddWheelerToFerry)(THIS_ DWORD ferry, S4_VEHICLE_ENUM vehicle); // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, VehiclesAmount)(THIS_ S4_VEHICLE_ENUM vehicle, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(DWORD, VehiclesAmountInArea)(THIS_ S4_VEHICLE_ENUM vehicle, INT x, INT y, INT r, DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(DWORD, VehiclesGetFerryCargoInArea)(THIS_ INT x, INT y, INT r, DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(DWORD, VehiclesGetHealth)(THIS_ INT x, INT y); // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, VehiclesIsSelected)(THIS_ S4_OBJECT_TYPE vehicle, INT amount); // defined in CS4Scripting.cpp
-	STDMETHOD_(BOOL, VehiclesKill)(THIS_ S4_OBJECT_TYPE vehicle, INT x, INT y, INT r, DWORD player); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, VehiclesIsSelected)(THIS_ S4_VEHICLE_ENUM vehicle, INT amount); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, VehiclesKill)(THIS_ S4_VEHICLE_ENUM vehicle, INT x, INT y, INT r, DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, SetGround)(THIS_ INT x, INT y, INT r, DWORD ground); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, ShowTextMessage)(THIS_ LPCSTR message, DWORD icon, DWORD reserved); // defined in CS4Scripting.cpp
 
