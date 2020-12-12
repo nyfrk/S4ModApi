@@ -45,22 +45,48 @@ struct CSettlers4Api : public ISettlers4Api {
 	STDMETHOD_(S4HOOK, AddTickListener)(THIS_ LPS4TICKCALLBACK); // defined in CS4Listeners.cpp
 	STDMETHOD_(S4HOOK, AddLuaOpenListener)(THIS_ LPS4LUAOPENCALLBACK); // defined in CS4Listeners.cpp
 	STDMETHOD_(S4HOOK, AddBltListener)(THIS_ LPS4BLTCALLBACK); // defined in CS4Listeners.cpp
+	STDMETHOD_(S4HOOK, AddEntityListener)(THIS_ LPS4ENTITYCALLBACK); // defined in CS4Listeners.cpp
 
 	STDMETHOD(GetMD5OfModule)(THIS_ HMODULE module, LPSTR out, SIZE_T sz); // defined in CS4Misc.cpp
 	STDMETHOD_(BOOL, IsEdition)(THIS_ S4_EDITION_ENUM edition); // defined in CS4Misc.cpp
 	STDMETHOD_(HWND, GetHwnd)(THIS_); // defined in CS4Misc.cpp
 	STDMETHOD(GetHoveringUiElement)(THIS_ LPS4UIELEMENT); // defined in CS4Misc.cpp
 	STDMETHOD_(BOOL, IsCurrentlyOnScreen)(THIS_ S4_GUI_ENUM); // defined in CS4Screen.cpp
-	STDMETHOD_(BOOL, IsObjectBuilding)(THIS_ WORD object, S4_BUILDING_ENUM type); // defined in CS4IsObjectType.cpp
-	STDMETHOD_(BOOL, IsObjectSettler)(THIS_ WORD object, S4_SETTLER_ENUM type); // defined in CS4IsObjectType.cpp
-	STDMETHOD_(BOOL, IsObjectObject)(THIS_ WORD object, S4_OBJECT_ENUM type); // defined in CS4IsObjectType.cpp
-	STDMETHOD_(BOOL, IsObjectVehicle)(THIS_ WORD object, S4_VEHICLE_ENUM type); // defined in CS4IsObjectType.cpp
-	STDMETHOD_(BOOL, IsObjectGood)(THIS_ WORD object, S4_GOOD_ENUM type); // defined in CS4IsObjectType.cpp
-	STDMETHOD_(BOOL, IsObjectTribe)(THIS_ WORD object, S4_TRIBE_ENUM type); // defined in CS4IsObjectType.cpp
+	STDMETHOD_(S4_ENTITY_ENUM, EntityGetClass)(THIS_ WORD entity); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntityGetPosition)(THIS_ WORD entity, LPINT x, LPINT y); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntitygGetDirection)(THIS_ WORD entity, LPDWORD dir); // 4 == top-left, etc. defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntityGetHealth)(THIS_ WORD entity, LPDWORD health); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntityGetMaxHealth)(THIS_ WORD entity, LPDWORD maxHealth); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntityGetTribe)(THIS_ WORD entity, S4_TRIBE_ENUM* tribe); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntityTreeGetType)(THIS_ WORD entity, S4_TREE_ENUM* tree); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntityPileGetType)(THIS_ WORD entity, S4_GOOD_ENUM* good); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntityDecoGetType)(THIS_ WORD entity, LPDWORD deco); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntityPileGetAmount)(THIS_ WORD entity, LPDWORD amount); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntitySettlerGetType)(THIS_ WORD entity, S4_SETTLER_ENUM* settler); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntityVehicleGetType)(THIS_ WORD entity, S4_VEHICLE_ENUM* vehicle); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntityAnimalGetType)(THIS_ WORD entity, S4_ANIMAL_ENUM* animal); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntityBuildingGetType)(THIS_ WORD entity, S4_BUILDING_ENUM* building); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntityStoneGetLevel)(THIS_ WORD entity, LPDWORD level); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntityGetRole)(THIS_ WORD entity, LPVOID* role); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntitygGetRoleClass)(THIS_ WORD entity, S4_ROLE_ENUM* role); // defined in CS4Entity.cpp
+	STDMETHOD_(BOOL, EntitygGetOwner)(THIS_ WORD entity, LPDWORD player); // defined in CS4Entity.cpp
 	STDMETHOD_(BOOL, ClearSelection)(THIS); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, GetSelection)(THIS_ PWORD out, SIZE_T outlen, PSIZE_T selectionCount); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, StartBuildingPlacement)(THIS_ S4_BUILDING_ENUM building); // defined in CS4MenuEvents.cpp
+
+	/** Landscape functions **/
+	STDMETHOD_(DWORD, LandscapeGetHeight)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
+	STDMETHOD_(S4_GROUND_ENUM, LandscapeGetType)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
+	STDMETHOD_(BOOL, LandscapeIsPond)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
+	STDMETHOD_(BOOL, LandscapeIsDarkLand)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
+	STDMETHOD_(BOOL, LandscapeIsDarkLandBorder)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
+	STDMETHOD_(DWORD, LandscapeGetFogOfWar)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
+	STDMETHOD_(BOOL, LandscapeIsFoundingStone)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
+	STDMETHOD_(S4_RESOURCE_ENUM, LandscapeGetResource)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
+	STDMETHOD_(BOOL, LandscapeSetResource)(THIS_ INT x, INT y, S4_RESOURCE_ENUM res); // defined in CS4Landscape.cpp
+	STDMETHOD_(DWORD, LandscapeGetObject)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
+	STDMETHOD_(DWORD, LandscapeGetOwner)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
 
 	/** Settlers 4 NetEvents functions **/
 	STDMETHOD_(BOOL, SendWarriors)(THIS_ INT x, INT y, S4_MOVEMENT_ENUM mode, PWORD warriors, SIZE_T countOfWarriors, DWORD player); // defined in CS4SendWarriors.cpp

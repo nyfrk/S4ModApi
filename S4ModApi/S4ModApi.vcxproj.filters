@@ -156,9 +156,6 @@
     <ClCompile Include="CMouseHook.cpp">
       <Filter>Quelldateien\Hooks</Filter>
     </ClCompile>
-    <ClCompile Include="CS4IsObjectType.cpp">
-      <Filter>Quelldateien\COM</Filter>
-    </ClCompile>
     <ClCompile Include="CUpdate.cpp">
       <Filter>Quelldateien\Helper</Filter>
     </ClCompile>
@@ -193,6 +190,15 @@
       <Filter>Quelldateien\Hooks</Filter>
     </ClCompile>
     <ClCompile Include="CBltHook.cpp">
+      <Filter>Quelldateien\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4Entity.cpp">
+      <Filter>Quelldateien\COM</Filter>
+    </ClCompile>
+    <ClCompile Include="CS4Landscape.cpp">
+      <Filter>Quelldateien\COM</Filter>
+    </ClCompile>
+    <ClCompile Include="CEntityHook.cpp">
       <Filter>Quelldateien\Hooks</Filter>
     </ClCompile>
   </ItemGroup>
@@ -270,6 +276,9 @@
       <Filter>Headerdateien\Hooks</Filter>
     </ClInclude>
     <ClInclude Include="CBltHook.h">
+      <Filter>Headerdateien\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="CEntityHook.h">
       <Filter>Headerdateien\Hooks</Filter>
     </ClInclude>
   </ItemGroup>
