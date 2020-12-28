@@ -43,11 +43,170 @@ typedef interface ISettlers4Api2 FAR * LPSETTLERS4API2;
 #define S4API LPSETTLERS4API
 
 typedef UINT32 S4HOOK;
-typedef LPCVOID S4CUSTOMUI;
+typedef LPVOID S4CUSTOMUI;
 
 enum S4_EDITION_ENUM : DWORD {
 	S4_EDITION_GOLD = 1,
 	S4_EDITION_HISTORY = 2,
+};
+
+enum S4_ENTITY_ENUM : BYTE {
+	S4_ENTITY_UNKNOWN,
+
+	S4_ENTITY_BUILDING,
+	S4_ENTITY_PILE,
+
+	// Ground Mobile Entities
+		// Settler
+			S4_ENTITY_SETTLER,
+		// Animal
+			S4_ENTITY_LANDANIMAL,
+		// Vehicles
+			// Wheelers
+				S4_ENTITY_CART,
+				// Catapult
+					S4_ENTITY_CATAPULT_MAYA,
+					S4_ENTITY_CATAPULT_TROJAN,
+					S4_ENTITY_CATAPULT_ROMAN,
+					S4_ENTITY_CATAPULT_VIKING,
+			// Ships
+				S4_ENTITY_FERRY,
+				S4_ENTITY_TRANSPORTSHIP,
+				// War Ship
+					S4_ENTITY_WARSHIP_MAYA,
+					S4_ENTITY_WARSHIP_TROJAN,
+					S4_ENTITY_WARSHIP_ROMAN,
+					S4_ENTITY_WARSHIP_VIKING,
+
+	// Flying Mobile Entites
+		S4_ENTITY_MANAKOPTER,
+
+	// Stationary Deco Entities
+		S4_ENTITY_DECO,
+		S4_ENTITY_HIVE,
+		S4_ENTITY_MUSHROOM,
+		S4_ENTITY_PLANT,
+		S4_ENTITY_SHADOW_HERB,
+		S4_ENTITY_STONE,
+		S4_ENTITY_TREE,
+};
+
+enum S4_GROUND_ENUM : BYTE {
+	WATER1 = 0, // water1 does only exist without waves (it ignores the pond flag)
+	WATER2 = 1, // this ground respects the pond flag
+	WATER3 = 2, // this ground respects the pond flag
+	WATER4 = 3, // this ground respects the pond flag
+	WATER5 = 4, // this ground respects the pond flag
+	WATER6 = 5, // this ground respects the pond flag
+	WATER7 = 6, // this ground respects the pond flag
+	WATER8 = 7, // deep sea, this ground respects the pond flag
+	GRASS = 16,
+	GRASS_ROCK = 17, // transition triangles only: grass grass rock
+	GRASS_ISLE = 18,
+	GRASS_DESERT = 20, // transition triangles only: grass grass desert
+	GRASS_SWAMP = 21, // transition triangles only: grass grass swamp
+	GRASS_MUD = 23,  // transition triangles only: grass grass mud
+	DARKGRASS = 24, 
+	DARKGRASS_GRASS = 25, // transition triangles only: darkgrass darkgrass grass
+	SANDYROAD = 28,
+	COBBLEDROAD = 29,
+	ROCK = 32,
+	ROCK_GRASS = 33, // transition triangles only: rock rock grass
+	ROCK_SNOW = 35, // transition triangles only: rock rock snow
+	BEACH = 48,
+	DESERT = 64,
+	DESERT_GRASS = 65, // transition triangles only: desert desert grass
+	SWAMP = 80,
+	SWAMP_GRASS = 81, // transition triangles only: swamp swamp grass
+	RIVER1 = 96,
+	RIVER2 = 97,
+	RIVER3 = 98,
+	RIVER4 = 99,
+	SNOW = 128,
+	SNOW_ROCK = 129,  // transition triangles only: snow snow rock
+	MUD = 144,
+	MUD_GRASS = 145,  // transition triangles only: mud mud grass
+};
+
+enum S4_RESOURCE_ENUM : BYTE {
+	S4_RESOURCE_NONE,
+	S4_RESOURCE_FISH_1,	S4_RESOURCE_FISH_2, S4_RESOURCE_FISH_3, S4_RESOURCE_FISH_4, S4_RESOURCE_FISH_5, S4_RESOURCE_FISH_6, S4_RESOURCE_FISH_7, S4_RESOURCE_FISH_8, S4_RESOURCE_FISH_9, S4_RESOURCE_FISH_10, S4_RESOURCE_FISH_11, S4_RESOURCE_FISH_12, S4_RESOURCE_FISH_13, S4_RESOURCE_FISH_14, S4_RESOURCE_FISH_15, S4_RESOURCE_FISH_16,
+	S4_RESOURCE_COAL_1, S4_RESOURCE_COAL_2, S4_RESOURCE_COAL_3, S4_RESOURCE_COAL_4, S4_RESOURCE_COAL_5, S4_RESOURCE_COAL_6, S4_RESOURCE_COAL_7, S4_RESOURCE_COAL_8, S4_RESOURCE_COAL_9, S4_RESOURCE_COAL_10, S4_RESOURCE_COAL_11, S4_RESOURCE_COAL_12, S4_RESOURCE_COAL_13, S4_RESOURCE_COAL_14, S4_RESOURCE_COAL_15, S4_RESOURCE_COAL_16,
+	S4_RESOURCE_IRON_1, S4_RESOURCE_IRON_2, S4_RESOURCE_IRON_3, S4_RESOURCE_IRON_4, S4_RESOURCE_IRON_5, S4_RESOURCE_IRON_6, S4_RESOURCE_IRON_7, S4_RESOURCE_IRON_8, S4_RESOURCE_IRON_9, S4_RESOURCE_IRON_10, S4_RESOURCE_IRON_11, S4_RESOURCE_IRON_12, S4_RESOURCE_IRON_13, S4_RESOURCE_IRON_14, S4_RESOURCE_IRON_15, S4_RESOURCE_IRON_16,
+	S4_RESOURCE_GOLD_1, S4_RESOURCE_GOLD_2, S4_RESOURCE_GOLD_3, S4_RESOURCE_GOLD_4, S4_RESOURCE_GOLD_5, S4_RESOURCE_GOLD_6, S4_RESOURCE_GOLD_7, S4_RESOURCE_GOLD_8, S4_RESOURCE_GOLD_9, S4_RESOURCE_GOLD_10, S4_RESOURCE_GOLD_11, S4_RESOURCE_GOLD_12, S4_RESOURCE_GOLD_13, S4_RESOURCE_GOLD_14, S4_RESOURCE_GOLD_15, S4_RESOURCE_GOLD_16,
+	S4_RESOURCE_SULPHUR_1, S4_RESOURCE_SULPHUR_2, S4_RESOURCE_SULPHUR_3, S4_RESOURCE_SULPHUR_4, S4_RESOURCE_SULPHUR_5, S4_RESOURCE_SULPHUR_6, S4_RESOURCE_SULPHUR_7, S4_RESOURCE_SULPHUR_8, S4_RESOURCE_SULPHUR_9, S4_RESOURCE_SULPHUR_10, S4_RESOURCE_SULPHUR_11, S4_RESOURCE_SULPHUR_12, S4_RESOURCE_SULPHUR_13, S4_RESOURCE_SULPHUR_14, S4_RESOURCE_SULPHUR_15, S4_RESOURCE_SULPHUR_16,
+	S4_RESOURCE_STONEMINE_1, S4_RESOURCE_STONEMINE_2, S4_RESOURCE_STONEMINE_3, S4_RESOURCE_STONEMINE_4, S4_RESOURCE_STONEMINE_5, S4_RESOURCE_STONEMINE_6, S4_RESOURCE_STONEMINE_7, S4_RESOURCE_STONEMINE_8, S4_RESOURCE_STONEMINE_9, S4_RESOURCE_STONEMINE_10, S4_RESOURCE_STONEMINE_11, S4_RESOURCE_STONEMINE_12, S4_RESOURCE_STONEMINE_13, S4_RESOURCE_STONEMINE_14, S4_RESOURCE_STONEMINE_15, S4_RESOURCE_STONEMINE_16,
+	S4_RESOURCE_STONE_1, S4_RESOURCE_STONE_2, S4_RESOURCE_STONE_3, S4_RESOURCE_STONE_4, S4_RESOURCE_STONE_5, S4_RESOURCE_STONE_6, S4_RESOURCE_STONE_7, S4_RESOURCE_STONE_8, S4_RESOURCE_STONE_9, S4_RESOURCE_STONE_10, S4_RESOURCE_STONE_11, S4_RESOURCE_STONE_12, S4_RESOURCE_STONE_13, S4_RESOURCE_STONE_14, S4_RESOURCE_STONE_15, S4_RESOURCE_STONE_16,
+	S4_RESOURCE_WOOD, // trees
+};
+
+// Roles define what an entity "does" or is destined for. You may create custom 
+// roles for entities. Just make sure to implement the proper Role interface for 
+// the entity type (building/pile/settler) you wish to program.
+enum S4_ROLE_ENUM : BYTE {
+	S4_ROLE_UNKNOWN,
+	
+	// Pile Roles
+	S4_ROLE_PILE_ANYWHERE,
+	S4_ROLE_PILE_BUILDING_SITE,
+	S4_ROLE_PILE_DELIVERY,
+	S4_ROLE_PILE_PRODUCTION,
+	S4_ROLE_PILE_STORAGE,
+	S4_ROLE_PILE_TRADE,
+
+	// Building Roles
+	S4_ROLE_BUILDING_WORKUP,  // needs confirmation
+	S4_ROLE_BUILDING_ANIMALRANCH,
+	S4_ROLE_BUILDING_MILITARY, // needs confirmation
+	S4_ROLE_BUILDING_CASTLE,
+	S4_ROLE_BUILDING_TRADING,
+	S4_ROLE_BUILDING_BARRACK,
+	S4_ROLE_BUILDING_BIGTEMPLE,
+	S4_ROLE_BUILDING_SITE,
+	S4_ROLE_BUILDING_MUSHROOMFARM,
+	S4_ROLE_BUILDING_DARKTEMPLE,
+	S4_ROLE_BUILDING_EYECATCHER,
+	S4_ROLE_BUILDING_FARM,
+	S4_ROLE_BUILDING_GATHER,
+	S4_ROLE_BUILDING_LOOKOUTTOWER,
+	S4_ROLE_BUILDING_MANAKOPTERHALL,
+	S4_ROLE_BUILDING_MINE,
+	S4_ROLE_BUILDING_PRODUCTION,
+	S4_ROLE_BUILDING_RESIDENCE,
+	S4_ROLE_BUILDING_SIMPLE,
+	S4_ROLE_BUILDING_SMALLTEMPLE,
+	S4_ROLE_BUILDING_STORAGE,
+	S4_ROLE_BUILDING_WORKSHOP,
+
+	// Settler Roles
+	S4_ROLE_SETTLER_BUILDER,
+	S4_ROLE_SETTLER_CARRIER,
+	S4_ROLE_SETTLER_DARKGARDENER,
+	S4_ROLE_SETTLER_DIGGER,
+	S4_ROLE_SETTLER_DONKEY,
+	S4_ROLE_SETTLER_DOOR,
+	S4_ROLE_SETTLER_FLEE,
+	S4_ROLE_SETTLER_FREEWORKER,
+	S4_ROLE_SETTLER_HOUSEWORKER,
+	S4_ROLE_SETTLER_HUNTER,
+	S4_ROLE_SETTLER_MUSHROOMFARMER,
+	S4_ROLE_SETTLER_SLAVE,
+	S4_ROLE_SETTLER_TOWERSOLDIER,
+
+	// The following are selectables
+	S4_ROLE_SETTLER_GARDENER,
+	S4_ROLE_SETTLER_GEOLOGIST,
+	S4_ROLE_SETTLER_PIONEER,
+	S4_ROLE_SETTLER_PRIEST,
+	S4_ROLE_SETTLER_THIEF,
+
+	// The following roles have a WarriorBehaviour attached. Note that 
+	// war machines/ships do not have a role but inherit directly from WarriorBehaviour!
+	S4_ROLE_SETTLER_SOLDIER,
+	S4_ROLE_SETTLER_SQUADLEADER,  // needs confirmation
+	S4_ROLE_SETTLER_HJB,  // needs confirmation
+	S4_ROLE_SETTLER_SHAMAN,
+	S4_ROLE_SETTLER_SABOTEUR,
 };
 
 enum S4_TRIBE_ENUM : BYTE {
@@ -264,6 +423,38 @@ enum S4_SETTLER_ENUM : BYTE {
 	S4_SETTLER_SUNFLOWERFARMER,
 	S4_SETTLER_SUNFLOWEROILMAKER,
 	S4_SETTLER_MANACOPTERMASTER,
+
+	S4_SETTLER_UNK68 = 68, // The first 6 entities of a game are this. Maybe the spawn flags set in the editor?
+	S4_SETTLER_UNK69 = 69, // Probably door swordman of a tower
+};
+
+enum S4_ANIMAL_ENUM : BYTE {
+	S4_ANIMAL_NONE = 0,
+	S4_ANIMAL_HOG = 1,
+	S4_ANIMAL_BUG_1 = 2, // unconfirmed, is it an IEntity?
+	S4_ANIMAL_BUG_2 = 3, // unconfirmed, is it an IEntity?
+	S4_ANIMAL_DEER_FEMALE = 4,
+	S4_ANIMAL_DEER_MALE = 5,
+	S4_ANIMAL_FOX = 6,
+	S4_ANIMAL_CHICKEN = 7, // unconfirmed, is it an IEntity?
+	S4_ANIMAL_JAGUAR = 8, // unconfirmed
+	S4_ANIMAL_BUNNY_RED = 9,
+	S4_ANIMAL_DOLPHIN = 10, // unconfirmed, probably not an IEntity
+	S4_ANIMAL_SEA_MONSTER = 11, // unconfirmed, probably not an IEntity
+	S4_ANIMAL_SHARK = 12, // unconfirmed, probably not an IEntity
+	S4_ANIMAL_BEAR = 13, // unconfirmed
+	S4_ANIMAL_WOLF = 14, // unconfirmed
+	S4_ANIMAL_FISH = 15, // unconfirmed, probably not an IEntity
+	S4_ANIMAL_BUNNY_GRAY = 16,
+	S4_ANIMAL_BULL = 17, // unconfirmed
+	S4_ANIMAL_SEAGUL = 0, // unknown, probably an effect?
+	S4_ANIMAL_DONKEY = 0, // unknown, probably an ISettler?
+	S4_ANIMAL_BUTTERFLY_1 = 0, // unknown, probably an effect?
+	S4_ANIMAL_BUTTERFLY_2 = 0, // unknown, probably an effect?
+	S4_ANIMAL_BUTTERFLY_3 = 0, // unknown, probably an effect?
+	S4_ANIMAL_DUCK_MALE = 0,  // unknown, probably an effect?
+	S4_ANIMAL_DUCK_FEMALE = 0,  // unknown, probably an effect?
+	S4_ANIMAL_PARROT = 0,  // unknown, probably an effect?
 };
 
 enum S4_VEHICLE_ENUM : BYTE {
@@ -276,12 +467,43 @@ enum S4_VEHICLE_ENUM : BYTE {
 	S4_VEHICLE_FOUNDATION_CART,
 };
 
+enum S4_TREE_ENUM : BYTE {
+	S4_TREE_NONE = 0,
+	S4_TREE_OAK = 1,
+	S4_TREE_BEECH = 2,
+	S4_TREE_ASH = 3,
+	S4_TREE_LINDEN = 4,
+	S4_TREE_BIRCH = 5,
+	S4_TREE_POPLAR = 6,
+	S4_TREE_CHESTNUT = 7,
+	S4_TREE_MAPLE = 8,
+	S4_TREE_FIR = 9,
+	S4_TREE_SPRUCE = 10,
+	S4_TREE_COCONUT = 11,
+	S4_TREE_DATE = 12,
+	S4_TREE_WALNUT = 13,
+	S4_TREE_CORKOAK = 14,
+	S4_TREE_PINE = 15,
+	S4_TREE_PINE2 = 16,
+	S4_TREE_OLIVE_LARGE = 17,
+	S4_TREE_OLIVE_SMALL = 18,
+
+	// Trees the tribes grow
+	S4_TREE_ROMAN_1 = S4_TREE_FIR,
+	S4_TREE_ROMAN_2 = S4_TREE_SPRUCE,
+	S4_TREE_VIKING_1 = S4_TREE_FIR,
+	S4_TREE_VIKING_2 = S4_TREE_SPRUCE,
+	S4_TREE_MAYA_1 = S4_TREE_WALNUT,
+	S4_TREE_MAYA_2 = S4_TREE_CORKOAK,
+	S4_TREE_TROJAN_1 = S4_TREE_PINE,
+	S4_TREE_TROJAN_2 = S4_TREE_PINE2,
+	S4_TREE_TROJAN_3 = S4_TREE_OLIVE_LARGE,
+	S4_TREE_TROJAN_4 = S4_TREE_OLIVE_SMALL,
+};
+
 enum S4_OBJECT_ENUM : BYTE { // plants and stuff
 	S4_OBJECT_NONE = 0,
 	S4_OBJECT_1 = 1,
-	S4_OBJECT_ROMAN_TREE = S4_OBJECT_1 + 8, // todo: find out what the proper names are
-	S4_OBJECT_MAYAN_TREE = S4_OBJECT_1 + 11,
-	S4_OBJECT_TROJAN_TREE = S4_OBJECT_1 + 17,
 	S4_OBJECT_WHEAT = S4_OBJECT_1 + 208,
 	S4_OBJECT_SUNFLOWER = S4_OBJECT_1 + 254,
 	// todo: add all objects
@@ -377,7 +599,10 @@ enum S4_GUI_ENUM : DWORD {
 	S4_GUI_ENUM_MAXVALUE // never put anything below this
 };
 
-
+enum S4_ENTITY_CAUSE : BOOL {
+	S4_ENTITY_DESTRUCTED = 1,
+	S4_ENTITY_CONSTRUCTED,
+};
 
 enum S4_MOVEMENT_ENUM : DWORD {
 	S4_MOVEMENT_FORWARD,
@@ -421,8 +646,8 @@ enum S4_CUSTOM_UI_ENUM : DWORD {
 	S4_CUSTOM_UI_HOVERING = 2,
 	S4_CUSTOM_UI_HOVERING_SELECTED = 3,
 };
-typedef HRESULT(FAR S4HCALL* LPS4UICALLBACK)(LPCVOID lpUiElement, S4_CUSTOM_UI_ENUM newstate);
-typedef BOOL(FAR S4HCALL* LPS4UIFILTERCALLBACK)(LPCVOID lpUiElement);
+typedef HRESULT(FAR S4HCALL* LPS4UICALLBACK)(S4CUSTOMUI lpUiElement, S4_CUSTOM_UI_ENUM newstate);
+typedef BOOL(FAR S4HCALL* LPS4UIFILTERCALLBACK)(S4CUSTOMUI lpUiElement);
 typedef struct S4CustomUiElement {
 	SIZE_T size;
 	HMODULE mod;
@@ -466,6 +691,7 @@ typedef HRESULT(FAR S4HCALL* LPS4SETTLERSENDCALLBACK)(DWORD dwPosition, S4_MOVEM
 typedef HRESULT(FAR S4HCALL* LPS4TICKCALLBACK)(DWORD dwTick, BOOL bHasEvent, BOOL bIsDelayed);
 typedef HRESULT(FAR S4HCALL* LPS4LUAOPENCALLBACK)(VOID);
 typedef BOOL   (FAR S4HCALL* LPS4BLTCALLBACK)(LPS4BLTPARAMS params, BOOL discard);
+typedef HRESULT(FAR S4HCALL* LPS4ENTITYCALLBACK)(WORD entity, S4_ENTITY_CAUSE cause); // called when an entity is spawned or destructed // todo: implement me
 
 
 HRESULT __declspec(nothrow) S4HCALL S4CreateInterface(CONST GUID FAR* lpGUID, LPSETTLERS4API FAR* lplpS4H);
@@ -498,7 +724,7 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(S4HOOK, AddTickListener)(THIS_ LPS4TICKCALLBACK) PURE;
 	STDMETHOD_(S4HOOK, AddLuaOpenListener)(THIS_ LPS4LUAOPENCALLBACK) PURE;
 	STDMETHOD_(S4HOOK, AddBltListener)(THIS_ LPS4BLTCALLBACK) PURE;
-	
+	STDMETHOD_(S4HOOK, AddEntityListener)(THIS_ LPS4ENTITYCALLBACK) PURE;
 
 	/** Misc helper functions **/
 	STDMETHOD(GetMD5OfModule)(THIS_ HMODULE module, LPSTR out, SIZE_T sz) PURE;
@@ -508,16 +734,42 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	/** Settlers 4 functions **/
 	STDMETHOD(GetHoveringUiElement)(THIS_ LPS4UIELEMENT) PURE;
 	STDMETHOD_(BOOL, IsCurrentlyOnScreen)(THIS_ S4_GUI_ENUM) PURE;
-	STDMETHOD_(BOOL, IsObjectBuilding)(THIS_ WORD object, S4_BUILDING_ENUM type) PURE;
-	STDMETHOD_(BOOL, IsObjectSettler)(THIS_ WORD object, S4_SETTLER_ENUM type) PURE;
-	STDMETHOD_(BOOL, IsObjectObject)(THIS_ WORD object, S4_OBJECT_ENUM type) PURE;
-	STDMETHOD_(BOOL, IsObjectVehicle)(THIS_ WORD object, S4_VEHICLE_ENUM type) PURE;
-	STDMETHOD_(BOOL, IsObjectGood)(THIS_ WORD object, S4_GOOD_ENUM type) PURE;
-	STDMETHOD_(BOOL, IsObjectTribe)(THIS_ WORD object, S4_TRIBE_ENUM type) PURE;
+	STDMETHOD_(S4_ENTITY_ENUM, EntityGetClass)(THIS_ WORD entity) PURE;
+	STDMETHOD_(BOOL, EntityGetPosition)(THIS_ WORD entity, LPINT x, LPINT y) PURE;
+	STDMETHOD_(BOOL, EntitygGetDirection)(THIS_ WORD entity, LPDWORD dir) PURE;
+	STDMETHOD_(BOOL, EntityGetHealth)(THIS_ WORD entity, LPDWORD health) PURE;
+	STDMETHOD_(BOOL, EntityGetMaxHealth)(THIS_ WORD entity, LPDWORD maxHealth) PURE;
+	STDMETHOD_(BOOL, EntityGetTribe)(THIS_ WORD entity, S4_TRIBE_ENUM* tribe) PURE;
+	STDMETHOD_(BOOL, EntityTreeGetType)(THIS_ WORD entity, S4_TREE_ENUM* tree) PURE;
+	STDMETHOD_(BOOL, EntityPileGetType)(THIS_ WORD entity, S4_GOOD_ENUM* good) PURE;
+	STDMETHOD_(BOOL, EntityDecoGetType)(THIS_ WORD entity, LPDWORD deco) PURE;
+	STDMETHOD_(BOOL, EntityPileGetAmount)(THIS_ WORD entity, LPDWORD amount) PURE;
+	STDMETHOD_(BOOL, EntitySettlerGetType)(THIS_ WORD entity, S4_SETTLER_ENUM* settler) PURE;
+	STDMETHOD_(BOOL, EntityVehicleGetType)(THIS_ WORD entity, S4_VEHICLE_ENUM* vehicle) PURE;
+	STDMETHOD_(BOOL, EntityAnimalGetType)(THIS_ WORD entity, S4_ANIMAL_ENUM *animal) PURE;
+	STDMETHOD_(BOOL, EntityBuildingGetType)(THIS_ WORD entity, S4_BUILDING_ENUM* building) PURE;
+	STDMETHOD_(BOOL, EntityStoneGetLevel)(THIS_ WORD entity, LPDWORD level) PURE;
+	STDMETHOD_(BOOL, EntityGetRole)(THIS_ WORD entity, LPVOID* role) PURE;
+	STDMETHOD_(BOOL, EntitygGetRoleClass)(THIS_ WORD entity, S4_ROLE_ENUM * role) PURE;
+	STDMETHOD_(BOOL, EntitygGetOwner)(THIS_ WORD entity, LPDWORD player) PURE;
+
 	STDMETHOD_(BOOL, ClearSelection)(THIS) PURE;
 	STDMETHOD_(BOOL, GetSelection)(THIS_ PWORD out, SIZE_T outlen, PSIZE_T selectionCount) PURE;
 	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount) PURE;
 	STDMETHOD_(BOOL, StartBuildingPlacement)(THIS_ S4_BUILDING_ENUM building) PURE;
+
+	/** Landscape functions **/
+	STDMETHOD_(DWORD, LandscapeGetHeight)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
+	STDMETHOD_(S4_GROUND_ENUM, LandscapeGetType)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
+	STDMETHOD_(BOOL, LandscapeIsPond)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
+	STDMETHOD_(BOOL, LandscapeIsDarkLand)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
+	STDMETHOD_(BOOL, LandscapeIsDarkLandBorder)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
+	STDMETHOD_(DWORD, LandscapeGetFogOfWar)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
+	STDMETHOD_(BOOL, LandscapeIsFoundingStone)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
+	STDMETHOD_(S4_RESOURCE_ENUM, LandscapeGetResource)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
+	STDMETHOD_(BOOL, LandscapeSetResource)(THIS_ INT x, INT y, S4_RESOURCE_ENUM res) PURE; // defined in CS4Landscape.cpp
+	STDMETHOD_(DWORD, LandscapeGetObject)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
+	STDMETHOD_(DWORD, LandscapeGetOwner)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
 
 	/** Settlers 4 NetEvents functions **/
 	STDMETHOD_(BOOL, SendWarriors)(THIS_ INT x, INT y, S4_MOVEMENT_ENUM mode, PWORD warriors, SIZE_T countOfWarriors, DWORD player = 0) PURE;

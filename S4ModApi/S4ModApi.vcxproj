@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="CBltHook.cpp" />
     <ClCompile Include="CCustomUi.cpp" />
+    <ClCompile Include="CEntityHook.cpp" />
     <ClCompile Include="CFrameHook.cpp" />
     <ClCompile Include="CHook.cpp" />
     <ClCompile Include="CDialog.cpp" />
@@ -169,6 +170,8 @@
     <ClCompile Include="CMouseHook.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="CS4Build.cpp" />
+    <ClCompile Include="CS4Entity.cpp" />
+    <ClCompile Include="CS4Landscape.cpp" />
     <ClCompile Include="CS4MenuEvents.cpp" />
     <ClCompile Include="CS4Casting.cpp" />
     <ClCompile Include="CS4Error.cpp" />
@@ -190,7 +193,6 @@
     <ClCompile Include="DebugProgram.cpp" />
     <ClCompile Include="DebugRender.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="CS4IsObjectType.cpp" />
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="CMapInitHook.cpp" />
     <ClCompile Include="lib\hlib.cpp" />
@@ -209,6 +211,7 @@
     <ClInclude Include="CBltHook.h" />
     <ClInclude Include="CCustomUi.h" />
     <ClInclude Include="CDialog.h" />
+    <ClInclude Include="CEntityHook.h" />
     <ClInclude Include="CFrameHook.h" />
     <ClInclude Include="CHook.h" />
     <ClInclude Include="CLuaOpenHook.h" />

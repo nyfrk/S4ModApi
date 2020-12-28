@@ -28,6 +28,7 @@
 #include "CTickHook.h"
 #include "CLuaOpenHook.h"
 #include "CBltHook.h"
+#include "CEntityHook.h"
 
 extern "C" {
 
@@ -74,6 +75,11 @@ extern "C" {
 	S4HOOK CSettlers4Api::AddBltListener(LPS4BLTCALLBACK cb) {
 		TRACE;
 		return CBltHook::GetInstance().AddListener(cb);
+	}
+
+	S4HOOK CSettlers4Api::AddEntityListener(LPS4ENTITYCALLBACK cb) {
+		TRACE;
+		return CEntityHook::GetInstance().AddListener(cb);
 	}
 
 }
