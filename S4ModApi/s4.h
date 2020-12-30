@@ -612,14 +612,14 @@ struct S4 {
 	inline void* realloc(void* p, size_t s) { return __realloc ? __realloc(p,s) : NULL; }
 	inline void* GetLuaState() { return (void*)READ_AT(lua_state); }
 
-	inline DWORD GetMapSize();
+	DWORD GetMapSize();
 	WorldField* GetLandscapeAt(WORD x, WORD y);
 	IEntity* GetEntityAt(WORD x, WORD y);
 	WORD GetEntityIdAt(WORD x, WORD y);
 	S4_RESOURCE_ENUM GetResourceAt(WORD x, WORD y);
 	BOOL SetResourceAt(WORD x, WORD y, S4_RESOURCE_ENUM res);
 	EcoSector* GetEcoSectorAt(WORD x, WORD y);
-	inline DWORD GetOwnerAt(WORD x, WORD y);
+	DWORD GetOwnerAt(WORD x, WORD y);
 
 	void Initialize();
 	static S4& GetInstance();
