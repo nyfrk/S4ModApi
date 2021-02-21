@@ -40,10 +40,7 @@ We are open for pull requests!
 
 Follow the [build instructions](BUILD.md) if you want to build the S4ModApi.dll and it's import library. 
 
-Some source files are only provided as precompiled obj files. This is due to the following reasons.
-
-* I do not have the license to make the hLib open source. 
-* Some key features like the frame and mouse hook are closed source to encourage people to dynamically link to the S4ModApi.dll instead of reusing our hooks and making it private. This would defeat the purpose of the library whose goal is to ensure compatibility between mods. These source files will be released in the future when the use of the S4ModApi is more widely accepted. 
+Some source files are only provided as precompiled obj files. This is due to license issues. 
 
 
 
