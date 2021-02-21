@@ -683,6 +683,16 @@ typedef struct S4BltParams {
 	HDC destinationDc;
 } *LPS4BLTPARAMS;
 
+typedef struct S4GuiBltParams {
+	DWORD id;
+	LPVOID dstSurface;
+	LPRECT dstRect;
+	LPVOID srcSurface;
+	LPRECT srcRect;
+	DWORD ddbltFlags;
+	LPVOID ddbltfx;
+} *LPS4GUIBLTPARAMS;
+
 /** Callback types **/
 typedef HRESULT(FAR S4HCALL* LPS4FRAMECALLBACK)(LPDIRECTDRAWSURFACE7 lpSurface, INT32 iPillarboxWidth, LPVOID lpReserved);
 typedef HRESULT(FAR S4HCALL* LPS4MAPINITCALLBACK)(LPVOID lpReserved0, LPVOID lpReserved1);
@@ -691,6 +701,7 @@ typedef HRESULT(FAR S4HCALL* LPS4SETTLERSENDCALLBACK)(DWORD dwPosition, S4_MOVEM
 typedef HRESULT(FAR S4HCALL* LPS4TICKCALLBACK)(DWORD dwTick, BOOL bHasEvent, BOOL bIsDelayed);
 typedef HRESULT(FAR S4HCALL* LPS4LUAOPENCALLBACK)(VOID);
 typedef BOOL   (FAR S4HCALL* LPS4BLTCALLBACK)(LPS4BLTPARAMS params, BOOL discard);
+typedef BOOL   (FAR S4HCALL* LPS4GUIBLTCALLBACK)(LPS4GUIBLTPARAMS params, BOOL discard);
 typedef HRESULT(FAR S4HCALL* LPS4ENTITYCALLBACK)(WORD entity, S4_ENTITY_CAUSE cause); // called when an entity is spawned or destructed // todo: implement me
 
 
@@ -725,6 +736,7 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(S4HOOK, AddLuaOpenListener)(THIS_ LPS4LUAOPENCALLBACK) PURE;
 	STDMETHOD_(S4HOOK, AddBltListener)(THIS_ LPS4BLTCALLBACK) PURE;
 	STDMETHOD_(S4HOOK, AddEntityListener)(THIS_ LPS4ENTITYCALLBACK) PURE;
+	STDMETHOD_(S4HOOK, AddGuiBltListener)(THIS_ LPS4GUIBLTCALLBACK) PURE;
 
 	/** Misc helper functions **/
 	STDMETHOD(GetMD5OfModule)(THIS_ HMODULE module, LPSTR out, SIZE_T sz) PURE;
