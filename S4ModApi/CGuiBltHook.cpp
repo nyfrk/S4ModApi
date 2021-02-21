@@ -72,7 +72,6 @@ static void __declspec(naked) __onBlt() {
 		fsave[esp]
 
 		push ecx
-		push edx
 		push[esp + 256 + 4 + 20]
 		push[esp + 256 + 4 + 20]
 		push[esp + 256 + 4 + 20]
@@ -81,7 +80,6 @@ static void __declspec(naked) __onBlt() {
 		push ecx
 		push edi
 		call CGuiBltHook::OnBlt
-		pop edx
 		pop ecx
 
 		frstor[esp]
