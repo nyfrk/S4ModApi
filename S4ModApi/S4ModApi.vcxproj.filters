@@ -204,6 +204,9 @@
     <ClCompile Include="CGuiBltHook.cpp">
       <Filter>Quelldateien\Hooks</Filter>
     </ClCompile>
+    <ClCompile Include="CGuiElementBltHook.cpp">
+      <Filter>Quelldateien\Hooks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -285,6 +288,9 @@
       <Filter>Headerdateien\Hooks</Filter>
     </ClInclude>
     <ClInclude Include="CGuiBltHook.h">
+      <Filter>Headerdateien\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="CGuiElementBltHook.h">
       <Filter>Headerdateien\Hooks</Filter>
     </ClInclude>
   </ItemGroup>

@@ -164,6 +164,7 @@
     <ClCompile Include="CCustomUi.cpp" />
     <ClCompile Include="CEntityHook.cpp" />
     <ClCompile Include="CFrameHook.cpp" />
+    <ClCompile Include="CGuiElementBltHook.cpp" />
     <ClCompile Include="CHook.cpp" />
     <ClCompile Include="CDialog.cpp" />
     <ClCompile Include="CLuaOpenHook.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="CDialog.h" />
     <ClInclude Include="CEntityHook.h" />
     <ClInclude Include="CFrameHook.h" />
+    <ClInclude Include="CGuiElementBltHook.h" />
     <ClInclude Include="CHook.h" />
     <ClInclude Include="CLuaOpenHook.h" />
     <ClInclude Include="CMapInitHook.h" />
