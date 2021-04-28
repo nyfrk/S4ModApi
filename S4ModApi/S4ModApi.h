@@ -646,38 +646,6 @@ enum S4_CUSTOM_UI_ENUM : DWORD {
 	S4_CUSTOM_UI_HOVERING = 2,
 	S4_CUSTOM_UI_HOVERING_SELECTED = 3,
 };
-enum S4_UI_TYPE : BYTE {
-	IGNORED = 4,
-	PLAYER_ICON = 6,
-	MAP = 9,
-	UI_PLAYER = 19,
-	TEXT_BOX = 20,
-	U4_IGNORED = 20,
-	MISSION_TEXT = 21,
-};
-
-enum S4_UI_EFFECTS : BYTE {
-	NONE = 0,
-	PRESSED = 1,
-	HOVER = 2,
-	DISABLED = 4,
-	HIDDEN = 8,
-	TEXT_BOX_ACTIVE = 64,
-	CURSOR_BLINK_ON = 128,
-};
-
-enum S4_UI_TEXTSTYLE : BYTE {
-	LARGE_BLUE = 0b00000000,
-	SMALL_BLUE = 0b00000100,
-	SMALL_WHITE = 0b00001000,
-	HEADER_CENTERED = 0b00001011, //Above input fields
-	NORMAL_CENTERED = 0b00000011,
-	NORMAL_LEFT = 0b00001001,
-	BOLD_CENTERED = 0b00000111,
-	RED_CENTERED = 0b00000010,
-	SMALL_GOLD = 0b00001100,
-};
-
 typedef HRESULT(FAR S4HCALL* LPS4UICALLBACK)(S4CUSTOMUI lpUiElement, S4_CUSTOM_UI_ENUM newstate);
 typedef BOOL(FAR S4HCALL* LPS4UIFILTERCALLBACK)(S4CUSTOMUI lpUiElement);
 typedef struct S4CustomUiElement {
@@ -725,31 +693,6 @@ typedef struct S4GuiBltParams {
 	LPVOID ddbltfx;
 } *LPS4GUIBLTPARAMS;
 
-#pragma pack(push, 1)
-typedef struct S4GuiElementBltParams {
-	DWORD surfaceWidth;
-	DWORD surfaceHeight;
-	WORD currentGFXCollection;
-	WORD x;
-	WORD y;
-	WORD xOffset;
-	WORD yOffset;
-	WORD width;
-	WORD height;
-	WORD mainTexture;
-	WORD valueLink;
-	WORD buttonPressedTexture;
-	WORD tooltipLink;
-	WORD tooltipLinkExtra;
-	S4_UI_TYPE imageStyle;
-	S4_UI_EFFECTS effects; //When == 8 -> hide text
-	S4_UI_TEXTSTYLE textStyle; //enum where the first 4 bits define which font style to use and last 4 bits define effects (Like pressed etc)
-	WORD showTexture;
-	WORD backTexture;
-	char *text;
-} *LPS4GUIDRAWBLTPARAMS;
-#pragma pack(pop)
-
 /** Callback types **/
 typedef HRESULT(FAR S4HCALL* LPS4FRAMECALLBACK)(LPDIRECTDRAWSURFACE7 lpSurface, INT32 iPillarboxWidth, LPVOID lpReserved);
 typedef HRESULT(FAR S4HCALL* LPS4MAPINITCALLBACK)(LPVOID lpReserved0, LPVOID lpReserved1);
@@ -760,7 +703,6 @@ typedef HRESULT(FAR S4HCALL* LPS4LUAOPENCALLBACK)(VOID);
 typedef BOOL   (FAR S4HCALL* LPS4BLTCALLBACK)(LPS4BLTPARAMS params, BOOL discard);
 typedef BOOL   (FAR S4HCALL* LPS4GUIBLTCALLBACK)(LPS4GUIBLTPARAMS params, BOOL discard);
 typedef HRESULT(FAR S4HCALL* LPS4ENTITYCALLBACK)(WORD entity, S4_ENTITY_CAUSE cause); // called when an entity is spawned or destructed // todo: implement me
-typedef HRESULT(FAR S4HCALL* LPS4GUIDRAWCALLBACK)(LPS4GUIDRAWBLTPARAMS entity, BOOL discard); // called when an entity is spawned or destructed // todo: implement me
 
 
 HRESULT __declspec(nothrow) S4HCALL S4CreateInterface(CONST GUID FAR* lpGUID, LPSETTLERS4API FAR* lplpS4H);
@@ -795,7 +737,6 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(S4HOOK, AddBltListener)(THIS_ LPS4BLTCALLBACK) PURE;
 	STDMETHOD_(S4HOOK, AddEntityListener)(THIS_ LPS4ENTITYCALLBACK) PURE;
 	STDMETHOD_(S4HOOK, AddGuiBltListener)(THIS_ LPS4GUIBLTCALLBACK) PURE;
-	STDMETHOD_(S4HOOK, AddGuiElementBltListener)(THIS_ LPS4GUIDRAWCALLBACK) PURE;
 
 	/** Misc helper functions **/
 	STDMETHOD(GetMD5OfModule)(THIS_ HMODULE module, LPSTR out, SIZE_T sz) PURE;
