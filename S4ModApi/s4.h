@@ -620,7 +620,6 @@ struct S4 {
 	BOOL SetResourceAt(WORD x, WORD y, S4_RESOURCE_ENUM res);
 	EcoSector* GetEcoSectorAt(WORD x, WORD y);
 	DWORD GetOwnerAt(WORD x, WORD y);
-	WORD LandscapeGetEcoSector(WORD x, WORD y);
 
 	void Initialize();
 	static S4& GetInstance();
