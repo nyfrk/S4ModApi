@@ -142,19 +142,6 @@ EcoSector* S4::GetEcoSectorAt(WORD x, WORD y) {
 	}
 	return NULL;
 }
-
-WORD S4::LandscapeGetEcoSector(WORD x, WORD y) {
-	if (EcoSectorMap && *EcoSectorMap && EcoSectorPool) {
-		auto size = GetMapSize();
-		if (size != 0 && y < size && x < size) {
-			auto ecoId = (*EcoSectorMap)[y * size + x];
-			return ecoId;
-		}
-	}
-	return NULL;
-}
-
-
 DWORD S4::GetOwnerAt(WORD x, WORD y) {
 	auto sector = GetEcoSectorAt(x, y);
 	return sector ? sector->GetOwningPlayer() : 0;
