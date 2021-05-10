@@ -54,7 +54,9 @@ struct CSettlers4Api : public ISettlers4Api {
 	STDMETHOD_(HWND, GetHwnd)(THIS_); // defined in CS4Misc.cpp
 	STDMETHOD(GetHoveringUiElement)(THIS_ LPS4UIELEMENT); // defined in CS4Misc.cpp
 	STDMETHOD_(BOOL, IsCurrentlyOnScreen)(THIS_ S4_GUI_ENUM); // defined in CS4Screen.cpp
-	STDMETHOD_(S4_ENTITY_ENUM, EntityGetClass)(THIS_ WORD entity); // defined in CS4Entity.cpp
+	STDMETHOD_(S4_ENTITY_ENUM, EntityGetClass)(THIS_ WORD entity);
+	STDMETHOD_(BOOL, GetEntitiesFromPlayer)(THIS_ WORD player, DWORD* entities, size_t size);
+	// defined in CS4Entity.cpp
 	STDMETHOD_(BOOL, EntityGetPosition)(THIS_ WORD entity, LPINT x, LPINT y); // defined in CS4Entity.cpp
 	STDMETHOD_(BOOL, EntitygGetDirection)(THIS_ WORD entity, LPDWORD dir); // 4 == top-left, etc. defined in CS4Entity.cpp
 	STDMETHOD_(BOOL, EntityGetHealth)(THIS_ WORD entity, LPDWORD health); // defined in CS4Entity.cpp
@@ -76,6 +78,7 @@ struct CSettlers4Api : public ISettlers4Api {
 	STDMETHOD_(BOOL, GetSelection)(THIS_ PWORD out, SIZE_T outlen, PSIZE_T selectionCount); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, StartBuildingPlacement)(THIS_ S4_BUILDING_ENUM building); // defined in CS4MenuEvents.cpp
+
 
 	/** Landscape functions **/
 	STDMETHOD_(DWORD, LandscapeGetHeight)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp

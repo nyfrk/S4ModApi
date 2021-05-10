@@ -806,6 +806,7 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD(GetHoveringUiElement)(THIS_ LPS4UIELEMENT) PURE;
 	STDMETHOD_(BOOL, IsCurrentlyOnScreen)(THIS_ S4_GUI_ENUM) PURE;
 	STDMETHOD_(S4_ENTITY_ENUM, EntityGetClass)(THIS_ WORD entity) PURE;
+	STDMETHOD_(BOOL, GetEntitiesFromPlayer)(THIS_ WORD player, DWORD * entities, size_t size);
 	STDMETHOD_(BOOL, EntityGetPosition)(THIS_ WORD entity, LPINT x, LPINT y) PURE;
 	STDMETHOD_(BOOL, EntitygGetDirection)(THIS_ WORD entity, LPDWORD dir) PURE;
 	STDMETHOD_(BOOL, EntityGetHealth)(THIS_ WORD entity, LPDWORD health) PURE;
