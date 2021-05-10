@@ -592,7 +592,7 @@ struct S4 {
 		// [13] maybe exists ? 
 	ActiveIngameMenu_t *ActiveIngameMenu;
 	Selection_t* Selection;
-	IEntity** SettlerPool; // todo: rename to EntityPool
+	IEntity** EntityPool; // todo: rename to EntityPool
 	DWORD* SettlerPrototypes;
 
 	DWORD* MapSize;

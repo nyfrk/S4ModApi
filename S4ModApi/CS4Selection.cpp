@@ -56,7 +56,7 @@ BOOL CSettlers4Api::RemoveSelection(PWORD settlers, SIZE_T settlerslen, PSIZE_T 
 	}
 	auto& s = S4::GetInstance().Selection;
 	if (!s) return FALSE;
-	auto ppool = S4::GetInstance().SettlerPool;
+	auto ppool = S4::GetInstance().EntityPool;
 	if (!ppool) return FALSE;
 	auto pool = *ppool;
 

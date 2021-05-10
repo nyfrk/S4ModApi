@@ -52,7 +52,7 @@ void S4::Initialize() {
 	LOAD_PTR_OFF(	ActiveIngameMenu	, g_Patterns.ActiveIngameMenu	, 3	, 8					);
 	LOAD_PTR(		SettlerPrototypes	, g_Patterns.SettlerFilter		, g_isGE ? 19 : 18		);
 	LOAD_PTR_OFF(	Selection			, g_Patterns.SettlerFilter		, g_isGE ? 56 : 49, -4	);
-	LOAD_PTR(		SettlerPool			, g_Patterns.SettlerFilter		, g_isGE ? -35 : -18	);
+	LOAD_PTR(		EntityPool			, g_Patterns.SettlerFilter		, g_isGE ? -35 : -18	);
 	LOAD_PTR(		LocalPlayer 		, g_Patterns.OnSettlerCommandHook, g_isGE ? -0x73 : -0x66);
 	LOAD_FUNC(      LocalEvent          , g_Patterns.LocalEvent         , 3);// todo: ge support
 	LOAD_PTR(		Tick, 
@@ -97,10 +97,10 @@ WorldField* S4::GetLandscapeAt(WORD x, WORD y) {
 	return NULL;
 }
 IEntity* S4::GetEntityAt(WORD x, WORD y) {
-	if (SettlerPool) {
+	if (EntityPool) {
 		auto eid = GetEntityIdAt(x, y);
 		if (eid) {
-			return SettlerPool[eid];
+			return EntityPool[eid];
 		}
 	}
 	return NULL;

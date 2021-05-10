@@ -27,7 +27,7 @@
 
 S4_ENTITY_ENUM CSettlers4Api::EntityGetClass(WORD entity) {
 	TRACE;
-	auto pool = S4::GetInstance().SettlerPool;
+	auto pool = S4::GetInstance().EntityPool;
 	if (pool) {
 		auto e = pool[entity];
 		if (e) return e->GetClass();
@@ -38,7 +38,7 @@ S4_ENTITY_ENUM CSettlers4Api::EntityGetClass(WORD entity) {
 BOOL CSettlers4Api::EntityGetPosition(WORD entity, LPINT x, LPINT y) {
 	TRACE;
 	if (x || y) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e) {
@@ -54,7 +54,7 @@ BOOL CSettlers4Api::EntityGetPosition(WORD entity, LPINT x, LPINT y) {
 BOOL CSettlers4Api::EntitygGetDirection(WORD entity, LPDWORD dir) {
 	TRACE;
 	if (dir) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e) {
@@ -69,7 +69,7 @@ BOOL CSettlers4Api::EntitygGetDirection(WORD entity, LPDWORD dir) {
 BOOL CSettlers4Api::EntityGetHealth(WORD entity, LPDWORD health) {
 	TRACE;
 	if (health) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e) {
@@ -84,7 +84,7 @@ BOOL CSettlers4Api::EntityGetHealth(WORD entity, LPDWORD health) {
 BOOL CSettlers4Api::EntityGetMaxHealth(WORD entity, LPDWORD maxHealth) {
 	TRACE;
 	if (maxHealth) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e) {
@@ -105,7 +105,7 @@ BOOL CSettlers4Api::EntityGetMaxHealth(WORD entity, LPDWORD maxHealth) {
 BOOL CSettlers4Api::EntityGetTribe(WORD entity, S4_TRIBE_ENUM* tribe) {
 	TRACE;
 	if (tribe) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e) {
@@ -127,7 +127,7 @@ BOOL CSettlers4Api::EntityGetTribe(WORD entity, S4_TRIBE_ENUM* tribe) {
 BOOL CSettlers4Api::EntityTreeGetType(WORD entity, S4_TREE_ENUM* tree) {
 	TRACE;
 	if (tree) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e && e->GetClass() == S4_ENTITY_TREE) {
@@ -142,7 +142,7 @@ BOOL CSettlers4Api::EntityTreeGetType(WORD entity, S4_TREE_ENUM* tree) {
 BOOL CSettlers4Api::EntityPileGetType(WORD entity, S4_GOOD_ENUM* good) {
 	TRACE;
 	if (good) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e && e->GetClass() == S4_ENTITY_PILE) {
@@ -158,7 +158,7 @@ BOOL CSettlers4Api::EntityPileGetType(WORD entity, S4_GOOD_ENUM* good) {
 BOOL CSettlers4Api::EntityPileGetAmount(WORD entity, LPDWORD amount) {
 	TRACE;
 	if (amount) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e && e->GetClass() == S4_ENTITY_PILE) {
@@ -174,7 +174,7 @@ BOOL CSettlers4Api::EntityPileGetAmount(WORD entity, LPDWORD amount) {
 BOOL CSettlers4Api::EntityDecoGetType(WORD entity, LPDWORD deco) {
 	TRACE;
 	if (deco) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e && e->GetClass() == S4_ENTITY_DECO) {
@@ -189,7 +189,7 @@ BOOL CSettlers4Api::EntityDecoGetType(WORD entity, LPDWORD deco) {
 BOOL CSettlers4Api::EntitySettlerGetType(WORD entity, S4_SETTLER_ENUM* settler) {
 	TRACE;
 	if (settler) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e && e->GetClass() == S4_ENTITY_SETTLER) {
@@ -204,7 +204,7 @@ BOOL CSettlers4Api::EntitySettlerGetType(WORD entity, S4_SETTLER_ENUM* settler) 
 BOOL CSettlers4Api::EntityVehicleGetType(WORD entity, S4_VEHICLE_ENUM* vehicle) {
 	TRACE;
 	if (vehicle) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e) {
@@ -232,7 +232,7 @@ BOOL CSettlers4Api::EntityVehicleGetType(WORD entity, S4_VEHICLE_ENUM* vehicle) 
 BOOL CSettlers4Api::EntityAnimalGetType(WORD entity, S4_ANIMAL_ENUM* animal) {
 	TRACE;
 	if (animal) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e && e->GetClass() == S4_ENTITY_LANDANIMAL) {
@@ -247,7 +247,7 @@ BOOL CSettlers4Api::EntityAnimalGetType(WORD entity, S4_ANIMAL_ENUM* animal) {
 BOOL CSettlers4Api::EntityBuildingGetType(WORD entity, S4_BUILDING_ENUM* building) {
 	TRACE;
 	if (building) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e && e->GetClass() == S4_ENTITY_BUILDING) {
@@ -262,7 +262,7 @@ BOOL CSettlers4Api::EntityBuildingGetType(WORD entity, S4_BUILDING_ENUM* buildin
 BOOL CSettlers4Api::EntityStoneGetLevel(WORD entity, LPDWORD level) {
 	TRACE;
 	if (level) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e && e->GetClass() == S4_ENTITY_STONE) {
@@ -277,7 +277,7 @@ BOOL CSettlers4Api::EntityStoneGetLevel(WORD entity, LPDWORD level) {
 BOOL CSettlers4Api::EntityGetRole(WORD entity, LPVOID* role) {
 	TRACE;
 	if (role) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e) {
@@ -307,7 +307,7 @@ BOOL CSettlers4Api::EntitygGetRoleClass(WORD entity, S4_ROLE_ENUM* role) {
 BOOL CSettlers4Api::EntitygGetOwner(WORD entity, LPDWORD player) {
 	TRACE;
 	if (player) {
-		auto pool = S4::GetInstance().SettlerPool;
+		auto pool = S4::GetInstance().EntityPool;
 		if (pool) {
 			auto e = pool[entity];
 			if (e) {
