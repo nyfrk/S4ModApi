@@ -78,12 +78,17 @@ void S4::Initialize() {
 	ResourceMap = (decltype(ResourceMap))(S4_Main + 0x11630E4);// he only, todo: make pattern
 	EcoSectorMap = (decltype(EcoSectorMap))(S4_Main + 0xEF1A18);// he only, todo: make pattern
 	EcoSectorPool = (decltype(EcoSectorPool))(S4_Main + 0xEF1A20);// he only, todo: make pattern
-	
+	EntityPoolSize = (decltype(EntityPoolSize))(S4_Main + 0xE9B0BC);
 }
 
 S4& S4::GetInstance() {
 	static S4 instance;
 	return instance;
+}
+
+DWORD S4::GetEntityPoolSize() {
+	return EntityPoolSize != NULL ? *EntityPoolSize : 0;
+
 }
 
 DWORD S4::GetMapSize() { 

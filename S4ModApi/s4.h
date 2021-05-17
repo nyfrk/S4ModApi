@@ -140,8 +140,8 @@ struct IEntity : public CPersistance {
 	/* +26 S */ WORD y;
 	/* +28 _ */ DWORD unk5;
 	/* +32 S */ struct {
-		BYTE player : 4; // only the 4 most significant bits are the player, todo: confirm it
-		BYTE tribe : 4; // only the 4 least significant bits are the tribe
+		BYTE tribe : 4; // only the 4 most significant bits are the player, todo: confirm it
+		BYTE player : 4; // only the 4 least significant bits are the tribe
 #pragma warning(suppress: 4201) // supress unnamed structures
 	};
 	/* +33 S */ BYTE health;
@@ -593,9 +593,12 @@ struct S4 {
 	ActiveIngameMenu_t *ActiveIngameMenu;
 	Selection_t* Selection;
 	IEntity** EntityPool; // todo: rename to EntityPool
+	DWORD* EntityPoolSize;
+
 	DWORD* SettlerPrototypes;
 
 	DWORD* MapSize;
+
 	WorldField** LandscapeMap; // map position to WorldField
 	WORD** EntityMap; // map position to entity id
 	S4_RESOURCE_ENUM** ResourceMap; // map position to resource enum
@@ -606,6 +609,8 @@ struct S4 {
 	DWORD GetCurrentTick();
 	BOOL SendNetEvent(Event_t& event);
 	BOOL SendLocalEvent(Event_t& event);
+	DWORD GetEntityPoolSize();
+
 	inline BOOL SendNetEvent(LPCVOID event) { return SendNetEvent(*(Event_t*)event); } // todo: use Event_t 
 	inline DWORD GetNetEventVTbl() { return NetEventVTbl; }
 	inline void free(void* p) { if (__free)__free(p); }
@@ -624,6 +629,7 @@ struct S4 {
 
 	void Initialize();
 	static S4& GetInstance();
+
 
 private:
 	DWORD* LocalPlayer;

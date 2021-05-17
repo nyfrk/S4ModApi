@@ -35,40 +35,41 @@ S4_ENTITY_ENUM CSettlers4Api::EntityGetClass(WORD entity) {
 	return S4_ENTITY_ENUM::S4_ENTITY_UNKNOWN;
 }
 
+BOOL CSettlers4Api::GetEntitiesCount(WORD* count)
+{
+	auto size = S4::GetInstance().GetEntityPoolSize();
+	*count = size;
 
-BOOL CSettlers4Api::GetEntitiesFromPlayer(WORD player, DWORD* entities, size_t size) {
+	return size;
+}
+
+
+BOOL CSettlers4Api::GetEntities(DWORD* entities, size_t size) {
 	TRACE;
-
 	auto pool = S4::GetInstance().EntityPool;
+	int counter = 0;
+
 	if (pool) {
-		auto mapSize = S4::GetInstance().GetMapSize();
-		if (mapSize) {
-			size_t count = 0;
-
-			for (int x = 0; x < mapSize - 1; x++) {
-				for (int y = 0; y < mapSize - 1; y++) {
-					auto e = S4::GetInstance().GetEntityAt(x, y);
-					if (e) {
-						auto id = e->id;
-						DWORD owner = 0;
-						EntitygGetOwner(id, &owner);
-						if (owner != 0) {
-							if (owner == player) {
-								entities[count] = id;
-								count++;
-								if (count >= size) {
-									return TRUE;
-								}
-							}
-						}
-					}
+		for (size_t i = 1; i <= size; i++) {
+			const IEntity* entity = pool[i];
+			if (entity != nullptr) {
+				if (this->EntityGetClass(entity->id) == S4_ENTITY_SETTLER) {
+					int xx = 0123;
+					xx++;
 				}
+
+				DWORD owner = -1;
+				EntitygGetOwner(entity->id, &owner);
+				entities[counter] = entity->id;
+				counter++;
+				
 			}
-			return TRUE;
+			if (counter >= size) {
+				return TRUE;
+			}
 		}
-
+		return TRUE;
 	}
-
 	return FALSE;
 }
 

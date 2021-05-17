@@ -55,7 +55,9 @@ struct CSettlers4Api : public ISettlers4Api {
 	STDMETHOD(GetHoveringUiElement)(THIS_ LPS4UIELEMENT); // defined in CS4Misc.cpp
 	STDMETHOD_(BOOL, IsCurrentlyOnScreen)(THIS_ S4_GUI_ENUM); // defined in CS4Screen.cpp
 	STDMETHOD_(S4_ENTITY_ENUM, EntityGetClass)(THIS_ WORD entity);
-	STDMETHOD_(BOOL, GetEntitiesFromPlayer)(THIS_ WORD player, DWORD* entities, size_t size);
+	STDMETHOD_(BOOL, GetEntitiesCount)(THIS_ WORD* count);
+
+	STDMETHOD_(BOOL, GetEntities)(THIS_ DWORD* entities, size_t size);
 	// defined in CS4Entity.cpp
 	STDMETHOD_(BOOL, EntityGetPosition)(THIS_ WORD entity, LPINT x, LPINT y); // defined in CS4Entity.cpp
 	STDMETHOD_(BOOL, EntitygGetDirection)(THIS_ WORD entity, LPDWORD dir); // 4 == top-left, etc. defined in CS4Entity.cpp
