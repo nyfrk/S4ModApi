@@ -93,3 +93,8 @@ DWORD CSettlers4Api::LandscapeGetOwner(INT x, INT y) {
 	TRACE;
 	return S4::GetInstance().GetOwnerAt((WORD)x, (WORD)y);
 }
+
+DWORD CSettlers4Api::LandscapeGetEcoSector(INT x, INT y) {
+	TRACE;
+	return S4::GetInstance().LandscapeGetEcoSector(x, y);
+}
