@@ -73,6 +73,7 @@ void S4::Initialize() {
 	EventConstructor = (LPCVOID)AddIfNotNull(g_Patterns.NetEventConstuctor, -0x12);
 
 	MapSize = (decltype(MapSize))(S4_Main + 0xD6921C);// he only, todo: make pattern
+	Blockmap2 = (decltype(Blockmap2))(S4_Main + 0x11630D0);// he only, todo: make pattern
 	LandscapeMap = (decltype(LandscapeMap))(S4_Main + 0xD69220);// he only, todo: make pattern
 	EntityMap = (decltype(EntityMap))(S4_Main + 0x11630DC);// he only, todo: make pattern
 	ResourceMap = (decltype(ResourceMap))(S4_Main + 0x11630E4);// he only, todo: make pattern
@@ -94,6 +95,11 @@ DWORD S4::GetEntityPoolSize() {
 DWORD S4::GetMapSize() { 
 	return MapSize != NULL ? *MapSize : 0; 
 }
+
+WORD* S4::GetBlockMap2() {
+	return Blockmap2 != NULL ? *Blockmap2 : 0;
+}
+
 WorldField* S4::GetLandscapeAt(WORD x, WORD y) {
 	if (LandscapeMap && *LandscapeMap) {
 		auto size = GetMapSize();
@@ -165,6 +171,16 @@ DWORD S4::GetOwnerAt(WORD x, WORD y) {
 	return sector ? sector->GetOwningPlayer() : 0;
 }
 
+BOOL S4::IsOccupied(WORD x, WORD y) {
+	if (Blockmap2 && *Blockmap2 && Blockmap2) {
+		auto size = GetMapSize();
+		if (size != 0 && y < size && x < size) {
+			auto ecoId = (*Blockmap2)[y * size + x];
+			//TODO
+			return ecoId;
+		}
+	}
+}
 
 
 DWORD S4::GetLocalPlayer() { return READ_AT(LocalPlayer); }

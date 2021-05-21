@@ -98,3 +98,8 @@ DWORD CSettlers4Api::LandscapeGetEcoSector(INT x, INT y) {
 	TRACE;
 	return S4::GetInstance().LandscapeGetEcoSector(x, y);
 }
+
+BOOL CSettlers4Api::LandscapeIsOccupied(INT x, INT y) {
+	TRACE;
+	return S4::GetInstance().IsOccupied(x, y);
+}

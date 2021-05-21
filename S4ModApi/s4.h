@@ -598,6 +598,7 @@ struct S4 {
 	DWORD* SettlerPrototypes;
 
 	DWORD* MapSize;
+	WORD** Blockmap2;
 
 	WorldField** LandscapeMap; // map position to WorldField
 	WORD** EntityMap; // map position to entity id
@@ -618,6 +619,7 @@ struct S4 {
 	inline void* GetLuaState() { return (void*)READ_AT(lua_state); }
 
 	DWORD GetMapSize();
+	WORD* GetBlockMap2();
 	WorldField* GetLandscapeAt(WORD x, WORD y);
 	IEntity* GetEntityAt(WORD x, WORD y);
 	WORD GetEntityIdAt(WORD x, WORD y);
@@ -625,6 +627,7 @@ struct S4 {
 	BOOL SetResourceAt(WORD x, WORD y, S4_RESOURCE_ENUM res);
 	EcoSector* GetEcoSectorAt(WORD x, WORD y);
 	DWORD GetOwnerAt(WORD x, WORD y);
+	BOOL IsOccupied(WORD x, WORD y);
 	WORD LandscapeGetEcoSector(WORD x, WORD y);
 
 	void Initialize();

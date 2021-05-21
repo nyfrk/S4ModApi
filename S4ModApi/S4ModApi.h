@@ -844,7 +844,8 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(BOOL, LandscapeSetResource)(THIS_ INT x, INT y, S4_RESOURCE_ENUM res) PURE; // defined in CS4Landscape.cpp
 	STDMETHOD_(DWORD, LandscapeGetObject)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
 	STDMETHOD_(DWORD, LandscapeGetOwner)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
-	STDMETHOD_(DWORD, LandscapeGetEcoSector)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
+	STDMETHOD_(DWORD, LandscapeGetEcoSector)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp	
+	STDMETHOD_(BOOL, LandscapeIsOccupied)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
 
 	/** Settlers 4 NetEvents functions **/
 	STDMETHOD_(BOOL, SendWarriors)(THIS_ INT x, INT y, S4_MOVEMENT_ENUM mode, PWORD warriors, SIZE_T countOfWarriors, DWORD player = 0) PURE;
