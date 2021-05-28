@@ -176,8 +176,8 @@ BOOL S4::IsOccupied(WORD x, WORD y) {
 		auto size = GetMapSize();
 		if (size != 0 && y < size && x < size) {
 			auto ecoId = (*Blockmap2)[y * size + x];
-			//TODO
-			return ecoId;
+			//TODO7
+			return ecoId == 0;
 		}
 	}
 }
