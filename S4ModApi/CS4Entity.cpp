@@ -37,10 +37,16 @@ S4_ENTITY_ENUM CSettlers4Api::EntityGetClass(WORD entity) {
 
 BOOL CSettlers4Api::GetEntitiesCount(WORD* count)
 {
+	TRACE;
 	auto size = S4::GetInstance().GetEntityPoolSize();
 	*count = size;
 
 	return size;
+}
+
+DWORD CSettlers4Api::GetGameTime() {
+	TRACE;
+	return S4::GetInstance().GetGameTime();
 }
 
 

@@ -831,6 +831,7 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(BOOL, GetSelection)(THIS_ PWORD out, SIZE_T outlen, PSIZE_T selectionCount) PURE;
 	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount) PURE;
 	STDMETHOD_(BOOL, StartBuildingPlacement)(THIS_ S4_BUILDING_ENUM building) PURE;
+	STDMETHOD_(DWORD, GetGameTime)(THIS_) PURE;
 
 	/** Landscape functions **/
 	STDMETHOD_(DWORD, LandscapeGetHeight)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp

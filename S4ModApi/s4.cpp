@@ -73,6 +73,7 @@ void S4::Initialize() {
 	EventConstructor = (LPCVOID)AddIfNotNull(g_Patterns.NetEventConstuctor, -0x12);
 
 	MapSize = (decltype(MapSize))(S4_Main + 0xD6921C);// he only, todo: make pattern
+	GameTime = (decltype(GameTime))(S4_Main + 0xE66B14);
 	Blockmap2 = (decltype(Blockmap2))(S4_Main + 0x11630D0);// he only, todo: make pattern
 	LandscapeMap = (decltype(LandscapeMap))(S4_Main + 0xD69220);// he only, todo: make pattern
 	EntityMap = (decltype(EntityMap))(S4_Main + 0x11630DC);// he only, todo: make pattern
@@ -98,6 +99,10 @@ DWORD S4::GetMapSize() {
 
 WORD* S4::GetBlockMap2() {
 	return Blockmap2 != NULL ? *Blockmap2 : 0;
+}
+
+DWORD S4::GetGameTime() {
+	return GameTime != NULL ? *GameTime : 0;
 }
 
 WorldField* S4::GetLandscapeAt(WORD x, WORD y) {

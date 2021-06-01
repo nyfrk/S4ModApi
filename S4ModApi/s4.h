@@ -599,6 +599,7 @@ struct S4 {
 
 	DWORD* MapSize;
 	WORD** Blockmap2;
+	DWORD* GameTime;
 
 	WorldField** LandscapeMap; // map position to WorldField
 	WORD** EntityMap; // map position to entity id
@@ -619,6 +620,7 @@ struct S4 {
 	inline void* GetLuaState() { return (void*)READ_AT(lua_state); }
 
 	DWORD GetMapSize();
+	DWORD GetGameTime();
 	WORD* GetBlockMap2();
 	WorldField* GetLandscapeAt(WORD x, WORD y);
 	IEntity* GetEntityAt(WORD x, WORD y);
