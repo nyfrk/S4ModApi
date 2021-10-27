@@ -746,9 +746,20 @@ typedef struct S4GuiElementBltParams {
 	S4_UI_TEXTSTYLE textStyle; //enum where the first 4 bits define which font style to use and last 4 bits define effects (Like pressed etc)
 	WORD showTexture;
 	WORD backTexture;
-	char *text;
+	char* text;
+	char* tooltipText;
+	char* tooltipExtraText;
 } *LPS4GUIDRAWBLTPARAMS;
 #pragma pack(pop)
+typedef struct S4GuiClearParams {
+	DWORD surfaceWidth;
+	DWORD surfaceHeight;
+	WORD currentGFXCollection;
+	WORD x;
+	WORD y;
+	WORD mainTexture;
+} *LPS4GUICLEARPARAMS;
+
 
 /** Callback types **/
 typedef HRESULT(FAR S4HCALL* LPS4FRAMECALLBACK)(LPDIRECTDRAWSURFACE7 lpSurface, INT32 iPillarboxWidth, LPVOID lpReserved);
@@ -761,6 +772,7 @@ typedef BOOL   (FAR S4HCALL* LPS4BLTCALLBACK)(LPS4BLTPARAMS params, BOOL discard
 typedef BOOL   (FAR S4HCALL* LPS4GUIBLTCALLBACK)(LPS4GUIBLTPARAMS params, BOOL discard);
 typedef HRESULT(FAR S4HCALL* LPS4ENTITYCALLBACK)(WORD entity, S4_ENTITY_CAUSE cause); // called when an entity is spawned or destructed // todo: implement me
 typedef HRESULT(FAR S4HCALL* LPS4GUIDRAWCALLBACK)(LPS4GUIDRAWBLTPARAMS entity, BOOL discard); // called when an entity is spawned or destructed // todo: implement me
+typedef HRESULT(FAR S4HCALL* LPS4GUICLEARCALLBACK)(LPS4GUICLEARPARAMS entity, BOOL discard); // called when an entity is spawned or destructed // todo: implement me
 
 
 HRESULT __declspec(nothrow) S4HCALL S4CreateInterface(CONST GUID FAR* lpGUID, LPSETTLERS4API FAR* lplpS4H);
@@ -796,6 +808,7 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(S4HOOK, AddEntityListener)(THIS_ LPS4ENTITYCALLBACK) PURE;
 	STDMETHOD_(S4HOOK, AddGuiBltListener)(THIS_ LPS4GUIBLTCALLBACK) PURE;
 	STDMETHOD_(S4HOOK, AddGuiElementBltListener)(THIS_ LPS4GUIDRAWCALLBACK) PURE;
+	STDMETHOD_(S4HOOK, AddGuiClearListener)(THIS_ LPS4GUICLEARCALLBACK) PURE;
 
 	/** Misc helper functions **/
 	STDMETHOD(GetMD5OfModule)(THIS_ HMODULE module, LPSTR out, SIZE_T sz) PURE;

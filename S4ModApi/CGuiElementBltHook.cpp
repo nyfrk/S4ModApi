@@ -109,6 +109,24 @@ BOOL __stdcall CGuiElementBltHook::OnElementBlt(DWORD _0, DWORD _1, DWORD uiCont
 		params.text = text;
 	}
 
+	auto tooltipMasterPtr = READ_AT((const void*)(S4_Main + 0x10540D8));
+	auto tooltipArrayPtr = READ_AT((const void*)(tooltipMasterPtr + 4));
+	if (element->tooltipLinkExtra) {
+		auto tooltipPtr = READ_AT((const void*)(tooltipArrayPtr + (element->tooltipLinkExtra * 4)));
+		params.tooltipExtraText = (char*)(const void*)(tooltipPtr);
+	}
+	else {
+		params.tooltipExtraText = "";
+	}
+	if (element->tooltipLink) {
+		auto tooltipPtr = READ_AT((const void*)(tooltipArrayPtr + (element->tooltipLink * 4)));
+		params.tooltipText = (char*)(const void*)(tooltipPtr);
+	}
+	else {
+		params.tooltipText = "";
+	}
+
+
 	// iterate observers
 	for (auto& observer : observers) {
 		discard |= ((LPS4GUIDRAWCALLBACK)observer.callback)(&params, discard);
