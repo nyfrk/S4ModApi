@@ -730,6 +730,7 @@ typedef struct S4GuiElementBltParams {
 	DWORD surfaceWidth;
 	DWORD surfaceHeight;
 	WORD currentGFXCollection;
+	WORD containerType;
 	WORD x;
 	WORD y;
 	WORD xOffset;

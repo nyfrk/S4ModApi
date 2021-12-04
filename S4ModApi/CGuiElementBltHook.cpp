@@ -76,8 +76,8 @@ BOOL __stdcall CGuiElementBltHook::OnElementBlt(DWORD _0, DWORD _1, DWORD uiCont
 	BOOL discard = false;
 	S4GuiElementBltParams params; // create a struct at S4ModApi.h 
 
-	auto ptr = READ_AT((const void*)(S4_Main + 0xE94814));
-	auto val = READ_AT((const void*)(ptr + 0xC98));
+	const auto ptr = READ_AT((const void*)(S4_Main + 0xE94814));
+	const auto val = READ_AT((const void*)(ptr + 0xC98));
 	params.currentGFXCollection = val;
 
 	params.surfaceWidth = surfaceWidth;
@@ -86,6 +86,7 @@ BOOL __stdcall CGuiElementBltHook::OnElementBlt(DWORD _0, DWORD _1, DWORD uiCont
 	GUIElement* element = (GUIElement*)uiElement;
 	GUIContainer* container = (GUIContainer*)uiContainer;
 	char* text = (char*)(const void*)(S4_Main + 0x1065218 + (element->id * 300));
+	params.containerType = container->type;
 	params.mainTexture = element->mainTexture;
 	params.buttonPressedTexture = element->buttonPressedTexture;
 	params.x = element->x;
@@ -109,8 +110,8 @@ BOOL __stdcall CGuiElementBltHook::OnElementBlt(DWORD _0, DWORD _1, DWORD uiCont
 		params.text = text;
 	}
 
-	auto tooltipMasterPtr = READ_AT((const void*)(S4_Main + 0x10540D8));
-	auto tooltipArrayPtr = READ_AT((const void*)(tooltipMasterPtr + 4));
+	const auto tooltipMasterPtr = READ_AT((const void*)(S4_Main + 0x10540D8));
+	const auto tooltipArrayPtr = READ_AT((const void*)(tooltipMasterPtr + 4));
 	if (element->tooltipLinkExtra) {
 		auto tooltipPtr = READ_AT((const void*)(tooltipArrayPtr + (element->tooltipLinkExtra * 4)));
 		params.tooltipExtraText = (char*)(const void*)(tooltipPtr);
