@@ -56,6 +56,7 @@ void __stdcall CGuiClearHook::OnClear(DWORD *surfaceContainer) {
 	params.surfaceHeight = c->height;
 	params.x = c->x;
 	params.y = c->y;
+	params.surfaceId = c->type;
 
 	// iterate observers
 	for (auto& observer : observers) {

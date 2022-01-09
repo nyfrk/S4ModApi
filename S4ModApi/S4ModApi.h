@@ -758,7 +758,7 @@ typedef struct S4GuiClearParams {
 	WORD currentGFXCollection;
 	WORD x;
 	WORD y;
-	WORD mainTexture;
+	WORD surfaceId;
 } *LPS4GUICLEARPARAMS;
 
 
