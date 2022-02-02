@@ -54,7 +54,12 @@ struct CSettlers4Api : public ISettlers4Api {
 	STDMETHOD_(HWND, GetHwnd)(THIS_); // defined in CS4Misc.cpp
 	STDMETHOD(GetHoveringUiElement)(THIS_ LPS4UIELEMENT); // defined in CS4Misc.cpp
 	STDMETHOD_(BOOL, IsCurrentlyOnScreen)(THIS_ S4_GUI_ENUM); // defined in CS4Screen.cpp
-	STDMETHOD_(S4_ENTITY_ENUM, EntityGetClass)(THIS_ WORD entity); // defined in CS4Entity.cpp
+	STDMETHOD_(S4_ENTITY_ENUM, EntityGetClass)(THIS_ WORD entity);
+	STDMETHOD_(BOOL, GetEntitiesCount)(THIS_ WORD* count);
+	STDMETHOD_(DWORD, GetGameTime)();
+
+	STDMETHOD_(BOOL, GetEntities)(THIS_ DWORD* entities, size_t size);
+	// defined in CS4Entity.cpp
 	STDMETHOD_(BOOL, EntityGetPosition)(THIS_ WORD entity, LPINT x, LPINT y); // defined in CS4Entity.cpp
 	STDMETHOD_(BOOL, EntitygGetDirection)(THIS_ WORD entity, LPDWORD dir); // 4 == top-left, etc. defined in CS4Entity.cpp
 	STDMETHOD_(BOOL, EntityGetHealth)(THIS_ WORD entity, LPDWORD health); // defined in CS4Entity.cpp
@@ -77,6 +82,7 @@ struct CSettlers4Api : public ISettlers4Api {
 	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, StartBuildingPlacement)(THIS_ S4_BUILDING_ENUM building); // defined in CS4MenuEvents.cpp
 
+
 	/** Landscape functions **/
 	STDMETHOD_(DWORD, LandscapeGetHeight)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
 	STDMETHOD_(S4_GROUND_ENUM, LandscapeGetType)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
@@ -89,6 +95,8 @@ struct CSettlers4Api : public ISettlers4Api {
 	STDMETHOD_(BOOL, LandscapeSetResource)(THIS_ INT x, INT y, S4_RESOURCE_ENUM res); // defined in CS4Landscape.cpp
 	STDMETHOD_(DWORD, LandscapeGetObject)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
 	STDMETHOD_(DWORD, LandscapeGetOwner)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
+	STDMETHOD_(DWORD, LandscapeGetEcoSector)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
+	STDMETHOD_(BOOL, LandscapeIsOccupied)(THIS_ INT x, INT y);
 
 	/** Settlers 4 NetEvents functions **/
 	STDMETHOD_(BOOL, SendWarriors)(THIS_ INT x, INT y, S4_MOVEMENT_ENUM mode, PWORD warriors, SIZE_T countOfWarriors, DWORD player); // defined in CS4SendWarriors.cpp

@@ -783,8 +783,11 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 
 	/** Settlers 4 functions **/
 	STDMETHOD(GetHoveringUiElement)(THIS_ LPS4UIELEMENT) PURE;
+	STDMETHOD_(BOOL, GetEntitiesCount)(THIS_  WORD* counter) PURE;
+
 	STDMETHOD_(BOOL, IsCurrentlyOnScreen)(THIS_ S4_GUI_ENUM) PURE;
 	STDMETHOD_(S4_ENTITY_ENUM, EntityGetClass)(THIS_ WORD entity) PURE;
+	STDMETHOD_(BOOL, GetEntities)(THIS_ DWORD * entities, size_t size);
 	STDMETHOD_(BOOL, EntityGetPosition)(THIS_ WORD entity, LPINT x, LPINT y) PURE;
 	STDMETHOD_(BOOL, EntitygGetDirection)(THIS_ WORD entity, LPDWORD dir) PURE;
 	STDMETHOD_(BOOL, EntityGetHealth)(THIS_ WORD entity, LPDWORD health) PURE;
@@ -807,6 +810,7 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(BOOL, GetSelection)(THIS_ PWORD out, SIZE_T outlen, PSIZE_T selectionCount) PURE;
 	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount) PURE;
 	STDMETHOD_(BOOL, StartBuildingPlacement)(THIS_ S4_BUILDING_ENUM building) PURE;
+	STDMETHOD_(DWORD, GetGameTime)(THIS_) PURE;
 
 	/** Landscape functions **/
 	STDMETHOD_(DWORD, LandscapeGetHeight)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
@@ -820,6 +824,8 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(BOOL, LandscapeSetResource)(THIS_ INT x, INT y, S4_RESOURCE_ENUM res) PURE; // defined in CS4Landscape.cpp
 	STDMETHOD_(DWORD, LandscapeGetObject)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
 	STDMETHOD_(DWORD, LandscapeGetOwner)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
+	STDMETHOD_(DWORD, LandscapeGetEcoSector)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp	
+	STDMETHOD_(BOOL, LandscapeIsOccupied)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
 
 	/** Settlers 4 NetEvents functions **/
 	STDMETHOD_(BOOL, SendWarriors)(THIS_ INT x, INT y, S4_MOVEMENT_ENUM mode, PWORD warriors, SIZE_T countOfWarriors, DWORD player = 0) PURE;

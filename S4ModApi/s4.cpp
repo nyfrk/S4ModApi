@@ -52,7 +52,7 @@ void S4::Initialize() {
 	LOAD_PTR_OFF(	ActiveIngameMenu	, g_Patterns.ActiveIngameMenu	, 3	, 8					);
 	LOAD_PTR(		SettlerPrototypes	, g_Patterns.SettlerFilter		, g_isGE ? 19 : 18		);
 	LOAD_PTR_OFF(	Selection			, g_Patterns.SettlerFilter		, g_isGE ? 56 : 49, -4	);
-	LOAD_PTR(		SettlerPool			, g_Patterns.SettlerFilter		, g_isGE ? -35 : -18	);
+	LOAD_PTR(		EntityPool			, g_Patterns.SettlerFilter		, g_isGE ? -35 : -18	);
 	LOAD_PTR(		LocalPlayer 		, g_Patterns.OnSettlerCommandHook, g_isGE ? -0x73 : -0x66);
 	LOAD_FUNC(      LocalEvent          , g_Patterns.LocalEvent         , 3);// todo: ge support
 	LOAD_PTR(		Tick, 
@@ -73,12 +73,14 @@ void S4::Initialize() {
 	EventConstructor = (LPCVOID)AddIfNotNull(g_Patterns.NetEventConstuctor, -0x12);
 
 	MapSize = (decltype(MapSize))(S4_Main + 0xD6921C);// he only, todo: make pattern
+	GameTime = (decltype(GameTime))(S4_Main + 0xE66B14);
+	Blockmap2 = (decltype(Blockmap2))(S4_Main + 0x11630D0);// he only, todo: make pattern
 	LandscapeMap = (decltype(LandscapeMap))(S4_Main + 0xD69220);// he only, todo: make pattern
 	EntityMap = (decltype(EntityMap))(S4_Main + 0x11630DC);// he only, todo: make pattern
 	ResourceMap = (decltype(ResourceMap))(S4_Main + 0x11630E4);// he only, todo: make pattern
 	EcoSectorMap = (decltype(EcoSectorMap))(S4_Main + 0xEF1A18);// he only, todo: make pattern
 	EcoSectorPool = (decltype(EcoSectorPool))(S4_Main + 0xEF1A20);// he only, todo: make pattern
-	
+	EntityPoolSize = (decltype(EntityPoolSize))(S4_Main + 0xE9B0BC);
 }
 
 S4& S4::GetInstance() {
@@ -86,9 +88,23 @@ S4& S4::GetInstance() {
 	return instance;
 }
 
+DWORD S4::GetEntityPoolSize() {
+	return EntityPoolSize != NULL ? *EntityPoolSize : 0;
+
+}
+
 DWORD S4::GetMapSize() { 
 	return MapSize != NULL ? *MapSize : 0; 
 }
+
+WORD* S4::GetBlockMap2() {
+	return Blockmap2 != NULL ? *Blockmap2 : 0;
+}
+
+DWORD S4::GetGameTime() {
+	return GameTime != NULL ? *GameTime : 0;
+}
+
 WorldField* S4::GetLandscapeAt(WORD x, WORD y) {
 	if (LandscapeMap && *LandscapeMap) {
 		auto size = GetMapSize();
@@ -97,10 +113,10 @@ WorldField* S4::GetLandscapeAt(WORD x, WORD y) {
 	return NULL;
 }
 IEntity* S4::GetEntityAt(WORD x, WORD y) {
-	if (SettlerPool) {
+	if (EntityPool) {
 		auto eid = GetEntityIdAt(x, y);
 		if (eid) {
-			return SettlerPool[eid];
+			return EntityPool[eid];
 		}
 	}
 	return NULL;
@@ -159,6 +175,16 @@ DWORD S4::GetOwnerAt(WORD x, WORD y) {
 	return sector ? sector->GetOwningPlayer() : 0;
 }
 
+BOOL S4::IsOccupied(WORD x, WORD y) {
+	if (Blockmap2 && *Blockmap2 && Blockmap2) {
+		auto size = GetMapSize();
+		if (size != 0 && y < size && x < size) {
+			auto ecoId = (*Blockmap2)[y * size + x];
+			//TODO7
+			return ecoId == 0;
+		}
+	}
+}
 
 
 DWORD S4::GetLocalPlayer() { return READ_AT(LocalPlayer); }

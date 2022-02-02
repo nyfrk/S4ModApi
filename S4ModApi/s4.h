@@ -140,8 +140,8 @@ struct IEntity : public CPersistance {
 	/* +26 S */ WORD y;
 	/* +28 _ */ DWORD unk5;
 	/* +32 S */ struct {
-		BYTE player : 4; // only the 4 most significant bits are the player, todo: confirm it
-		BYTE tribe : 4; // only the 4 least significant bits are the tribe
+		BYTE tribe : 4; // only the 4 most significant bits are the player, todo: confirm it
+		BYTE player : 4; // only the 4 least significant bits are the tribe
 #pragma warning(suppress: 4201) // supress unnamed structures
 	};
 	/* +33 S */ BYTE health;
@@ -592,10 +592,15 @@ struct S4 {
 		// [13] maybe exists ? 
 	ActiveIngameMenu_t *ActiveIngameMenu;
 	Selection_t* Selection;
-	IEntity** SettlerPool; // todo: rename to EntityPool
+	IEntity** EntityPool; // todo: rename to EntityPool
+	DWORD* EntityPoolSize;
+
 	DWORD* SettlerPrototypes;
 
 	DWORD* MapSize;
+	WORD** Blockmap2;
+	DWORD* GameTime;
+
 	WorldField** LandscapeMap; // map position to WorldField
 	WORD** EntityMap; // map position to entity id
 	S4_RESOURCE_ENUM** ResourceMap; // map position to resource enum
@@ -606,6 +611,8 @@ struct S4 {
 	DWORD GetCurrentTick();
 	BOOL SendNetEvent(Event_t& event);
 	BOOL SendLocalEvent(Event_t& event);
+	DWORD GetEntityPoolSize();
+
 	inline BOOL SendNetEvent(LPCVOID event) { return SendNetEvent(*(Event_t*)event); } // todo: use Event_t 
 	inline DWORD GetNetEventVTbl() { return NetEventVTbl; }
 	inline void free(void* p) { if (__free)__free(p); }
@@ -613,6 +620,8 @@ struct S4 {
 	inline void* GetLuaState() { return (void*)READ_AT(lua_state); }
 
 	DWORD GetMapSize();
+	DWORD GetGameTime();
+	WORD* GetBlockMap2();
 	WorldField* GetLandscapeAt(WORD x, WORD y);
 	IEntity* GetEntityAt(WORD x, WORD y);
 	WORD GetEntityIdAt(WORD x, WORD y);
@@ -620,6 +629,7 @@ struct S4 {
 	BOOL SetResourceAt(WORD x, WORD y, S4_RESOURCE_ENUM res);
 	EcoSector* GetEcoSectorAt(WORD x, WORD y);
 	DWORD GetOwnerAt(WORD x, WORD y);
+	BOOL IsOccupied(WORD x, WORD y);
 	WORD LandscapeGetEcoSector(WORD x, WORD y);
 
 	void Initialize();
