@@ -88,10 +88,10 @@ void DebugProgramMain() {
 			Sleep(100);
 
 			if (GetAsyncKeyState(VK_MULTIPLY) < 0) {
-				CMessageBox test(L"loL", L"Das ist eine test nachricht", 200, 200, 400, 150);
+				CMessageBox test(L"Caption", L"This is a test message", 200, 200, 400, 150);
 				test.Show();
 				while (GetAsyncKeyState(VK_MULTIPLY) < 0) { Sleep(10); }
-				cout << "Reason = " << dec << (DWORD)test.GetHideReason() << endl;
+				cout << "Hide Reason = " << dec << (DWORD)test.GetHideReason() << endl;
 			}
 		}
 		while (GetAsyncKeyState(DEBUG_KEY) < 0) Sleep(10);
