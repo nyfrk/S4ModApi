@@ -68,7 +68,7 @@ CUpdate::EUpdateCheckStatus CUpdate::check() {
 		return  m_status;
 	}
 
-	const char* URL = "https://api.github.com/repos/WizzardMaker/S4ModApi/releases/latest";
+	const char* URL = "https://api.github.com/repos/nyfrk/S4ModApi/releases/latest";
 	DWORD error, read;
 	HINTERNET hInet, hConn;
 	char data[255], urlbuf[INTERNET_MAX_URL_LENGTH];
