@@ -25,6 +25,7 @@
 #include "s4.h"
 #include <cwchar>
 #include "CHook.h"
+#include "CMod.h"
 #include "md5.h"
 #include "CMessageBox.h"
 #include "CUpdate.h"
@@ -37,6 +38,7 @@ DWORD EventEngine = 0;
 DWORD GuiEngine2 = 0;
 DWORD GfxEngine = 0;
 MD5 g_md5;
+std::atomic_bool g_isInitialized = false;
 
 #if _DEBUG
 void DebugProgramMain();
@@ -64,8 +66,13 @@ DWORD WINAPI InitializeGlobals(HMODULE mod) {
 	// initialize all instantiated hooks (others will be lazy initialized)
 	CHook::InitAll();
 
+	// Initialize all mods
+	CMod::InitAll();
+
 	// Check for updates
 	CUpdate::GetInstance().check();
+
+	g_isInitialized = true;
 
 #if _DEBUG
 		DebugProgramMain();

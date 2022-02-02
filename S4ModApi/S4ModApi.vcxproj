@@ -168,6 +168,7 @@
     <ClCompile Include="CDialog.cpp" />
     <ClCompile Include="CLuaOpenHook.cpp" />
     <ClCompile Include="CMessageBox.cpp" />
+    <ClCompile Include="CMod.cpp" />
     <ClCompile Include="CMouseHook.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="CS4Build.cpp" />
@@ -190,6 +191,7 @@
     <ClCompile Include="CS4Unknown.cpp" />
     <ClCompile Include="CS4Misc.cpp" />
     <ClCompile Include="CS4Screen.cpp" />
+    <ClCompile Include="CSelectionMod.cpp" />
     <ClCompile Include="DebugInfo.cpp" />
     <ClCompile Include="DebugProgram.cpp" />
     <ClCompile Include="DebugRender.cpp" />
@@ -219,8 +221,10 @@
     <ClInclude Include="CLuaOpenHook.h" />
     <ClInclude Include="CMapInitHook.h" />
     <ClInclude Include="CMessageBox.h" />
+    <ClInclude Include="CMod.h" />
     <ClInclude Include="CMouseHook.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="CSelectionMod.h" />
     <ClInclude Include="CSettlerSendHook.h" />
     <ClInclude Include="CTickHook.h" />
     <ClInclude Include="CSettlers4Api.h" />

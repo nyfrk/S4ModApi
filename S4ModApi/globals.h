@@ -33,6 +33,7 @@ extern DWORD EventEngine; // base address of EventEngine.dll. This is only prese
 extern DWORD GuiEngine2; // base address of GuiEngine2.dll. This is only present in the gold edition.
 extern DWORD GfxEngine; // base address of GfxEngine.dll. This is only present in the gold edition.
 extern MD5 g_md5; // md5 of the exe
+extern std::atomic_bool g_isInitialized; // variable that indicates when s4api has been initialized
 
 
 DWORD WINAPI InitializeGlobals(HMODULE mod);

@@ -58,6 +58,12 @@
     <Filter Include="Quelldateien\COM\NetEvent">
       <UniqueIdentifier>{dc8b7de0-157a-4218-851a-a52de7c7eb1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\Mods">
+      <UniqueIdentifier>{748992ae-ea2a-4fd4-8b78-9ab645123ce0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\Mods">
+      <UniqueIdentifier>{74a190b6-a163-4a9f-86eb-ee1586c43735}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -204,6 +210,12 @@
     <ClCompile Include="CGuiBltHook.cpp">
       <Filter>Quelldateien\Hooks</Filter>
     </ClCompile>
+    <ClCompile Include="CMod.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="CSelectionMod.cpp">
+      <Filter>Quelldateien\Mods</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -286,6 +298,12 @@
     </ClInclude>
     <ClInclude Include="CGuiBltHook.h">
       <Filter>Headerdateien\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="CMod.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="CSelectionMod.h">
+      <Filter>Headerdateien\Mods</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
