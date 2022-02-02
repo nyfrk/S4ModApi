@@ -216,6 +216,9 @@
     <ClCompile Include="CSelectionMod.cpp">
       <Filter>Quelldateien\Mods</Filter>
     </ClCompile>
+    <ClCompile Include="CGuiClearHook.cpp">
+      <Filter>Quelldateien\Hooks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -304,6 +307,9 @@
     </ClInclude>
     <ClInclude Include="CSelectionMod.h">
       <Filter>Headerdateien\Mods</Filter>
+    </ClInclude>
+    <ClInclude Include="CGuiClearHook.h">
+      <Filter>Headerdateien\Hooks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

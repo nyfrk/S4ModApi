@@ -20,12 +20,13 @@
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>S4Hooks</RootNamespace>
     <ProjectName>S4ModApi</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141_xp</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug142|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -35,8 +36,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141_xp</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -56,7 +57,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>$(ProjectDir)lib\lua321\Release\;$(ProjectDir)lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(ProjectDir)lib\lua321\include\;$(ProjectDir)lib\;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <IncludePath>$(ProjectDir)lib\lua321\include\;$(ProjectDir)lib\;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);$(IncludePath)</IncludePath>
     <SourcePath>$(ProjectDir)lib;$(SourcePath)</SourcePath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -70,7 +71,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <LibraryPath>$(ProjectDir)lib\lua321\Release\;$(ProjectDir)lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(ProjectDir)lib\lua321\include\;$(ProjectDir)lib\;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <IncludePath>$(ProjectDir)lib\lua321\include\;$(ProjectDir)lib\;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);$(IncludePath)</IncludePath>
     <SourcePath>$(ProjectDir)lib;$(SourcePath)</SourcePath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -164,6 +165,8 @@
     <ClCompile Include="CCustomUi.cpp" />
     <ClCompile Include="CEntityHook.cpp" />
     <ClCompile Include="CFrameHook.cpp" />
+    <ClCompile Include="CGuiClearHook.cpp" />
+    <ClCompile Include="CGuiElementBltHook.cpp" />
     <ClCompile Include="CHook.cpp" />
     <ClCompile Include="CDialog.cpp" />
     <ClCompile Include="CLuaOpenHook.cpp" />
@@ -217,6 +220,8 @@
     <ClInclude Include="CDialog.h" />
     <ClInclude Include="CEntityHook.h" />
     <ClInclude Include="CFrameHook.h" />
+    <ClInclude Include="CGuiClearHook.h" />
+    <ClInclude Include="CGuiElementBltHook.h" />
     <ClInclude Include="CHook.h" />
     <ClInclude Include="CLuaOpenHook.h" />
     <ClInclude Include="CMapInitHook.h" />
