@@ -24,13 +24,13 @@ A modding library for Bluebyte's The Settlers 4. The goal of this project is to 
 
 ## Remarks for Modders
 
-Note: The ABI is stable and backward compatible only if you link against the latest release. **Do not distribute your mod linking to a prerelease** (labeled with RC) since the ABI is not stable and not backward compatible. Your mod will break with upcoming releases. 
+Note: The ABI is stable and backward compatible only if you link against the latest release. **Do not distribute your mod linking to a prerelease** (labeled with RC) since the ABI is not stable and not backward compatible. Your mod will break with upcoming releases. Read the [versioning guide](VERSION.md) for more information regarding ABI stability.
 
 See the [hello world sample mod](https://github.com/nyfrk/S4ModApi/wiki/HelloWorldPlugin) on how to configure your project with the S4ModApi.
 
 [The **reference** of the API is available in the Wiki](https://github.com/nyfrk/S4ModApi/wiki)
 
-Please consider contributing features that that we currently do not offer back to this project. You can make sure that your mod stays compatible with upcoming and past releases of The Settlers 4, if you link to the S4ModApi.dll instead of directly linking to the S4_Main.exe. Moreover does it reduce the risk of conflicts between plugins. 
+Please consider contributing features that that we currently do not offer back to this project. You can make sure that your mod stays compatible with upcoming and past releases of The Settlers 4, if you link to the S4ModApi.dll instead of directly linking to the S4_Main.exe. Moreover does it reduce the risk of conflicts between plugins and other mods. 
 
 
 
