@@ -50,6 +50,8 @@ Special thanks to the following contributors. Without their work this project wo
 
 - [**MuffinMario**](https://github.com/MuffinMario) for the creation of [s4.muffinmar.io](https://s4.muffinmar.io/scripts/) and the reversal / documentation of the Lua interface including all function names, their parameters and many enumerations.
 - [**Viciten**](https://github.com/Viciten) for the support of [alpha blended bitmaps](https://github.com/nyfrk/S4ModApi/commit/134d532b83d201f43f18b699d877021f512411d3).
+- [**oberstrike**](https://github.com/oberstrike) for the contribution of [features and bugfixes](https://github.com/oberstrike/S4ModApi)
+- [**WizzardMaker**](https://github.com/WizzardMaker) for the contributions of [features and bugfixes](https://github.com/WizzardMaker/S4ModApi).
 
 
 
