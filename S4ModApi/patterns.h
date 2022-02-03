@@ -63,7 +63,16 @@ extern struct Patterns {
 		Lua,
 		ShowTextMessage,
 		OnLuaOpenHook,
-		OnBltHook;
+		OnBltHook,
+
+		BoxSelect,
+		AltSelect,
+		UnitsPerRightclick,
+		SelectionMarkerBufferGetter,
+		SelectionMarkerBufferSetter,
+		HealthBubbleBufferGetter,
+		HealthBubbleBufferSetter
+		;
 
 	void Scan();
 

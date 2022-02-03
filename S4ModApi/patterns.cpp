@@ -54,6 +54,12 @@ void Patterns::Scan() {
 		SCAN_GE(Backbuffer, GfxEngine, "12 8B ? ? ? ? 8D 9E ? ? ? ? 6A 00 8B 11 53 EB 29 8B 10 68");
 		SCAN_GE(ClearSelection, S4_Main, "51 8B 15 ? ? ? ? 85 D2 0F 84 ? ? ? ? A1 ? ? ? ? 8B C8 2B");
 		SCAN_GE(SettlerFilter, S4_Main, "66 8B 50 0C 8D 0C 89 8D 0C 4A 8D 14 89 8D 0C 51 8A 14 8D");
+		SCAN_GE(BoxSelect, S4_Main, "D1 FA 83 FA 64 73 7A 8B 46 58 8B 6E 4C 33 C9");
+		SCAN_GE(AltSelect, S4_Main, "D1 FA 83 FA 64 73 1A 8B 15");
+		SCAN_GE(SelectionMarkerBufferGetter, GfxEngine, "BE ? ? ? ? 8B 4E 04 6A 00 DB 06 8B 04 8D");
+		SCAN_GE(SelectionMarkerBufferSetter, GfxEngine, "8B 74 24 14 C1 E0 02 41 89 B0 ? ? ? ? 89");
+		SCAN_GE(HealthBubbleBufferGetter, GfxEngine, "40 83 C2 14 3B C1 89 45 E8 89 55 D8 0F 8C ? ? ? ? A1 ? ? ? ? 85 C0 0F 84 ? ? ? ? 8A 0D ? ? ? ? 84 C9 74 60 33 FF 85 C0 0F 8E ? ? ? ?");
+		SCAN_GE(HealthBubbleBufferSetter, GfxEngine, "89 98 ? ? ? ? 89 3D ? ? ? ? D9 44 24 10 DF 7C 24 14 8B 5C 24 14 89 98 ? ? ? ? 89 90 ? ? ? ? 89 B0 ? ? ? ? 89 88 ? ? ? ? 33 DB");
 	}
 	else {
 		SCAN_HE(OnSettlerCommandHook, S4_Main, "2B F8 D1 FF 85 FF 0F 8E D7 00 00 00 0F B7 00");
@@ -79,6 +85,12 @@ void Patterns::Scan() {
 		SCAN_HE(ShowTextMessage, S4_Main, "55 8B EC 53 56 57 6A 24 8B F2 8B F9");
 		SCAN_HE(OnLuaOpenHook, S4_Main, "89 5F 0C 89 5F 10 89 5F 14 89 5F 18 89 5F 04 89 5F 08 89 9F ? ? ? ? 89 3D ? ? ? ? E8"); // +30
 		SCAN_HE(OnBltHook, S4_Main, "55 8B EC 8B 45 08 A3 ? ? ? ? 89 15 ? ? ? ? 8B 15 ? ? ? ? 89 0D ? ? ? ? 8B 4D 20 53 56 8B 34 82 8B 45 0C");
+		SCAN_HE(BoxSelect, S4_Main, "D1 F8 83 F8 64 0F 83 84 00 00 00 8B C6 25 00 FF FF 00 89 45 F8 0F B7 04 59 8B 3C 85");
+		SCAN_HE(AltSelect, S4_Main, "D1 F8 83 F8 64 73 10 8B 3D ? ? ? ? 43 3B 5D F0 0F 8C 01 FF FF FF 5F 5E 5B 33 C0 8B E5 5D C2 08 00");
+		SCAN_HE(SelectionMarkerBufferGetter, S4_Main, "7C A3 EB 49 85 C0 7E 45 BE ? ? ? ? 90 8B 46 04 6A 00");
+		SCAN_HE(SelectionMarkerBufferSetter, S4_Main, "8B 7D F0 8D 04 49 C1 E0 02 41 89 0D ? ? ? ? 89 B8 ? ? ? ? 8B 7D 10 89 B0 ? ? ? ? 8B 75 F4 89 B0 ? ? ? ? 8A 43 14 8B 4D 0C 84 C0");
+		SCAN_HE(HealthBubbleBufferGetter, S4_Main, "85 C0 7E 3C BE ? ? ? ? 66 90 8B 56 10 8B 0D ? ? ? ? 83 C2 06 6A 00");
+		SCAN_HE(HealthBubbleBufferSetter, S4_Main, "8B 4D 0C 89 90 ? ? ? ? 8B 55 FC 89 90 ? ? ? ? 8B 55 F0 89 90 ? ? ? ? 8B 55 F4 89 90 ? ? ? ? 8B 15 ? ? ? ? 89 B0 ? ? ? ? 8A 43 15 84 C0");			
 	}
 }
 

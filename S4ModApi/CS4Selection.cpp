@@ -19,11 +19,14 @@
 // along with S4ModApi. If not, see <https://www.gnu.org/licenses/lgpl-3.0>.
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "globals.h" // g_isGE, hProcess
 #include "CSettlers4Api.h"
+#include "hlib.h" // JmpPatch
 #include "patterns.h"
 #include "s4.h"
 #include "safemem.h"
 #include <unordered_set>
+#include "CSelectionMod.h"
 
 BOOL CSettlers4Api::ClearSelection() {
 	TRACE;
@@ -84,4 +87,14 @@ BOOL CSettlers4Api::RemoveSelection(PWORD settlers, SIZE_T settlerslen, PSIZE_T 
 	}
 	s->EndPtr = cur;
 	return TRUE;
+}
+
+DWORD CSettlers4Api::SetMaxSelection(DWORD newLimit) {
+	TRACE;
+	return CSelectionMod::GetInstance().SetMaxSelection(newLimit);
+}
+
+DWORD CSettlers4Api::GetMaxSelection() {
+	TRACE;
+	return CSelectionMod::GetInstance().GetMaxSelection();
 }

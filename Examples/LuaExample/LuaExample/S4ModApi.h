@@ -32,15 +32,18 @@
 
 extern "C" {
 
-#define IID_ISettlers4Api __uuidof(ISettlers4Api)
+#define IID_ISettlers4Api2 __uuidof(ISettlers4Api2)
+//#define IID_ISettlers4Api3 __uuidof(ISettlers4Api3)
 
-interface __declspec(uuid("b3b5169a-dca0-493c-c08e-99ca36c2b863")) ISettlers4Api;
+#define IID_Default_ISettlers4Api IID_ISettlers4Api2
 
+interface __declspec(uuid("05104b9f-52d3-4904-8d6f-a7c3012eabdd")) ISettlers4Api2;
+//interface __declspec(uuid("6891fea7-ef5a-4ee9-801f-a05548b3bd66")) ISettlers4Api3;
 
-typedef interface ISettlers4Api  FAR * LPSETTLERS4API;
 typedef interface ISettlers4Api2 FAR * LPSETTLERS4API2;
+//typedef interface ISettlers4Api3 FAR * LPSETTLERS4API3;
 
-#define S4API LPSETTLERS4API
+#define S4API LPSETTLERS4API2
 
 typedef UINT32 S4HOOK;
 typedef LPVOID S4CUSTOMUI;
@@ -646,6 +649,38 @@ enum S4_CUSTOM_UI_ENUM : DWORD {
 	S4_CUSTOM_UI_HOVERING = 2,
 	S4_CUSTOM_UI_HOVERING_SELECTED = 3,
 };
+enum S4_UI_TYPE : BYTE {
+	IGNORED = 4,
+	PLAYER_ICON = 6,
+	MAP = 9,
+	UI_PLAYER = 19,
+	TEXT_BOX = 20,
+	U4_IGNORED = 20,
+	MISSION_TEXT = 21,
+};
+
+enum S4_UI_EFFECTS : BYTE {
+	NONE = 0,
+	PRESSED = 1,
+	HOVER = 2,
+	DISABLED = 4,
+	HIDDEN = 8,
+	TEXT_BOX_ACTIVE = 64,
+	CURSOR_BLINK_ON = 128,
+};
+
+enum S4_UI_TEXTSTYLE : BYTE {
+	LARGE_BLUE = 0b00000000,
+	SMALL_BLUE = 0b00000100,
+	SMALL_WHITE = 0b00001000,
+	HEADER_CENTERED = 0b00001011, //Above input fields
+	NORMAL_CENTERED = 0b00000011,
+	NORMAL_LEFT = 0b00001001,
+	BOLD_CENTERED = 0b00000111,
+	RED_CENTERED = 0b00000010,
+	SMALL_GOLD = 0b00001100,
+};
+
 typedef HRESULT(FAR S4HCALL* LPS4UICALLBACK)(S4CUSTOMUI lpUiElement, S4_CUSTOM_UI_ENUM newstate);
 typedef BOOL(FAR S4HCALL* LPS4UIFILTERCALLBACK)(S4CUSTOMUI lpUiElement);
 typedef struct S4CustomUiElement {
@@ -693,6 +728,42 @@ typedef struct S4GuiBltParams {
 	LPVOID ddbltfx;
 } *LPS4GUIBLTPARAMS;
 
+#pragma pack(push, 1)
+typedef struct S4GuiElementBltParams {
+	DWORD surfaceWidth;
+	DWORD surfaceHeight;
+	WORD currentGFXCollection;
+	WORD containerType;
+	WORD x;
+	WORD y;
+	WORD xOffset;
+	WORD yOffset;
+	WORD width;
+	WORD height;
+	WORD mainTexture;
+	WORD valueLink;
+	WORD buttonPressedTexture;
+	WORD tooltipLink;
+	WORD tooltipLinkExtra;
+	S4_UI_TYPE imageStyle;
+	S4_UI_EFFECTS effects; //When == 8 -> hide text
+	S4_UI_TEXTSTYLE textStyle; //enum where the first 4 bits define which font style to use and last 4 bits define effects (Like pressed etc)
+	WORD showTexture;
+	WORD backTexture;
+	char* text;
+	char* tooltipText;
+	char* tooltipExtraText;
+} *LPS4GUIDRAWBLTPARAMS;
+#pragma pack(pop)
+typedef struct S4GuiClearParams {
+	DWORD surfaceWidth;
+	DWORD surfaceHeight;
+	WORD currentGFXCollection;
+	WORD x;
+	WORD y;
+	WORD surfaceId;
+} *LPS4GUICLEARPARAMS;
+
 /** Callback types **/
 typedef HRESULT(FAR S4HCALL* LPS4FRAMECALLBACK)(LPDIRECTDRAWSURFACE7 lpSurface, INT32 iPillarboxWidth, LPVOID lpReserved);
 typedef HRESULT(FAR S4HCALL* LPS4MAPINITCALLBACK)(LPVOID lpReserved0, LPVOID lpReserved1);
@@ -703,19 +774,27 @@ typedef HRESULT(FAR S4HCALL* LPS4LUAOPENCALLBACK)(VOID);
 typedef BOOL   (FAR S4HCALL* LPS4BLTCALLBACK)(LPS4BLTPARAMS params, BOOL discard);
 typedef BOOL   (FAR S4HCALL* LPS4GUIBLTCALLBACK)(LPS4GUIBLTPARAMS params, BOOL discard);
 typedef HRESULT(FAR S4HCALL* LPS4ENTITYCALLBACK)(WORD entity, S4_ENTITY_CAUSE cause); // called when an entity is spawned or destructed // todo: implement me
+typedef HRESULT(FAR S4HCALL* LPS4GUIDRAWCALLBACK)(LPS4GUIDRAWBLTPARAMS entity, BOOL discard);
+typedef HRESULT(FAR S4HCALL* LPS4GUICLEARCALLBACK)(LPS4GUICLEARPARAMS entity, BOOL discard); 
 
 
-HRESULT __declspec(nothrow) S4HCALL S4CreateInterface(CONST GUID FAR* lpGUID, LPSETTLERS4API FAR* lplpS4H);
+HRESULT __declspec(nothrow) S4HCALL S4CreateInterface(CONST GUID FAR* lpGUID, S4API FAR* lplpS4H);
 
-static LPSETTLERS4API inline S4HCALL S4ApiCreate() {
-	LPSETTLERS4API out = NULL;
-	S4CreateInterface(&IID_ISettlers4Api, &out);
+static S4API inline S4HCALL S4ApiCreate() {
+	S4API out = NULL;
+	S4CreateInterface(&IID_Default_ISettlers4Api, &out);
 	return out;
 }
 
 #undef  INTERFACE
-#define INTERFACE ISettlers4Api
-DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
+#define INTERFACE ISettlers4Api2
+DECLARE_INTERFACE_(ISettlers4Api2, IUnknown) {
+	/** Never change this interface, create a new one if you need to change methods.
+		Otherwise you will break the ABI. Appending (to the end) is acceptable since
+		older versions never access methods beyond their known vtable. You may also
+		change arguments as long as the argument list is still compatible with the
+		old one. **/
+
 	/** IUnknown methods **/
 	STDMETHOD(QueryInterface) (THIS_ REFIID riid, LPVOID FAR * ppvObj) PURE;
 	STDMETHOD_(ULONG, AddRef) (THIS)  PURE;
@@ -737,6 +816,7 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(S4HOOK, AddBltListener)(THIS_ LPS4BLTCALLBACK) PURE;
 	STDMETHOD_(S4HOOK, AddEntityListener)(THIS_ LPS4ENTITYCALLBACK) PURE;
 	STDMETHOD_(S4HOOK, AddGuiBltListener)(THIS_ LPS4GUIBLTCALLBACK) PURE;
+	STDMETHOD_(S4HOOK, AddGuiClearListener)(THIS_ LPS4GUICLEARCALLBACK) PURE;
 
 	/** Misc helper functions **/
 	STDMETHOD(GetMD5OfModule)(THIS_ HMODULE module, LPSTR out, SIZE_T sz) PURE;
@@ -745,8 +825,11 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 
 	/** Settlers 4 functions **/
 	STDMETHOD(GetHoveringUiElement)(THIS_ LPS4UIELEMENT) PURE;
+	STDMETHOD_(BOOL, GetEntitiesCount)(THIS_  WORD* counter) PURE;
+
 	STDMETHOD_(BOOL, IsCurrentlyOnScreen)(THIS_ S4_GUI_ENUM) PURE;
 	STDMETHOD_(S4_ENTITY_ENUM, EntityGetClass)(THIS_ WORD entity) PURE;
+	STDMETHOD_(BOOL, GetEntities)(THIS_ DWORD * entities, size_t size);
 	STDMETHOD_(BOOL, EntityGetPosition)(THIS_ WORD entity, LPINT x, LPINT y) PURE;
 	STDMETHOD_(BOOL, EntitygGetDirection)(THIS_ WORD entity, LPDWORD dir) PURE;
 	STDMETHOD_(BOOL, EntityGetHealth)(THIS_ WORD entity, LPDWORD health) PURE;
@@ -765,10 +848,13 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(BOOL, EntitygGetRoleClass)(THIS_ WORD entity, S4_ROLE_ENUM * role) PURE;
 	STDMETHOD_(BOOL, EntitygGetOwner)(THIS_ WORD entity, LPDWORD player) PURE;
 
-	STDMETHOD_(BOOL, ClearSelection)(THIS) PURE;
-	STDMETHOD_(BOOL, GetSelection)(THIS_ PWORD out, SIZE_T outlen, PSIZE_T selectionCount) PURE;
-	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount) PURE;
+	STDMETHOD_(BOOL, ClearSelection)(THIS) PURE; // defined in CS4Selection.cpp
+	STDMETHOD_(BOOL, GetSelection)(THIS_ PWORD out, SIZE_T outlen, PSIZE_T selectionCount) PURE; // defined in CS4Selection.cpp
+	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount) PURE; // defined in CS4Selection.cpp
+	STDMETHOD_(DWORD, SetMaxSelection)(THIS_ DWORD maxSelection) PURE; // defined in CS4Selection.cpp
+	STDMETHOD_(DWORD, GetMaxSelection)(THIS) PURE; // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, StartBuildingPlacement)(THIS_ S4_BUILDING_ENUM building) PURE;
+	STDMETHOD_(DWORD, GetGameTime)(THIS_) PURE;
 
 	/** Landscape functions **/
 	STDMETHOD_(DWORD, LandscapeGetHeight)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
@@ -782,6 +868,8 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(BOOL, LandscapeSetResource)(THIS_ INT x, INT y, S4_RESOURCE_ENUM res) PURE; // defined in CS4Landscape.cpp
 	STDMETHOD_(DWORD, LandscapeGetObject)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
 	STDMETHOD_(DWORD, LandscapeGetOwner)(THIS_ INT x, INT y) PURE; // defined in CS4Landscape.cpp
+	STDMETHOD_(DWORD, LandscapeGetEcoSector)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp	
+	STDMETHOD_(BOOL, LandscapeIsOccupied)(THIS_ INT x, INT y); // defined in CS4Landscape.cpp
 
 	/** Settlers 4 NetEvents functions **/
 	STDMETHOD_(BOOL, SendWarriors)(THIS_ INT x, INT y, S4_MOVEMENT_ENUM mode, PWORD warriors, SIZE_T countOfWarriors, DWORD player = 0) PURE;
@@ -894,12 +982,19 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(BOOL, VehiclesKill)(THIS_ S4_VEHICLE_ENUM vehicle, INT x, INT y, INT r, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, SetGround)(THIS_ INT x, INT y, INT r, DWORD ground) PURE; // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, ShowTextMessage)(THIS_ LPCSTR message, DWORD icon, DWORD reserved) PURE; // defined in CS4Scripting.cpp
-
-	/** Never extend this interface, create a new one if you need more methods 
-		Otherwise you will break the ABI **/
 };
 
-
+// Template for interface version 3.x
+//#undef  INTERFACE
+//#define INTERFACE ISettlers4Api3
+//DECLARE_INTERFACE_(ISettlers4Api3, ISettlers4Api) {
+//	/** Never change this interface, create a new one if you need to change methods.
+//		Otherwise you will break the ABI. Appending (to the end) is acceptable since 
+//		older versions never access methods beyond their known vtable. You may also
+//		change arguments as long as the argument list is still compatible with the 
+//		old one. **/
+//
+//};
 
 
 }

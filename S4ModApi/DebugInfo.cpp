@@ -52,7 +52,13 @@ extern "C" HRESULT __declspec(nothrow) S4HCALL S4HooksGetDebugData(UINT32 type, 
 			"ActiveIngameMenu     at 0x%X\n"
 			"NetEventConstuctor   at 0x%X\n"
 			"RecruitmentEventCons at 0x%X\n"
-			"LocalEvent           at 0x%X\n",
+			"LocalEvent           at 0x%X\n"
+			"BoxSelect            at 0x%X\n"
+			"AltSelect            at 0x%X\n"
+			"SelMarkerBufGet      at 0x%X\n"
+			"SelMarkerBufSet      at 0x%X\n"
+			"HealthBubbleBufGet   at 0x%X\n"
+			"HealthBubbleBufSet   at 0x%X\n",
 			(g_isGE ? "   Gold" : "History"),
 			g_Patterns.Backbuffer.addr,
 			g_Patterns.OnSettlerCommandHook.addr,
@@ -70,7 +76,13 @@ extern "C" HRESULT __declspec(nothrow) S4HCALL S4HooksGetDebugData(UINT32 type, 
 			g_Patterns.ActiveIngameMenu.addr,
 			g_Patterns.NetEventConstuctor.addr,
 			g_Patterns.RecruitmentEventConstructor.addr,
-			g_Patterns.LocalEvent.addr
+			g_Patterns.LocalEvent.addr,
+			g_Patterns.BoxSelect.addr,
+			g_Patterns.AltSelect.addr,
+			g_Patterns.SelectionMarkerBufferGetter.addr,
+			g_Patterns.SelectionMarkerBufferSetter.addr,
+			g_Patterns.HealthBubbleBufferGetter.addr,
+			g_Patterns.HealthBubbleBufferSetter.addr
 		);	
 		LOG(endl << buf << endl);
 		return 0;

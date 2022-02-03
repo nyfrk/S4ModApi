@@ -80,6 +80,9 @@ struct CSettlers4Api : public ISettlers4Api2 {
 	STDMETHOD_(BOOL, ClearSelection)(THIS); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, GetSelection)(THIS_ PWORD out, SIZE_T outlen, PSIZE_T selectionCount); // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount); // defined in CS4Selection.cpp
+	STDMETHOD_(DWORD, SetMaxSelection)(THIS_ DWORD newLimit); // defined in CS4Selection.cpp
+	STDMETHOD_(DWORD, GetMaxSelection)(THIS); // defined in CS4Selection.cpp
+
 	STDMETHOD_(BOOL, StartBuildingPlacement)(THIS_ S4_BUILDING_ENUM building); // defined in CS4MenuEvents.cpp
 
 

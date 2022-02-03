@@ -33,7 +33,7 @@
 extern "C" {
 
 #define IID_ISettlers4Api2 __uuidof(ISettlers4Api2)
-//#define IID_ISettlers4Api3 __uuidof(ISettlers4Api2)
+//#define IID_ISettlers4Api3 __uuidof(ISettlers4Api3)
 
 #define IID_Default_ISettlers4Api IID_ISettlers4Api2
 
@@ -848,9 +848,11 @@ DECLARE_INTERFACE_(ISettlers4Api2, IUnknown) {
 	STDMETHOD_(BOOL, EntitygGetRoleClass)(THIS_ WORD entity, S4_ROLE_ENUM * role) PURE;
 	STDMETHOD_(BOOL, EntitygGetOwner)(THIS_ WORD entity, LPDWORD player) PURE;
 
-	STDMETHOD_(BOOL, ClearSelection)(THIS) PURE;
-	STDMETHOD_(BOOL, GetSelection)(THIS_ PWORD out, SIZE_T outlen, PSIZE_T selectionCount) PURE;
-	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount) PURE;
+	STDMETHOD_(BOOL, ClearSelection)(THIS) PURE; // defined in CS4Selection.cpp
+	STDMETHOD_(BOOL, GetSelection)(THIS_ PWORD out, SIZE_T outlen, PSIZE_T selectionCount) PURE; // defined in CS4Selection.cpp
+	STDMETHOD_(BOOL, RemoveSelection)(THIS_ PWORD settlers, SIZE_T settlerslen, PSIZE_T removedCount) PURE; // defined in CS4Selection.cpp
+	STDMETHOD_(DWORD, SetMaxSelection)(THIS_ DWORD maxSelection) PURE; // defined in CS4Selection.cpp
+	STDMETHOD_(DWORD, GetMaxSelection)(THIS) PURE; // defined in CS4Selection.cpp
 	STDMETHOD_(BOOL, StartBuildingPlacement)(THIS_ S4_BUILDING_ENUM building) PURE;
 	STDMETHOD_(DWORD, GetGameTime)(THIS_) PURE;
 
