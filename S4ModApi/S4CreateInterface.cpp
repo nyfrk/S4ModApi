@@ -26,7 +26,7 @@
 #include <new> // new(std::nothrow)
 #include <stdio.h> // sprintf_s
 
-HRESULT __declspec(nothrow) S4HCALL S4CreateInterface(CONST GUID FAR* lpGUID, LPSETTLERS4API FAR* lplpS4H) {
+HRESULT __declspec(nothrow) S4HCALL S4CreateInterface(CONST GUID FAR* lpGUID, S4API FAR* lplpS4H) {
 	#pragma comment(linker, "/EXPORT:" __FUNCTION__ "=" __FUNCDNAME__ ",@1") // undecorated
 	#pragma comment(linker, "/EXPORT:" __FUNCDNAME__ ) // stdcall decorated
 	TRACE;
@@ -55,7 +55,7 @@ HRESULT __declspec(nothrow) S4HCALL S4CreateInterface(CONST GUID FAR* lpGUID, LP
 			"Click No if you want to continue (no more warnings are shown)\n"
 			"Click Cancel to stop the process.\n";
 
-		char buf[_countof(fmt) + 45*2];
+		char buf[_countof(fmt) + 45*2]; // 45 is length of a uuid in characters
 		const char* txt = buf;
 		LPOLESTR uuidStr = NULL;
 

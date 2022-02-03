@@ -26,7 +26,7 @@
 
 extern "C" { 
 
-struct CSettlers4Api : public ISettlers4Api {
+struct CSettlers4Api : public ISettlers4Api2 {
 	/** IUnknown methods **/
 	STDMETHOD(QueryInterface) (THIS_ REFIID riid, LPVOID FAR* ppvObj); // defined in CS4Unknown.cpp
 	STDMETHOD_(ULONG, AddRef) (THIS); // defined in CS4Unknown.cpp

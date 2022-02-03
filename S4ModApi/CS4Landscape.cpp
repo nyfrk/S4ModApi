@@ -96,10 +96,10 @@ DWORD CSettlers4Api::LandscapeGetOwner(INT x, INT y) {
 
 DWORD CSettlers4Api::LandscapeGetEcoSector(INT x, INT y) {
 	TRACE;
-	return S4::GetInstance().LandscapeGetEcoSector(x, y);
+	return S4::GetInstance().LandscapeGetEcoSector((WORD)x, (WORD)y);
 }
 
 BOOL CSettlers4Api::LandscapeIsOccupied(INT x, INT y) {
 	TRACE;
-	return S4::GetInstance().IsOccupied(x, y);
+	return S4::GetInstance().IsOccupied((WORD)x, (WORD)y);
 }

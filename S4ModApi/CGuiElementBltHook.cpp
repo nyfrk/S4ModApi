@@ -70,6 +70,8 @@ struct GUIContainer
 #pragma optimize("", off)
 BOOL __stdcall CGuiElementBltHook::OnElementBlt(DWORD _0, DWORD _1, DWORD uiContainer, DWORD surfaceWidth, DWORD surfaceHeight, DWORD uiElement) {
 	//TRACE; // we do not log this as it will be a mayor performance hit
+	UNREFERENCED_PARAMETER(_0);
+	UNREFERENCED_PARAMETER(_1);
 	mutex.lock();
 	auto observers = GetInstance().observers; // obtain a copy of all the observers since the callbacks may modify the vector
 	mutex.unlock();
@@ -78,7 +80,7 @@ BOOL __stdcall CGuiElementBltHook::OnElementBlt(DWORD _0, DWORD _1, DWORD uiCont
 
 	const auto ptr = READ_AT((const void*)(S4_Main + 0xE94814));
 	const auto val = READ_AT((const void*)(ptr + 0xC98));
-	params.currentGFXCollection = val;
+	params.currentGFXCollection = (WORD)val;
 
 	params.surfaceWidth = surfaceWidth;
 	params.surfaceHeight = surfaceHeight;

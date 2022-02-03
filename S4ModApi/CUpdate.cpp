@@ -30,6 +30,8 @@
 #include "module.h"
 #include <fstream>
 #include <iostream>
+#include <locale> 
+#include <codecvt>
 
 #pragma comment(lib, "wininet.lib")
 #pragma comment(lib, "version.lib")
@@ -327,8 +329,9 @@ void CUpdate::InstallUpdate(const std::string& url) {
 	// a process has loaded the module
 
 	auto unwide = [](LPCWSTR a) {
-		std::wstring s(a);
-		return std::string(s.begin(), s.end());
+		using convert_type = std::codecvt_utf8<wchar_t>;
+		std::wstring_convert<convert_type, wchar_t> converter;
+		return converter.to_bytes(a);
 	};
 
 	LOG("creating update script with" << std::endl 

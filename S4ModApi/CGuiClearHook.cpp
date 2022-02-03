@@ -30,8 +30,7 @@ static hlib::JmpPatch OnClearHook;
 DWORD Orig; // you store the original function address here. Populate it before you install the call patch.
 DWORD backJmp;
 
-extern struct GUIContainer
-{
+struct GUIContainer {
 	WORD type;
 	WORD x;
 	WORD y;

@@ -45,12 +45,12 @@ struct RenderSettlerDetails {
 };
 #pragma pack(pop)
 
-BYTE __cdecl RenderSettlerHook(DWORD unk0, DWORD xpack, DWORD ypack, RenderSettlerDetails* details) {
-	SHORT x = HIWORD(xpack);
-	SHORT y = HIWORD(ypack);
-
-	return 0; // return orig return value
-}
+//BYTE __cdecl RenderSettlerHook(DWORD unk0, DWORD xpack, DWORD ypack, RenderSettlerDetails* details) {
+//	SHORT x = HIWORD(xpack);
+//	SHORT y = HIWORD(ypack);
+//
+//	return 0; // return orig return value
+//}
 
 BOOL __stdcall CBltHook::OnBlt(DWORD caller, DWORD ecx, DWORD edx, DWORD _0, DWORD _1, DWORD _2, DWORD _3, DWORD _4, DWORD _5, DWORD _6) {
 	//TRACE; // we do not log this as it will be a mayor performance hit

@@ -184,6 +184,7 @@ BOOL S4::IsOccupied(WORD x, WORD y) {
 			return ecoId == 0;
 		}
 	}
+	return FALSE;
 }
 
 

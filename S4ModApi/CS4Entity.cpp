@@ -39,7 +39,7 @@ BOOL CSettlers4Api::GetEntitiesCount(WORD* count)
 {
 	TRACE;
 	auto size = S4::GetInstance().GetEntityPoolSize();
-	*count = size;
+	*count = (WORD)size;
 
 	return size;
 }
@@ -53,19 +53,19 @@ DWORD CSettlers4Api::GetGameTime() {
 BOOL CSettlers4Api::GetEntities(DWORD* entities, size_t size) {
 	TRACE;
 	auto pool = S4::GetInstance().EntityPool;
-	int counter = 0;
+	DWORD counter = 0;
 
 	if (pool) {
 		for (size_t i = 1; i <= size; i++) {
 			const IEntity* entity = pool[i];
 			if (entity != nullptr) {
-				if (this->EntityGetClass(entity->id) == S4_ENTITY_SETTLER) {
+				if (this->EntityGetClass((WORD)entity->id) == S4_ENTITY_SETTLER) {
 					int xx = 0123;
 					xx++;
 				}
 
-				DWORD owner = -1;
-				EntitygGetOwner(entity->id, &owner);
+				DWORD owner = 0xffffffff;
+				EntitygGetOwner((WORD)entity->id, &owner);
 				entities[counter] = entity->id;
 				counter++;
 				

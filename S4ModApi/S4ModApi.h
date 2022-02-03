@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2020 nyfrk <nyfrk@gmx.net>
+// Copyright (c) 2022 nyfrk <nyfrk@gmx.net>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,14 +33,17 @@
 extern "C" {
 
 #define IID_ISettlers4Api __uuidof(ISettlers4Api)
+#define IID_ISettlers4Api2 __uuidof(ISettlers4Api2)
+
+#define IID_Default_ISettlers4Api IID_ISettlers4Api2
 
 interface __declspec(uuid("b3b5169a-dca0-493c-c08e-99ca36c2b863")) ISettlers4Api;
-
+interface __declspec(uuid("05104b9f-52d3-4904-8d6f-a7c3012eabdd")) ISettlers4Api2;
 
 typedef interface ISettlers4Api  FAR * LPSETTLERS4API;
 typedef interface ISettlers4Api2 FAR * LPSETTLERS4API2;
 
-#define S4API LPSETTLERS4API
+#define S4API LPSETTLERS4API2
 
 typedef UINT32 S4HOOK;
 typedef LPVOID S4CUSTOMUI;
@@ -646,6 +649,38 @@ enum S4_CUSTOM_UI_ENUM : DWORD {
 	S4_CUSTOM_UI_HOVERING = 2,
 	S4_CUSTOM_UI_HOVERING_SELECTED = 3,
 };
+enum S4_UI_TYPE : BYTE {
+	IGNORED = 4,
+	PLAYER_ICON = 6,
+	MAP = 9,
+	UI_PLAYER = 19,
+	TEXT_BOX = 20,
+	U4_IGNORED = 20,
+	MISSION_TEXT = 21,
+};
+
+enum S4_UI_EFFECTS : BYTE {
+	NONE = 0,
+	PRESSED = 1,
+	HOVER = 2,
+	DISABLED = 4,
+	HIDDEN = 8,
+	TEXT_BOX_ACTIVE = 64,
+	CURSOR_BLINK_ON = 128,
+};
+
+enum S4_UI_TEXTSTYLE : BYTE {
+	LARGE_BLUE = 0b00000000,
+	SMALL_BLUE = 0b00000100,
+	SMALL_WHITE = 0b00001000,
+	HEADER_CENTERED = 0b00001011, //Above input fields
+	NORMAL_CENTERED = 0b00000011,
+	NORMAL_LEFT = 0b00001001,
+	BOLD_CENTERED = 0b00000111,
+	RED_CENTERED = 0b00000010,
+	SMALL_GOLD = 0b00001100,
+};
+
 typedef HRESULT(FAR S4HCALL* LPS4UICALLBACK)(S4CUSTOMUI lpUiElement, S4_CUSTOM_UI_ENUM newstate);
 typedef BOOL(FAR S4HCALL* LPS4UIFILTERCALLBACK)(S4CUSTOMUI lpUiElement);
 typedef struct S4CustomUiElement {
@@ -739,14 +774,15 @@ typedef HRESULT(FAR S4HCALL* LPS4LUAOPENCALLBACK)(VOID);
 typedef BOOL   (FAR S4HCALL* LPS4BLTCALLBACK)(LPS4BLTPARAMS params, BOOL discard);
 typedef BOOL   (FAR S4HCALL* LPS4GUIBLTCALLBACK)(LPS4GUIBLTPARAMS params, BOOL discard);
 typedef HRESULT(FAR S4HCALL* LPS4ENTITYCALLBACK)(WORD entity, S4_ENTITY_CAUSE cause); // called when an entity is spawned or destructed // todo: implement me
-typedef HRESULT(FAR S4HCALL* LPS4GUICLEARCALLBACK)(LPS4GUICLEARPARAMS entity, BOOL discard); // called when an entity is spawned or destructed // todo: implement me
+typedef HRESULT(FAR S4HCALL* LPS4GUIDRAWCALLBACK)(LPS4GUIDRAWBLTPARAMS entity, BOOL discard);
+typedef HRESULT(FAR S4HCALL* LPS4GUICLEARCALLBACK)(LPS4GUICLEARPARAMS entity, BOOL discard); 
 
 
-HRESULT __declspec(nothrow) S4HCALL S4CreateInterface(CONST GUID FAR* lpGUID, LPSETTLERS4API FAR* lplpS4H);
+HRESULT __declspec(nothrow) S4HCALL S4CreateInterface(CONST GUID FAR* lpGUID, S4API FAR* lplpS4H);
 
-static LPSETTLERS4API inline S4HCALL S4ApiCreate() {
-	LPSETTLERS4API out = NULL;
-	S4CreateInterface(&IID_ISettlers4Api, &out);
+static S4API inline S4HCALL S4ApiCreate() {
+	S4API out = NULL;
+	S4CreateInterface(&IID_Default_ISettlers4Api, &out);
 	return out;
 }
 
@@ -943,7 +979,13 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 		Otherwise you will break the ABI **/
 };
 
+#undef  INTERFACE
+#define INTERFACE ISettlers4Api2
+DECLARE_INTERFACE_(ISettlers4Api2, ISettlers4Api) {
 
+	/** Never extend this interface, create a new one if you need more methods
+		Otherwise you will break the ABI **/
+};
 
 
 }

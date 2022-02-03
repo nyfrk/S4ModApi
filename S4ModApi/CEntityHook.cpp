@@ -31,12 +31,12 @@ BOOL __stdcall CEntityHook::OnEntity() {
 	return 0;
 }
 
-static void __declspec(naked) __onEntity() {
-	// todo: add entity hook
-	__asm {
-		ret
-	}
-}
+//static void __declspec(naked) __onEntity() {
+//	// todo: add entity hook
+//	__asm {
+//		ret
+//	}
+//}
 
 CEntityHook& CEntityHook::GetInstance() {
 	static CEntityHook inst;

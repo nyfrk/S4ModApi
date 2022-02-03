@@ -19,51 +19,21 @@
 // along with S4ModApi. If not, see <https://www.gnu.org/licenses/lgpl-3.0>.
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "CSettlers4Api.h"
-#include "globals.h"
-#include <mutex>
+#pragma once
 
-HRESULT CSettlers4Api::QueryInterface(REFIID riid, LPVOID* ppvObj) {
-	TRACE;
-	if (ppvObj == NULL) {
-		return E_POINTER;
-	}
+#include "CHook.h"
 
-	if (riid == IID_IUnknown) {
-		*ppvObj = static_cast<IUnknown*>(this);
-	}
-	else if (riid == IID_ISettlers4Api) {
-		*ppvObj = static_cast<ISettlers4Api*>(this);
-	}
-	else if (riid == IID_ISettlers4Api2) {
-		*ppvObj = static_cast<ISettlers4Api2*>(this);
-	}
-	else {
-		*ppvObj = NULL;
-		return E_NOINTERFACE;
-	}
+class CGuiElementBltHook : public CHook {
+public:
+	static CGuiElementBltHook& GetInstance();
 
-	(static_cast<IUnknown*>(*ppvObj))->AddRef();
+protected:
+	virtual bool Init();
+	virtual void Patch();
+	virtual void Unpatch();
 
-	return S_OK;
-}
+private:
+	CGuiElementBltHook();
+	static BOOL __stdcall OnElementBlt(DWORD _0, DWORD _1, DWORD, DWORD _2, DWORD _3, DWORD _4);
+};
 
-static std::mutex mtx; // ref counter lock
-
-ULONG CSettlers4Api::AddRef() {
-	TRACE;
-	std::lock_guard<std::mutex> lock(mtx);
-	return ++m_refs;
-}
-
-ULONG CSettlers4Api::Release() {
-	TRACE;
-	std::lock_guard<std::mutex> lock(mtx);
-	// Decrement the object's internal counter.
-	auto lRefCount = --m_refs;
-	if (lRefCount <= 0) {
-		//delete this;
-		return 0;
-	}
-	return lRefCount;
-}

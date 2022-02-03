@@ -210,14 +210,14 @@
     <ClCompile Include="CGuiBltHook.cpp">
       <Filter>Quelldateien\Hooks</Filter>
     </ClCompile>
-    <ClCompile Include="CMod.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="CSelectionMod.cpp">
-      <Filter>Quelldateien\Mods</Filter>
-    </ClCompile>
     <ClCompile Include="CGuiClearHook.cpp">
       <Filter>Quelldateien\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="CGuiElementBltHook.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="CMod.cpp">
+      <Filter>Quelldateien\Mods</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -302,14 +302,14 @@
     <ClInclude Include="CGuiBltHook.h">
       <Filter>Headerdateien\Hooks</Filter>
     </ClInclude>
-    <ClInclude Include="CMod.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="CSelectionMod.h">
-      <Filter>Headerdateien\Mods</Filter>
-    </ClInclude>
     <ClInclude Include="CGuiClearHook.h">
       <Filter>Headerdateien\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="CGuiElementBltHook.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="CMod.h">
+      <Filter>Headerdateien\Mods</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -50,9 +50,9 @@ S4CUSTOMUI CSettlers4Api::CreateCustomUiElement(LPCS4CUSTOMUIELEMENT arg) {
 BOOL CSettlers4Api::DestroyCustomUiElement(S4CUSTOMUI arg) {
 	TRACE;
 	return HideCustomUiElement(arg); // TODO: calling delete may be harmful when calling from a S4UiCallbackProc
-	if (arg) {
-		delete arg;
-	}
+	//if (arg) {
+	//	delete arg;
+	//}
 	return NULL;
 }
 
