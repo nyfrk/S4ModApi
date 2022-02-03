@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // GNU Lesser General Public License v3 (LGPL v3) 
 //
-// Copyright (c) 2020 nyfrk <nyfrk@gmx.net>
+// Copyright (c) 2022 nyfrk <nyfrk@gmx.net> and contributors
 //
 // This file is part of S4ModApi.
 //
