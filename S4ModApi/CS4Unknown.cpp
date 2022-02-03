@@ -32,12 +32,13 @@ HRESULT CSettlers4Api::QueryInterface(REFIID riid, LPVOID* ppvObj) {
 	if (riid == IID_IUnknown) {
 		*ppvObj = static_cast<IUnknown*>(this);
 	}
-	else if (riid == IID_ISettlers4Api) {
-		*ppvObj = static_cast<ISettlers4Api*>(this);
-	}
 	else if (riid == IID_ISettlers4Api2) {
 		*ppvObj = static_cast<ISettlers4Api2*>(this);
 	}
+	// Template that can be used when adding version 3.x of the interface
+	//else if (riid == IID_ISettlers4Api3) {
+	//	*ppvObj = static_cast<ISettlers4Api3*>(this);
+	//}
 	else {
 		*ppvObj = NULL;
 		return E_NOINTERFACE;

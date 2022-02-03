@@ -31,7 +31,7 @@
 
 std::mutex CDialog::state_mutex;
 std::vector<CDialog*> CDialog::dialogs; // how many dialogs are visible
-LPSETTLERS4API CDialog::S4API;
+S4API CDialog::s4api;
 S4HOOK CDialog::hFramehook, CDialog::hMousehook;
 std::vector<CDialog*> CDialog::pending_dialogs; // how many dialogs want to be visible
 volatile CDialog::State CDialog::state;
@@ -59,26 +59,26 @@ const RECT& CDialog::GetRect() const {
 
 void CDialog::MaintainS4Api() {
 	TRACE;
-	if (S4API) {
+	if (s4api) {
 		if (hFramehook && countFramehook <= 0) {
-			S4API->RemoveListener(hFramehook);
+			s4api->RemoveListener(hFramehook);
 			hFramehook = 0;
 		}
 		if (hMousehook && countMousehook <= 0) {
-			S4API->RemoveListener(hMousehook);
+			s4api->RemoveListener(hMousehook);
 			hMousehook = 0;
 		}
 		if (dialogs.empty()) {
-			S4API->Release();
-			S4API = NULL;
+			s4api->Release();
+			s4api = NULL;
 		}
 	}
 	else if (!dialogs.empty()) {
-		S4API = S4ApiCreate();
+		s4api = S4ApiCreate();
 		hFramehook = 0;
 		hMousehook = 0;
 	}
-	if (S4API) {
+	if (s4api) {
 		if (!hFramehook && countFramehook > 0) hFramehook = CFrameHook::GetInstance().AddListener(OnFrameProc,0, DIALOG_RENDER_PRIORITY);
 		if (!hMousehook && countMousehook > 0) hMousehook = CMouseHook::GetInstance().AddListener(OnMouseProc,0, DIALOG_RENDER_PRIORITY);
 	}
@@ -217,7 +217,7 @@ HRESULT S4HCALL CDialog::OnFrameProc(LPDIRECTDRAWSURFACE7 lpSurface, INT32 iPill
 	std::unique_lock<decltype(state_mutex)> lock(state_mutex);
 	POINT p = { 0 };
 	RECT clientRect = { 0 };
-	HWND hwnd = S4API ? S4API->GetHwnd() : NULL;
+	HWND hwnd = s4api ? s4api->GetHwnd() : NULL;
 	const POINT* pp = (hwnd && GetCursorPos(&p) && ScreenToClient(hwnd, &p)) ? &p : NULL;
 	if (hwnd) GetClientRect(hwnd, &clientRect);
 	HDC hdc;

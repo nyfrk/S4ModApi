@@ -51,7 +51,7 @@ protected:
 
 	RECT m_position;
 	DWORD m_flags;
-	static LPSETTLERS4API S4API;
+	static S4API s4api;
 
 private:
 	CDialog(const CDialog&) = delete;

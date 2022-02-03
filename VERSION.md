@@ -16,7 +16,7 @@ S4ModApi now adopts a semantic versioning scheme (mayor.minor.patch). The digits
 
 Versions according to these rules may also be increased even for changes to older interfaces. Lets say for example the current S4ModApi is in version 3.3. The change to 3.4 may change features that were initially implemented in version 2.0 (e.g. bug fixes). Plugins that were linked to version 2.0 may now enjoy the fixed behavior even though it was linked against the older version. Please note that at some point this will be difficult to maintain and we may thus decide at any point to not fix old bugs. Especially when we notice that plugins rely on these. 
 
-Note: If your plugin was compiled against version 0.5 or older you will have to recompile your plugin using a newer S4ModApi Version. 
+Note: If your plugin was compiled against version 1.x or older you will have to recompile your plugin using a newer S4ModApi Version. 
 
 
 

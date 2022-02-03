@@ -184,7 +184,7 @@ BOOL CCustomUi::OnDraw(HDC hdc, const POINT* cursor, const RECT* clientRect) {
 	TRACE;
 
 	if (m_screenFilter != S4_GUI_UNKNOWN) {
-		m_visible = S4API->IsCurrentlyOnScreen(m_screenFilter);
+		m_visible = s4api->IsCurrentlyOnScreen(m_screenFilter);
 		if (m_visible && NULL != m_filterFunc && !m_filterFunc(this)) {
 			m_visible = false;
 		}

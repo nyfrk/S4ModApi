@@ -32,16 +32,16 @@
 
 extern "C" {
 
-#define IID_ISettlers4Api __uuidof(ISettlers4Api)
 #define IID_ISettlers4Api2 __uuidof(ISettlers4Api2)
+//#define IID_ISettlers4Api3 __uuidof(ISettlers4Api2)
 
 #define IID_Default_ISettlers4Api IID_ISettlers4Api2
 
-interface __declspec(uuid("b3b5169a-dca0-493c-c08e-99ca36c2b863")) ISettlers4Api;
 interface __declspec(uuid("05104b9f-52d3-4904-8d6f-a7c3012eabdd")) ISettlers4Api2;
+//interface __declspec(uuid("6891fea7-ef5a-4ee9-801f-a05548b3bd66")) ISettlers4Api3;
 
-typedef interface ISettlers4Api  FAR * LPSETTLERS4API;
 typedef interface ISettlers4Api2 FAR * LPSETTLERS4API2;
+//typedef interface ISettlers4Api3 FAR * LPSETTLERS4API3;
 
 #define S4API LPSETTLERS4API2
 
@@ -787,8 +787,14 @@ static S4API inline S4HCALL S4ApiCreate() {
 }
 
 #undef  INTERFACE
-#define INTERFACE ISettlers4Api
-DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
+#define INTERFACE ISettlers4Api2
+DECLARE_INTERFACE_(ISettlers4Api2, IUnknown) {
+	/** Never change this interface, create a new one if you need to change methods.
+		Otherwise you will break the ABI. Appending (to the end) is acceptable since
+		older versions never access methods beyond their known vtable. You may also
+		change arguments as long as the argument list is still compatible with the
+		old one. **/
+
 	/** IUnknown methods **/
 	STDMETHOD(QueryInterface) (THIS_ REFIID riid, LPVOID FAR * ppvObj) PURE;
 	STDMETHOD_(ULONG, AddRef) (THIS)  PURE;
@@ -974,18 +980,19 @@ DECLARE_INTERFACE_(ISettlers4Api, IUnknown) {
 	STDMETHOD_(BOOL, VehiclesKill)(THIS_ S4_VEHICLE_ENUM vehicle, INT x, INT y, INT r, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, SetGround)(THIS_ INT x, INT y, INT r, DWORD ground) PURE; // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, ShowTextMessage)(THIS_ LPCSTR message, DWORD icon, DWORD reserved) PURE; // defined in CS4Scripting.cpp
-
-	/** Never extend this interface, create a new one if you need more methods 
-		Otherwise you will break the ABI **/
 };
 
-#undef  INTERFACE
-#define INTERFACE ISettlers4Api2
-DECLARE_INTERFACE_(ISettlers4Api2, ISettlers4Api) {
-
-	/** Never extend this interface, create a new one if you need more methods
-		Otherwise you will break the ABI **/
-};
+// Template for interface version 3.x
+//#undef  INTERFACE
+//#define INTERFACE ISettlers4Api3
+//DECLARE_INTERFACE_(ISettlers4Api3, ISettlers4Api) {
+//	/** Never change this interface, create a new one if you need to change methods.
+//		Otherwise you will break the ABI. Appending (to the end) is acceptable since 
+//		older versions never access methods beyond their known vtable. You may also
+//		change arguments as long as the argument list is still compatible with the 
+//		old one. **/
+//
+//};
 
 
 }
