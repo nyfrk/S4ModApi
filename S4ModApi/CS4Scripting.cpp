@@ -717,3 +717,9 @@ BOOL CSettlers4Api::ShowTextMessage(LPCSTR message, DWORD icon, DWORD reserved) 
 	}
 	return retval;
 }
+
+BOOL CSettlers4Api::SoundPlay(S4_SOUND_ENUM sound, LPVOID reserved, LPVOID reserved2) {
+	TRACE;
+	// todo: implement me
+	return FALSE;
+}

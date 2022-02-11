@@ -504,12 +504,8 @@ enum S4_TREE_ENUM : BYTE {
 	S4_TREE_TROJAN_4 = S4_TREE_OLIVE_SMALL,
 };
 
-enum S4_OBJECT_ENUM : BYTE { // plants and stuff
-	S4_OBJECT_NONE = 0,
-	S4_OBJECT_1 = 1,
-	S4_OBJECT_WHEAT = S4_OBJECT_1 + 208,
-	S4_OBJECT_SUNFLOWER = S4_OBJECT_1 + 254,
-	// todo: add all objects
+enum S4_SOUND_ENUM : DWORD {
+	S4_SOUND_NONE = 0,
 };
 
 enum S4_SPELL_ENUM : BYTE {
@@ -982,6 +978,7 @@ DECLARE_INTERFACE_(ISettlers4Api2, IUnknown) {
 	STDMETHOD_(BOOL, VehiclesKill)(THIS_ S4_VEHICLE_ENUM vehicle, INT x, INT y, INT r, DWORD player = 0) PURE; // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, SetGround)(THIS_ INT x, INT y, INT r, DWORD ground) PURE; // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, ShowTextMessage)(THIS_ LPCSTR message, DWORD icon, DWORD reserved) PURE; // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SoundPlay)(THIS_ S4_SOUND_ENUM sound, LPVOID reserved = 0, LPVOID reserved2 = 0) PURE; // defined in CS4Scripting.cpp
 };
 
 // Template for interface version 3.x

@@ -211,6 +211,7 @@ struct CSettlers4Api : public ISettlers4Api2 {
 	STDMETHOD_(BOOL, VehiclesKill)(THIS_ S4_VEHICLE_ENUM vehicle, INT x, INT y, INT r, DWORD player); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, SetGround)(THIS_ INT x, INT y, INT r, DWORD ground); // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, ShowTextMessage)(THIS_ LPCSTR message, DWORD icon, DWORD reserved); // defined in CS4Scripting.cpp
+	STDMETHOD_(BOOL, SoundPlay)(THIS_ S4_SOUND_ENUM sound, LPVOID reserved, LPVOID reserved2); // defined in CS4Scripting.cpp
 
 	~CSettlers4Api();  // defined in CS4Singleton.cpp
 	static CSettlers4Api& GetInstance(); // defined in CS4Singleton.cpp

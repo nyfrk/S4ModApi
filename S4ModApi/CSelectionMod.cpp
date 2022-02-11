@@ -69,10 +69,13 @@ HRESULT S4HCALL CSelectionMod::OnSettlersSend(DWORD dwPosition, S4_MOVEMENT_ENUM
 	SIZE_T settlersSelected = 0;
 	auto& s4 = CSettlers4Api::GetInstance();
 	if (s4.GetSelection(settlers, sel, &settlersSelected)) {
-		s4.SendWarriors(x, y, dwCommand, settlers, settlersSelected, 0);
-		// todo: add the sound effect that is played when sending settlers
+		if (settlersSelected > OriginalSelectionLimit) {
+			// make sure to send the remaining settlers in the selection buffer since the game
+			// does only send the first 100.
+			s4.SendWarriors(x, y, dwCommand, &settlers[OriginalSelectionLimit], settlersSelected - OriginalSelectionLimit, 0);
+		}
 	}
-	return TRUE;
+	return FALSE;
 }
 
 CSelectionMod& CSelectionMod::GetInstance() {
