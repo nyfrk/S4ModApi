@@ -70,6 +70,7 @@ HRESULT S4HCALL CSelectionMod::OnSettlersSend(DWORD dwPosition, S4_MOVEMENT_ENUM
 	auto& s4 = CSettlers4Api::GetInstance();
 	if (s4.GetSelection(settlers, sel, &settlersSelected)) {
 		s4.SendWarriors(x, y, dwCommand, settlers, settlersSelected, 0);
+		// todo: add the sound effect that is played when sending settlers
 	}
 	return TRUE;
 }
