@@ -22,6 +22,7 @@
 #include "globals.h" // g_isGE, S4_Main
 #include "hlib.h" // CallPatch, Patch
 #include "patterns.h"
+#include "CSettlers4Api.h"
 
 #include "CSelectionMod.h"
 
@@ -33,7 +34,6 @@ static DWORD maxSelection = OriginalSelectionLimit;
 static struct SelectionMarker { DWORD x, y, markerType /*1=normal, 5C=silver, 5D=gold, 5E=priest, 5F=armored*/; } *selectionMarkersArray = nullptr; // new buffer, since games buffer is fixed to 100 elements
 static struct HealthBubble { DWORD x, y, unk[3]; } *healthBubblesArray = nullptr; // new buffer, since games buffer is fixed to 100 elements
 static S4HOOK SendWarriorHook;
-static S4API s4;
 
 static void __declspec(naked) __newSelectLimitHE() {
 	__asm {
@@ -67,8 +67,9 @@ HRESULT S4HCALL CSelectionMod::OnSettlersSend(DWORD dwPosition, S4_MOVEMENT_ENUM
 	auto sel = maxSelection;
 	WORD* settlers = new WORD[sel];
 	SIZE_T settlersSelected = 0;
-	if (s4->GetSelection(settlers, sel, &settlersSelected)) {
-		s4->SendWarriors(x, y, dwCommand, settlers, settlersSelected);
+	auto& s4 = CSettlers4Api::GetInstance();
+	if (s4.GetSelection(settlers, sel, &settlersSelected)) {
+		s4.SendWarriors(x, y, dwCommand, settlers, settlersSelected, 0);
 	}
 	return TRUE;
 }
@@ -148,6 +149,7 @@ bool CSelectionMod::Init() {
 		S4_Main;
 
 	if (!requiredPatterns) {
+#ifdef  _DEBUG
 		if (!g_Patterns.SelectionMarkerBufferGetter) LOG("missing g_Patterns.SelectionMarkerBufferGetter");
 		if (!g_Patterns.SelectionMarkerBufferSetter) LOG("missing g_Patterns.SelectionMarkerBufferSetter");
 		if (!g_Patterns.HealthBubbleBufferGetter) LOG("missing g_Patterns.HealthBubbleBufferGetter");
@@ -155,6 +157,7 @@ bool CSelectionMod::Init() {
 		if (!g_Patterns.BoxSelect) LOG("missing g_Patterns.BoxSelect");
 		if (!g_Patterns.AltSelect) LOG("missing g_Patterns.AltSelect");
 		if (!S4_Main) LOG("missing S4_Main");
+#endif
 		return false;
 	}
 
@@ -187,17 +190,14 @@ void CSelectionMod::Patch() {
 	BoxSelectLimitPatch.patch();
 	AltSelectLimitPatch.patch();
 
-	s4 = S4ApiCreate();
-	if (s4) SendWarriorHook = s4->AddSettlerSendListener(OnSettlersSend);
+	SendWarriorHook = CSettlers4Api::GetInstance().AddSettlerSendListener(OnSettlersSend);
 }
 
 void CSelectionMod::Unpatch() {
 	const std::lock_guard<decltype(mutex)> lock(mutex);
 	TRACE;
-	if (SendWarriorHook && s4) s4->RemoveListener(SendWarriorHook);
-	if (s4) s4->Release();
+	if (SendWarriorHook) CSettlers4Api::GetInstance().RemoveListener(SendWarriorHook);
 	SendWarriorHook = 0;
-	s4 = 0;
 	AltSelectLimitPatch.unpatch();
 	BoxSelectLimitPatch.unpatch();
 	for (auto it = valuePatches.rbegin(); it != valuePatches.rend(); it++) {
