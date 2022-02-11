@@ -2,6 +2,8 @@ This is a example project for the S4ModApi. The goal of the Selection Limit Exam
 
 See https://github.com/nyfrk/S4ModApi/wiki/SetMaxSelection.
 
+![units-selected](units-selected.png)
+
 
 
 # License
