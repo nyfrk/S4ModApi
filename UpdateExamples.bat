@@ -9,3 +9,6 @@ copy ..\S4ModApi\S4ModApi.h LuaExample\LuaExample
 copy ..\Release\S4ModApi.lib HotkeysExample\HotkeysExample
 copy ..\S4ModApi\S4ModApi.h HotkeysExample\HotkeysExample
 
+copy ..\Release\S4ModApi.lib SelectionLimitExample\SelectionLimitExample
+copy ..\S4ModApi\S4ModApi.h SelectionLimitExample\SelectionLimitExample
+
