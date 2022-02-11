@@ -75,6 +75,7 @@ HRESULT S4HCALL CSelectionMod::OnSettlersSend(DWORD dwPosition, S4_MOVEMENT_ENUM
 			s4.SendWarriors(x, y, dwCommand, &settlers[OriginalSelectionLimit], settlersSelected - OriginalSelectionLimit, 0);
 		}
 	}
+	delete[] settlers;
 	return FALSE;
 }
 
