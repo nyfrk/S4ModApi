@@ -720,6 +720,9 @@ BOOL CSettlers4Api::ShowTextMessage(LPCSTR message, DWORD icon, DWORD reserved) 
 
 BOOL CSettlers4Api::SoundPlay(S4_SOUND_ENUM sound, LPVOID reserved, LPVOID reserved2) {
 	TRACE;
+	UNREFERENCED_PARAMETER(sound);
+	UNREFERENCED_PARAMETER(reserved);
+	UNREFERENCED_PARAMETER(reserved2);
 	// todo: implement me
 	return FALSE;
 }
