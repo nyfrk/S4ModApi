@@ -48,26 +48,32 @@ static bool IsSkipUpdate() {
 	TRACE
 	WCHAR fn[MAX_PATH + 1];
 	auto l = GetModuleFileNameW(g_hModule, fn, MAX_PATH);
-	if (!l) return true;
-	fn[l] = '\0';
+	if (l < 3) return true; // not a valid path
 
-	std::wstring str(fn);
-	str += L"\\..\\NoUpdateForS4ModApi";
-	auto attr = GetFileAttributesW(str.c_str());
-	if (attr != INVALID_FILE_ATTRIBUTES) return true;
-	str += L".txt";
-	attr = GetFileAttributesW(str.c_str());
-	if (attr != INVALID_FILE_ATTRIBUTES) return true;
+	// cut filename of modules fully qualified filename
+	for (; fn[l] != '\\' && fn[l] != '/' && l > 0; --l) {} 
+	fn[++l] = '\0';
+	auto path = std::wstring(fn, l);
 
-	std::wstring str2(fn);
-	str2 += L"\\..\\S4ModApiNoUpdate";
-	attr = GetFileAttributesW(str2.c_str());
-	if (attr != INVALID_FILE_ATTRIBUTES) return true;
-	str2 += L".cfg";
-	attr = GetFileAttributesW(str2.c_str());
-	if (attr != INVALID_FILE_ATTRIBUTES) return true;
+	// we skip the update if one of the following files exists in the 
+	// same directory as the module. The content of the file does not matter.
+	LPCWSTR files[] = {
+		L".NoUpdateForS4ModApi",
+		L"NoUpdateForS4ModApi",
+		L"NoUpdateForS4ModApi.txt",
+		L"NoUpdateForS4ModApi.cfg",
+		L".S4ModApiNoUpdate",
+		L"S4ModApiNoUpdate",
+		L"S4ModApiNoUpdate.txt",
+		L"S4ModApiNoUpdate.cfg" };
 
-	return false;
+	for (auto file : files) {
+		auto str = path + file;
+		auto attr = GetFileAttributesW(str.c_str());
+		if (attr != INVALID_FILE_ATTRIBUTES) return true; // file exists
+	}
+
+	return false; // none of the above files were found
 }
 
 CUpdate::EUpdateCheckStatus CUpdate::check() {
