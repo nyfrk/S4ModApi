@@ -213,14 +213,14 @@
     <ClCompile Include="CGuiClearHook.cpp">
       <Filter>Quelldateien\Hooks</Filter>
     </ClCompile>
-    <ClCompile Include="CGuiElementBltHook.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="CMod.cpp">
       <Filter>Quelldateien\Mods</Filter>
     </ClCompile>
     <ClCompile Include="CSelectionMod.cpp">
       <Filter>Quelldateien\Mods</Filter>
+    </ClCompile>
+    <ClCompile Include="CGuiElementBltHook.cpp">
+      <Filter>Quelldateien\Hooks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -47,6 +47,7 @@ struct CSettlers4Api : public ISettlers4Api2 {
 	STDMETHOD_(S4HOOK, AddBltListener)(THIS_ LPS4BLTCALLBACK); // defined in CS4Listeners.cpp
 	STDMETHOD_(S4HOOK, AddEntityListener)(THIS_ LPS4ENTITYCALLBACK); // defined in CS4Listeners.cpp
 	STDMETHOD_(S4HOOK, AddGuiBltListener)(THIS_ LPS4GUIBLTCALLBACK); // defined in CS4Listeners.cpp
+	STDMETHOD_(S4HOOK, AddGuiElementBltListener)(THIS_ LPS4GUIDRAWCALLBACK); // defined in CS4Listeners.cpp
 	STDMETHOD_(S4HOOK, AddGuiClearListener)(THIS_ LPS4GUICLEARCALLBACK); // defined in CS4Listeners.cpp
 
 	STDMETHOD(GetMD5OfModule)(THIS_ HMODULE module, LPSTR out, SIZE_T sz); // defined in CS4Misc.cpp

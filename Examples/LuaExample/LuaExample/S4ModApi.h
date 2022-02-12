@@ -979,6 +979,9 @@ DECLARE_INTERFACE_(ISettlers4Api2, IUnknown) {
 	STDMETHOD_(BOOL, SetGround)(THIS_ INT x, INT y, INT r, DWORD ground) PURE; // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, ShowTextMessage)(THIS_ LPCSTR message, DWORD icon, DWORD reserved) PURE; // defined in CS4Scripting.cpp
 	STDMETHOD_(BOOL, SoundPlay)(THIS_ S4_SOUND_ENUM sound, LPVOID reserved = 0, LPVOID reserved2 = 0) PURE; // defined in CS4Scripting.cpp
+
+	// Added since version 2.2
+	STDMETHOD_(S4HOOK, AddGuiElementBltListener)(THIS_ LPS4GUIDRAWCALLBACK) PURE;
 };
 
 // Template for interface version 3.x

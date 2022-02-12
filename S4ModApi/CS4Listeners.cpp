@@ -31,6 +31,7 @@
 #include "CEntityHook.h"
 #include "CGuiBltHook.h"
 #include "CGuiClearHook.h"
+#include "CGuiElementBltHook.h"
 
 extern "C" {
 
@@ -89,6 +90,10 @@ extern "C" {
 		return CGuiBltHook::GetInstance().AddListener(cb);
 	}
 
+	S4HOOK CSettlers4Api::AddGuiElementBltListener(LPS4GUIDRAWCALLBACK cb) {
+		TRACE;
+		return CGuiElementBltHook::GetInstance().AddListener(cb);
+	}
 
 	S4HOOK CSettlers4Api::AddGuiClearListener(LPS4GUICLEARCALLBACK cb) {
 		TRACE;
