@@ -50,13 +50,24 @@ static bool IsSkipUpdate() {
 	auto l = GetModuleFileNameW(g_hModule, fn, MAX_PATH);
 	if (!l) return true;
 	fn[l] = '\0';
+
 	std::wstring str(fn);
 	str += L"\\..\\NoUpdateForS4ModApi";
 	auto attr = GetFileAttributesW(str.c_str());
 	if (attr != INVALID_FILE_ATTRIBUTES) return true;
 	str += L".txt";
 	attr = GetFileAttributesW(str.c_str());
-	return attr != INVALID_FILE_ATTRIBUTES;
+	if (attr != INVALID_FILE_ATTRIBUTES) return true;
+
+	std::wstring str2(fn);
+	str2 += L"\\..\\S4ModApiNoUpdate";
+	attr = GetFileAttributesW(str2.c_str());
+	if (attr != INVALID_FILE_ATTRIBUTES) return true;
+	str2 += L".cfg";
+	attr = GetFileAttributesW(str2.c_str());
+	if (attr != INVALID_FILE_ATTRIBUTES) return true;
+
+	return false;
 }
 
 CUpdate::EUpdateCheckStatus CUpdate::check() {
