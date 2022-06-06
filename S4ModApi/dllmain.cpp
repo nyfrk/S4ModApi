@@ -65,20 +65,7 @@ BOOL APIENTRY DllMain( HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReser
 					LOG("MD5 of " << exeFilename << " is " << md5str << '.');
 				#endif
 
-				// prevent lib from beeing unloaded when we are not ready with cleanup yet
-				// use FreeLibraryAndExitThread to unload it.
-				HMODULE mod = IncreaseModuleRefcount(InitializeGlobals);
-				if (mod) {
-					// evade the loader lock (thread gets started as soon as it becomes attached, witch will
-					// only happen if the loader lock is released - thus everything is loaded
-					HANDLE hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)InitializeGlobals, mod, 0, NULL);
-					if (!hThread) {
-						DecreaseModuleRefcount(mod);
-						return FALSE; // unload DLL
-					} else {
-						CloseHandle(hThread);
-					}
-				}
+				InitializeGlobals();
 			}
 		}
 

@@ -38,13 +38,18 @@ DWORD EventEngine = 0;
 DWORD GuiEngine2 = 0;
 DWORD GfxEngine = 0;
 MD5 g_md5;
-std::atomic_bool g_isInitialized = false;
+std::atomic_bool g_isInitialized(false);
 
 #if _DEBUG
 void DebugProgramMain();
 #endif
 
-DWORD WINAPI InitializeGlobals(HMODULE mod) {
+void Update() {
+	// Check for updates
+	CUpdate::GetInstance().check();
+}
+
+DWORD WINAPI InitializeGlobals() {
 	TRACE;
 
 	// find base addresses of modules of interest
@@ -69,15 +74,15 @@ DWORD WINAPI InitializeGlobals(HMODULE mod) {
 	// Initialize all mods
 	CMod::InitAll();
 
-	// Check for updates
-	CUpdate::GetInstance().check();
+	const HANDLE hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Update, nullptr, 0, NULL);
+	if(hThread)
+		CloseHandle(hThread);
 
 	g_isInitialized = true;
 
 #if _DEBUG
 		DebugProgramMain();
 #endif
-
-	FreeLibraryAndExitThread(mod, 0); // decrements the reference counter
-	return 0; // never reached
+		
+	return 0;
 }
