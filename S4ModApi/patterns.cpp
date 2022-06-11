@@ -34,6 +34,13 @@ void PatternAddr::Scan(LPCSTR pname, DWORD pbase, LPCSTR pbasename, LPCSTR patte
 	this->basename = pbasename;
 	this->base = pbase;
 	this->addr = (DWORD)hlib::FindPattern(base, patternStr);
+
+	static bool failed = false;
+	if(this->addr == 0 && !failed) {
+		failed = true;
+		const std::string error = "Error, couldn't find pattern: \"" + std::string(pname) + "\"";
+		MessageBox(nullptr, error.c_str(), "S4 - ModAPI", MB_OK);
+	}
 }
 DWORD PatternAddr::operator+(int off) { return addr ? this->addr + off : 0; } // safe add
 DWORD PatternAddr::operator-(int off) { return addr ? this->addr - off : 0; } // safe sub

@@ -36,4 +36,4 @@ extern MD5 g_md5; // md5 of the exe
 extern std::atomic_bool g_isInitialized; // variable that indicates when s4api has been initialized
 
 
-DWORD WINAPI InitializeGlobals(HMODULE mod);
+DWORD WINAPI InitializeGlobals();
